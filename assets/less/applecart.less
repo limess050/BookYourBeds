@@ -1,0 +1,147 @@
+body
+{
+	padding-top: 60px;
+}
+
+footer
+{
+	margin-top: 20px;
+}
+
+hr
+{
+	color: #ccc;
+	background-color: #ccc;
+	height: 1px;
+}
+
+.halfspan
+{
+	width: 30px;
+}
+
+.align_center,
+th.align_center,
+td.align_center
+{
+	text-align: center;
+}
+
+.weekend
+{
+	background: lighten(@blue, 50%);
+}
+
+th.today,
+td.today
+{
+	background: lighten(@green, 40%);
+}
+
+.table-hover tbody tr {
+  td.today {
+    background-color: lighten(@green, 40%);
+  }
+}
+
+.table-striped {
+  tbody {
+    > tr:nth-child(odd),
+    > tr:nth-child(odd) {
+
+    	th.today,
+		td.today
+		{
+			background: lighten(@green, 30%);
+		}
+    }
+  }
+}
+
+.heavy-border
+{
+	border: solid 8px #ccc;
+	padding: 10px 15px;
+	margin-bottom: 10px;
+}
+
+.diary
+{
+	background-image: url('../img/large-calendar.png');
+	background-repeat: no-repeat;
+	background-position: 10px 5px;
+	padding-left: 90px;
+	font-size: 18px;
+
+	h1
+	{
+		font-size: 40px;
+	}
+}
+
+.validation-errors
+{
+	
+	ul
+	{
+		margin-bottom: 0;
+	}
+}
+
+.diary-bar
+{
+	min-height: 75px;
+}
+
+tr.checked_in
+{
+	color: lighten(@textColor, 50%);
+
+	a
+	{
+		color: lighten(@textColor, 50%);
+	}
+}
+
+/* Growl */
+#growl
+{
+	position: fixed;
+	top: 50px;
+	right: 10px;
+	overflow: hidden;
+	z-index: 9999;
+	
+	.msg
+	{
+		border: 1px solid #171717;
+		color: #E4E4E4;
+		text-shadow: 0 -1px 1px #0A131A;
+		width: 250px;
+		padding: 10px;
+		margin-bottom: 10px;
+
+		background: #141517;
+		background: -webkit-gradient(
+		    linear, left top, left bottom, 
+		    from(rgba(255, 255, 255, 0.3)), 
+		    color-stop(0.8, rgba(255, 255, 255, 0))), 
+		    rgba(0, 0, 0, 0.8);
+
+		box-shadow: inset 0 1px 1px #8E8E8E;
+		-webkit-box-shadow: inset 0 1px 1px #8E8E8E;
+		-moz-box-shadow: inset 0 1px 1px #8E8E8E;
+
+		border-radius: 7px;
+		-webkit-border-radius: 7px;
+		-moz-border-radius: 7px;
+
+		span.loading
+		{
+			display: block;
+			padding: 5px 0px 5px 30px;
+			background: url('../img/ajax-loader-growl.gif') no-repeat left center;
+		}
+		
+	}
+}

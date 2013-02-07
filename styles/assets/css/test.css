@@ -1,0 +1,94 @@
+.clearfix {
+  *zoom: 1;
+}
+.clearfix:before,
+.clearfix:after {
+  display: table;
+  content: "";
+  line-height: 0;
+}
+.clearfix:after {
+  clear: both;
+}
+.hide-text {
+  font: 0/0 a;
+  color: transparent;
+  text-shadow: none;
+  background-color: transparent;
+  border: 0;
+}
+.input-block-level {
+  display: block;
+  width: 100%;
+  min-height: 28px;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+  padding: 0;
+}
+table {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+table tbody,
+table thead,
+table tr,
+table td,
+table th {
+  margin: 0;
+  padding: 0;
+}
+table tr td:nth-child(even) {
+  background-color: #bbb;
+}
+table tr td:nth-child(odd) {
+  background-color: #ddd;
+}
+table tr th:nth-child(even) {
+  background-color: #bbb;
+}
+table tr th:nth-child(odd) {
+  background-color: #ddd;
+}
+table tr td.total,
+table tr th.total {
+  background: #ff0000;
+}
+@media only screen and (max-width: 500px) {
+  table {
+    background: #eee;
+  }
+  table thead {
+    float: left;
+    width: 60%;
+  }
+  table thead th {
+    display: block;
+    width: 100%;
+  }
+  table tbody {
+    float: right;
+    width: 40%;
+  }
+  table tr {
+    display: block;
+  }
+  table tr td {
+    display: block;
+    width: 100%;
+  }
+  table tr th:nth-child(even) {
+    background-color: #ccc;
+  }
+  table tr th:nth-child(odd) {
+    background-color: #eee;
+  }
+  table tr td.total,
+  table tr th.total {
+    background: #ff0000;
+  }
+}

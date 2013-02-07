@@ -1,0 +1,110 @@
+@import "variables.less";
+@import "mixins.less";
+
+body
+{
+	margin: 0;
+	padding: 0;	
+}
+
+table
+{
+	width: 100%;
+	margin: 0;
+	padding: 0;
+
+	tbody,
+	thead,
+	tr,
+	td,
+	th
+	{
+		margin: 0;
+		padding: 0;
+	}
+
+	tr
+	{
+		td:nth-child(even)
+		{
+			background-color: #bbb;
+		}
+
+		td:nth-child(odd)
+		{
+			background-color: #ddd;
+		}
+
+		th:nth-child(even)
+		{
+			background-color: #bbb;
+		}
+
+		th:nth-child(odd)
+		{
+			background-color: #ddd;
+		}
+
+		td.total,
+		th.total
+		{
+			background: #ff0000;
+		}
+	}
+}
+
+@media only screen and (max-width: 500px)
+{
+
+	table
+	{
+		
+		background: #eee;
+		thead
+		{
+			float: left;
+			width: 60%;
+
+			th
+			{
+				display: block;
+				width: 100%;
+			}
+		}
+
+		tbody
+		{
+			float: right;
+			width: 40%;
+		}
+
+		tr
+		{
+			display: block;
+
+			td
+			{
+				display: block;
+				width: 100%;
+			}
+
+			th:nth-child(even)
+			{
+				background-color: #ccc;
+			}
+
+			th:nth-child(odd)
+			{
+				background-color: #eee;
+			}
+
+			td.total,
+			th.total
+			{
+				background: #ff0000;
+			}
+		}
+	    
+	    
+	}
+}
