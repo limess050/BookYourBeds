@@ -36,6 +36,7 @@ class User_m extends MY_Model
 		$this->is_paranoid();
 		
 		$user = $this->db->where('user_username', $username)
+						->or_where('user_email', $username)
 						->where('user_password', $password)
 						->get('users')
 						->row();
@@ -68,6 +69,26 @@ class User_m extends MY_Model
 						->count_all_results('users');
 
 		return ($exists > 0) ? FALSE : TRUE;
+	}
+
+	public function get_by_auth($auth)
+	{
+		$this->is_paranoid();
+		
+		return $this->db->where('user_password_reset', $auth)
+						->where('user_password_reset_expires >', 'NOW()', FALSE)
+						->get('users')
+						->row();
+	}
+
+	public function reset_password($id, $password)
+	{
+		$this->db->where('user_id', $id)
+				->update('users', array(
+										'user_password'					=> SHA1($password),
+										'user_password_reset'			=> null,
+										'user_password_reset_expires'	=> null
+										));
 	}
 
 }

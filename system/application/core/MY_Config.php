@@ -42,8 +42,6 @@ class MY_Config extends CI_Config
 		{
 			$ci =& get_instance();
 			
-
-
 			$pre = ( empty($ci->account->ac)) ? '' : $ci->account->val('slug') . '/';
 		}
 

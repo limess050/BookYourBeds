@@ -4,6 +4,8 @@ class Users extends Admin_Controller {
 
 	public function index()
 	{
+		show_404(); // COMING SOON!
+
 		$this->admin_access();
 
 		$data['users'] = $this->model('user')->get_all(account('id'));
@@ -13,6 +15,8 @@ class Users extends Admin_Controller {
 
 	public function create()
 	{
+		show_404(); // COMING SOON!
+
 		$this->admin_access();
 
 		$this->load->library('form_validation');
@@ -52,10 +56,10 @@ class Users extends Admin_Controller {
 
 		$this->load->library('form_validation');
 
-		$this->form_validation->set_rules('user[user_firstname]', 'First Name', 'trim|required');
+		$this->form_validation->set_rules('user[user_firstname]', 'First Name', 'trim');
 		$this->form_validation->set_rules('user[user_lastname]', 'Last Name', 'trim');
-		$this->form_validation->set_rules('user[user_username]', 'Username', 'trim|required|callback_check_username');
-		//$this->form_validation->set_rules('user[user_email]', 'Email Address', 'trim|valid_email');
+		$this->form_validation->set_rules('user[user_username]', 'Username', 'trim|callback_check_username');
+		$this->form_validation->set_rules('user[user_email]', 'Email Address', 'trim|valid_email');
 		//$this->form_validation->set_rules('user[user_agent_admin]', '', 'trim|callback_set_to_zero');
 
 		if( ! empty($_POST['password']))
@@ -90,11 +94,13 @@ class Users extends Admin_Controller {
 	public function check_username($str)
 	{
 		$this->form_validation->set_message('check_username', 'That Username has already been taken.');
-		return $this->model('user')->check_username($str, $this->input->post('user_id'));
+		return (empty($str)) ? TRUE : $this->model('user')->check_username($str, $this->input->post('user_id'));
 	}
 
 	public function delete($id = null)
 	{
+		show_404(); // COMING SOON!
+
 		if(empty($id))
 		{
 			show_404();

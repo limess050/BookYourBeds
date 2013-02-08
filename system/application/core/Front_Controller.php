@@ -22,5 +22,10 @@ class Front_Controller extends MY_Controller
 
 			->append_metadata( css('jquery.ui.css') ) 
 			->append_metadata( js('jquery.ui.js') );
+
+		if( ! $this->account->val('active'))
+		{
+			redirect('roadblock/coming_soon');
+		}
 	}
 }

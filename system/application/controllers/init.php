@@ -10,15 +10,16 @@ class Init extends CI_Controller {
 		{
 			show_error($this->migration->error_string());
 		}
+
+		echo anchor('init/back?v=0', 'Back');
 	}
 
 	public function back()
 	{
 		$this->load->library('migration');
 
-		if ( ! $this->migration->version($this->input->get('v')))
-		{
-			show_error($this->migration->error_string());
-		}
+		$this->migration->version($this->input->get('v'));
+
+		echo anchor('init/migrate', 'Forwards');
 	}
 }

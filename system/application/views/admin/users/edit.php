@@ -41,6 +41,20 @@
 			</div>
 
 			<div class="control-group">
+				<label class="control-label" for="user_email">Email Address</label>
+				<div class="controls">
+					<?php
+					echo form_input(array(
+						'name'	=> 'user[user_email]',
+						'id'	=> 'user_email',
+						'class'	=> 'span4',
+						'value'	=> set_value('user[user_email]', $user->user_email)
+						));
+					?>
+				</div>
+			</div>
+
+			<div class="control-group">
 				<label class="control-label" for="user_username">Username</label>
 				<div class="controls">
 					<?php

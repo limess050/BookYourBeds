@@ -7,7 +7,7 @@
 				<?php echo $template['partials']['form_errors']; ?>
 
 				<div class="control-group">
-		        	<label class="control-label">Username</label>
+		        	<label class="control-label">Email address or username</label>
 		        	<div class="controls">
 		            	<input type="text" class="span4" name="username" />
 		            </div>
@@ -22,7 +22,7 @@
 			</fieldset>
 
 			<div class="form-actions">
-		        <button type="submit" class="btn btn-primary">Signin</button>
+		        <button type="submit" class="btn btn-primary">Signin</button>&nbsp;&nbsp;<?php echo anchor('forgotten_password', 'Forgotten Password?'); ?>
 		    </div>
 		</form>
 	</div>

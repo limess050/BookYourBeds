@@ -6,18 +6,19 @@ class Migration_Test_account extends CI_Migration
 	public function up()
 	{
 		$account = array(
-					'account_name'	=> 'Testing Account',
-					'account_slug'	=> 'test',
+					'account_name'	=> 'Phil\'s Bunkhouse',
+					'account_slug'	=> 'phils-bunkhouse',
 					'account_email'	=> 'phil@othertribe.com'
 					);
 
 		$account_id = $this->model('account')->insert($account);
 
 		$user = array(
-					'user_firstname'	=> 'Joe',
-					'user_lastname'		=> 'Bloggs',
-					'user_username'		=> 'joe',
-					'user_password'		=> SHA1('password'),
+					'user_firstname'	=> 'Phil',
+					'user_lastname'		=> 'Stephens',
+					'user_username'		=> 'phil',
+					'user_email'		=> 'phil@othertribe.com',
+					'user_password'		=> SHA1('pcr34t366'),
 					'user_is_admin'		=> 1,
 					'user_account_id'	=> $account_id
 					);

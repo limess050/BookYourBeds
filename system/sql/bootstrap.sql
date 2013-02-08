@@ -19,11 +19,15 @@ DROP TABLE IF EXISTS `accounts`;
 
 CREATE TABLE `accounts` (
 `account_id` INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+`account_confirmed` TINYINT(1) NOT NULL DEFAULT '0',
+`account_active` TINYINT(1) NOT NULL DEFAULT '0',
 `account_name` VARCHAR(64) NOT NULL DEFAULT '',
-`account_email` VARCHAR(100) NOT NULL DEFAULT '',
 `account_slug` VARCHAR(100) NOT NULL DEFAULT '',
+`account_email` VARCHAR(100) NOT NULL DEFAULT '',
+`account_confirmation_code` VARCHAR(100) NOT NULL DEFAULT '',
 `account_updated_at` TIMESTAMP NOT NULL,
 `account_created_at` DATETIME NOT NULL,
+`account_activated_at` DATETIME NOT NULL,
 `account_deleted_at` DATETIME NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='Accounts';
 
@@ -37,6 +41,7 @@ CREATE TABLE `users` (
 `user_id` INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
 `user_account_id` INT(11) NOT NULL DEFAULT '0',
 `user_username` VARCHAR(64) NULL,
+`user_email` VARCHAR(100) NULL,
 `user_password` VARCHAR(100) NOT NULL DEFAULT '',
 `user_firstname` VARCHAR(64) NULL,
 `user_lastname` VARCHAR(64) NULL,
@@ -44,7 +49,10 @@ CREATE TABLE `users` (
 `user_updated_at` TIMESTAMP NOT NULL,
 `user_created_at` DATETIME NOT NULL,
 `user_deleted_at` DATETIME NOT NULL,
-UNIQUE KEY `account_user` (`user_account_id`, `user_username`),
+`user_password_reset` VARCHAR(100) NOT NULL DEFAULT '',
+`user_password_reset_expires` DATETIME NOT NULL,
+UNIQUE KEY `account_username` (`user_account_id`, `user_username`),
+UNIQUE KEY `account_email` (`user_account_id`, `user_email`),
 INDEX (`user_account_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='Users';
 

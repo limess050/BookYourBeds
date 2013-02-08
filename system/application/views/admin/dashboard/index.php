@@ -1,6 +1,4 @@
-<div class="page-header row">
-	<h1>Arriving Today</h1>
-</div>
+<h1 class="page-header">Arriving Today</h1>
 
 <?php if(empty($bookings)) { ?>
 <p><span class="label label-important">NO BOOKINGS ARRIVING TODAY</span></p>
@@ -36,9 +34,7 @@
 <?php } ?>
 
 <?php if( ! empty($new)) { ?>
-<div class="page-header row">
-	<h1>New Bookings</h1>
-</div>
+<h1 class="page-header">New Bookings</h1>
 
 <table class="table table-condensed table-striped table-hover">
 	<thead>

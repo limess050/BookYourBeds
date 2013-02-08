@@ -11,10 +11,13 @@ class Admin_Controller extends MY_Controller
 		if(account('id'))
 		{
 			$this->account->new_bookings();
+			$this->template->set_layout('admin');
+		} else
+		{
+			$this->template->set_layout('default');
 		}
 
 		$this->template
-			->set_layout('admin')
 			->enable_parser(FALSE)
 
 			->set_partial('form_errors', 'partials/form_errors')
@@ -25,6 +28,7 @@ class Admin_Controller extends MY_Controller
 			->append_metadata( css('bootstrap.css') )
 			->append_metadata( js('application.js') )
 			->append_metadata( js('spin.js') )
+			->append_metadata( js('holder.js') )
 
 			->append_metadata( css('jquery.ui.css') ) 
 			->append_metadata( js('jquery.ui.js') );
@@ -45,6 +49,7 @@ class Admin_Controller extends MY_Controller
 
 		if($this->form_validation->run() == FALSE)
 		{
+
 			$this->template
 				->title('Signin')
 				->build('admin/auth/signin'); 
@@ -74,7 +79,7 @@ class Admin_Controller extends MY_Controller
 	{
 		
 		// These pages get past permission checks
-	    $ignored_methods = array('signin', 'signout');
+	    $ignored_methods = array('signin', 'signout', 'forgotten_password', 'reset_password');
 
 	    if(ci()->uri->total_segments() == 1 && in_array($this->uri->segment(1), $ignored_methods))
 		{

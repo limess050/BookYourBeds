@@ -37,16 +37,16 @@
 	<div class="navbar-inner">
 		<div class="container">
 			
-			<?php if(session('user', 'user_id')) { ?>
 			<ul class="nav">
 				<li>
-					<?php 
-
-		
-					echo anchor('admin', account('name') . " <span class=\"badge badge-success\">{$this->account->bookings}</span>"); ?>
+					<?php echo anchor('admin', account('name') . " <span class=\"badge badge-success\">{$this->account->bookings}</span>"); ?>
 				</li>
 
+				<?php if(session('user', 'user_id')) { ?>
+				
+				<?php if(account('active')) { ?>
 				<li><?php echo anchor('admin/bookings', 'Diary'); ?></li>
+				<?php } ?>
 
 				<li class="dropdown">
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown">Rooms <b class="caret"></b></a>
@@ -58,14 +58,18 @@
                 </li>
 			</ul>
 
+			<?php if(account('active')) { ?>
             <?php echo form_open('admin/bookings/search', 'class="navbar-search pull-left"'); ?>
             	<input type="text" class="search-query span2" name="search_terms" placeholder="Search..." />
           	</form>
+          	<?php } ?>
 
 			<ul class="nav pull-right">
+				<?php if(account('active')) { ?>
 				<li><?php echo anchor('admin/salesdesk', 'Sales Desk'); ?></li>
-
-				<?php if(session('user', 'user_is_admin')) { ?>
+				<?php } ?>
+				
+				<?php if(session('user', 'user_is_admin') && account('active')) { ?>
 				<li class="divider-vertical"></li>
 
 				<li class="dropdown">
@@ -79,11 +83,11 @@
 				<li class="divider-vertical"></li>
 
 				<li class="dropdown">
-					<a href="#" class="dropdown-toggle" data-toggle="dropdown"><?php echo session('user', 'user_firstname') . ' ' . session('user', 'user_lastname'); ?> <b class="caret"></b></a>
+					<a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="icon-user icon-white"></i> <b class="caret"></b></a>
 					
 					<ul class="dropdown-menu">
 						<li><?php echo anchor('admin/signout', 'Sign Out'); ?></li>
-						<li><?php echo anchor('admin/users/me', 'Edit User Account'); ?></li>
+						<li><?php echo anchor('admin/users/me', 'Edit Your Details'); ?></li>
 						<!--<li class="divider"></li>
 						<li><?php echo anchor('admin/account', 'Settings'); ?></li>
 						<li><?php echo anchor('admin/users', 'Users'); ?></li>
@@ -103,7 +107,7 @@
 	<?php echo $template['body']; ?>
 
 	<footer>
-		&copy; Copyright <?php echo date('Y'); ?> | <?php echo account('name'); ?> | <?php echo anchor('', 'Go to site...'); ?>
+		&copy; Copyright <?php echo date('Y'); ?> <?php if(account('id')) { ?>| <?php echo account('name'); ?><?php echo (account('active')) ? ' | ' . anchor('', 'Go to site...') : ''; } ?>
 	</footer>
 
 </div>

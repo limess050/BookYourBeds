@@ -67,8 +67,14 @@
 $route['default_controller'] 						= 'roadblock';
 $route['404_override']			 					= 'errors/error_404';
 
+$route['signup']									= "roadblock/signup";
+$route['confirm_account']							= "roadblock/confirm_account";
 $route['(signin|signout)']							= "admin/auth/$1";
 $route['(:any)/(signin|signout)']					= 'admin/auth/$2';
+$route['forgotten_password']						= 'admin/auth/forgotten_password';
+$route['(:any)/forgotten_password']					= 'admin/auth/forgotten_password';
+$route['reset_password']							= 'admin/auth/reset_password';
+$route['(:any)/reset_password']						= 'admin/auth/reset_password';
 
 $route['init/(:any)']								= 'init/$1';
 
