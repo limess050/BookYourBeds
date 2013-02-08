@@ -83,6 +83,7 @@ class Booking
 
 	public function process($booking_id = null, $gateway_results = null)
 	{
+		echo 'Processing ' . $booking_id;
 		ci()->load->helper('date');
 		ci()->load->helper('text');
 
