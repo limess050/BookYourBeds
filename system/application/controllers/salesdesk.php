@@ -259,7 +259,11 @@ class Salesdesk extends Front_Controller {
 				break;
 
 			case 'create':
+				// Has it already been processed by an IPN call or something?
+				
 				$this->session->set_flashdata('booking_id', $this->booking->process($results['booking_id'], $results['results']));
+
+
 
 				redirect(site_url('salesdesk/complete'));
 				break;

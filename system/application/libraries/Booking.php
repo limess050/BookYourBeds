@@ -89,6 +89,11 @@ class Booking
 		if( ! empty($booking_id))
 		{
 			$_booking = $this->model('booking')->get($booking_id);
+			if($_booking->booking_completed)
+			{
+				ci()->session->unset_userdata('booking');
+				return $_booking->booking_id;
+			}
 			$booking = unserialize(( ! empty($_booking->booking_session_dump)) ? $_booking->booking_session_dump : null);
 			unset($_booking);
 		} else
@@ -167,9 +172,9 @@ class Booking
 		// Notifications
 		ci()->load->library('mandrill');
 
-		//$this->internal_notification($booking);
+		$this->internal_notification($booking);
 
-		//$this->customer_notification($booking);
+		$this->customer_notification($booking);
 
 		return $booking->booking_id;
 	}
