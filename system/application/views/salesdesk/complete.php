@@ -47,11 +47,16 @@
 <h3>Deposit Paid: &pound;<?php echo as_currency($booking->booking_deposit); ?></h3>
 <h3>Due On Arrival: &pound;<?php echo as_currency($booking->booking_price - $booking->booking_deposit); ?></h3>
 
+<?php if( ! empty($billing_info)) { ?>
 <div class="alert">	
 	<h3>Billing Information</h3>
 
 	<dl class="dl-horizontal">
-		<dt>Card Number</dt>
+		<?php foreach($billing_info as $key => $value) { ?>
+		<dt><?php echo $key; ?></dt>
+		<dd><?php echo $value; ?></dd>
+		<?php } ?>
+		<!--<dt>Card Number</dt>
 		<dd>**** **** **** <?php echo $gateway_data['Last4Digits']; ?></dd>
 
 		<dt>Card Type</dt>
@@ -61,6 +66,7 @@
 		<dd>&pound;<?php echo as_currency($gateway_data['Amount']); ?></dd>
 
 		<dt>Authorisation Number</dt>
-		<dd><?php echo $gateway_data['TxAuthNo']; ?></dd>
+		<dd><?php echo $gateway_data['TxAuthNo']; ?></dd>-->
 	</dl>
 </div>
+<?php } ?>

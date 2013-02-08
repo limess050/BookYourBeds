@@ -54,7 +54,7 @@
 	<div class="control-group">
 		<div class="controls">
  			 <button type="submit" class="btn btn-primary">Proceed To Payment</button>&nbsp;
- 			 <button type="reset" class="btn">Cancel</button>
+ 			 <a class="btn" href="<?php echo site_url('admin/salesdesk/reset'); ?>">Cancel</a>
 		</div>
 	</div>
 

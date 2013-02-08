@@ -108,7 +108,7 @@
 		<input type="hidden" name="price_total" id="price_total_field" />
 		<input type="hidden" name="price_deposit" id="price_deposit_field" />
 		
-		<?php /*switch (setting('deposit')) {
+		<?php switch (setting('deposit')) {
 			case 'full':
 				echo "Full payment required: <strong id=\"deposit_amount\" style=\"text-decoration: underline;\"></strong>&nbsp;&nbsp;&nbsp;";
 				break;
@@ -120,8 +120,7 @@
 			case 'fraction':
 				echo setting('deposit_percentage') . "% total cost as Deposit/Downpayment: <strong id=\"deposit_amount\" style=\"text-decoration: underline;\"></strong>&nbsp;&nbsp;&nbsp;";
 				break; 
-		}*/ ?>
-		First Night as Deposit/Downpayment: <strong id="deposit_amount" style="text-decoration: underline;"></strong>&nbsp;&nbsp;&nbsp;
+		} ?>
 		
 		<button type="submit" class="btn btn-primary">Book Now</button>
 	</div>
@@ -167,10 +166,10 @@
 
 		$('#availability_results tr').each(function()
 		{
-			$(this).removeClass('highlight');
+			$(this).removeClass('success');
 		});
 
-		$('#availability_results tr#row_' + id).addClass('highlight');
+		$('#availability_results tr#row_' + id).addClass('success');
 
 		calculatePrice();
 	}
@@ -285,29 +284,29 @@
 		$('#price_total_field').val(total_price);
 		$('#price_breakdown').html(table_body);
 		
-		<?php /*switch (setting('deposit')) {
+		<?php switch (setting('deposit')) {
 			case 'none': ?>
-		//$('#price_deposit_field').val('0');
-		//$('#deposit_amount').html('0');
+		$('#price_deposit_field').val('0');
+		$('#deposit_amount').html('0');
 		<?php break; ?>
 		<?php case 'full': ?>
-		//$('#price_deposit_field').val(total_price);
-		//$('#deposit_amount').html(total_price.toFixed(2));
+		$('#price_deposit_field').val(total_price);
+		$('#deposit_amount').html(total_price.toFixed(2));
 		<?php break; ?>
 		<?php case 'first': ?>
-		//$('#price_deposit_field').val(first_night);
-		//$('#deposit_amount').html(first_night.toFixed(2));
-		<?php break; ?>
-		<?php case 'fraction': ?>
-		//var deposit = total_price * <?php echo setting('deposit_percentage') / 100; ?>;
-		//$('#price_deposit_field').val(deposit);
-		//$('#deposit_amount').html('&pound;' + deposit.toFixed(2));
-		<?php break; ?>
-		<?php }*/ ?>
-		
-
 		$('#price_deposit_field').val(first_night);
 		$('#deposit_amount').html(first_night.toFixed(2));
+		<?php break; ?>
+		<?php case 'fraction': ?>
+		var deposit = total_price * <?php echo setting('deposit_percentage') / 100; ?>;
+		$('#price_deposit_field').val(deposit);
+		$('#deposit_amount').html('&pound;' + deposit.toFixed(2));
+		<?php break; ?>
+		<?php } ?>
+		
+
+		//$('#price_deposit_field').val(first_night);
+		//$('#deposit_amount').html(first_night.toFixed(2));
 		//var deposit = total_price * 0.1;
 		//$('#price_deposit_field').val(deposit);
 		//$('#deposit_amount').html('&pound;' + deposit.toFixed(2));

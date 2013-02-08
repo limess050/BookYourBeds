@@ -10,7 +10,9 @@
 
 		<a href="#" onclick="$('#account_form').slideToggle(); return false;">Do this...</a>
 
-		<?php echo form_open('admin/dashboard/wizard', 'class="form-horizontal hide" id="account_form"'); ?>
+		<?php echo form_open('admin/dashboard/wizard', 'class="form-horizontal' . ((empty($_account_open)) ? ' hide' : '') . '" id="account_form"', array('_form' => 'account', 'account[account_personalised]' => 1)); ?>
+			<?php echo $template['partials']['form_errors']; ?>
+
 			<fieldset>
 				<legend>The Essentials</legend>
 
@@ -50,6 +52,19 @@
 											'name'	=> 'account[account_email]',
 											'class'	=> 'span4',
 											'value'	=> account('email')
+											));
+						?>
+					</div>
+				</div>
+
+
+				<div class="control-group">
+					<label class="control-label">Contact Telephone</label>
+					<div class="controls">
+						<?php echo form_input(array(
+											'name'	=> 'account_phone',
+											'class'	=> 'span4',
+											'value'	=> account('telephone')
 											));
 						?>
 					</div>

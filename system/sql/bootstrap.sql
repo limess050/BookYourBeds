@@ -20,6 +20,7 @@ DROP TABLE IF EXISTS `accounts`;
 CREATE TABLE `accounts` (
 `account_id` INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
 `account_confirmed` TINYINT(1) NOT NULL DEFAULT '0',
+`account_personalised` TINYINT(1) NOT NULL DEFAULT '0',
 `account_active` TINYINT(1) NOT NULL DEFAULT '0',
 `account_name` VARCHAR(64) NOT NULL DEFAULT '',
 `account_slug` VARCHAR(100) NOT NULL DEFAULT '',

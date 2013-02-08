@@ -13,3 +13,10 @@ function account($key = null)
 	
 	return $CI->account->val($key);
 }
+
+function setting($key = null)
+{
+	$CI =& get_instance();
+	
+	return $CI->account->setting($key);
+}

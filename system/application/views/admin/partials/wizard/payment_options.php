@@ -10,33 +10,70 @@
 
 		<a href="#" onclick="$('#payment_form').slideToggle(); return false;">Do this...</a>
 
-		<?php echo form_open('admin/dashboard/wizard', 'class="form-horizontal hide" id="payment_form"'); ?>
+		<?php echo form_open('admin/dashboard/wizard', 'class="form-horizontal' . ((empty($_payment_options_open)) ? ' hide' : '') . '" id="payment_form"', array('_form' => 'payment_options')); ?>
+			<?php echo $template['partials']['form_errors']; ?>
 			<fieldset>
 				<legend>Deposit</legend>
 
 				<div class="control-group">
 					<label class="control-label">Deposit</label>
 					<div class="controls">
-						
 						<label class="radio">
-							<input type="radio" name="payment" onchange="toggleGateway();" value="none" checked>
+							<?php echo form_radio(
+												array(
+												    'name'		=> 'setting[deposit]',
+												    'value'		=> 'none',
+												    'checked'	=> set_radio('setting[deposit]', 'none', TRUE),
+												    'onchange'	=> 'toggleGateway();'
+												    )
+												);
+							?>
 							No payment up front
 						</label>
 						
 						<label class="radio">
-							<input type="radio" name="payment" onchange="toggleGateway();" value="full">
+							<?php echo form_radio(
+												array(
+												    'name'		=> 'setting[deposit]',
+												    'value'		=> 'full',
+												    'checked'	=> set_radio('setting[deposit]', 'full'),
+												    'onchange'	=> 'toggleGateway();'
+												    )
+												);
+							?>
 							Payment in full
 						</label>
 
 						<label class="radio">
-							<input type="radio" name="payment" onchange="toggleGateway();" value="first">
+							<?php echo form_radio(
+												array(
+												    'name'		=> 'setting[deposit]',
+												    'value'		=> 'first',
+												    'checked'	=> set_radio('setting[deposit]', 'first'),
+												    'onchange'	=> 'toggleGateway();'
+												    )
+												);
+							?>
 							First night
 						</label>
 
 						<label class="radio">
-							<input type="radio" name="payment" onchange="toggleGateway();" value="percent">
+							<?php echo form_radio(
+												array(
+												    'name'		=> 'setting[deposit]',
+												    'value'		=> 'fraction',
+												    'checked'	=> set_radio('setting[deposit]', 'fraction'),
+												    'onchange'	=> 'toggleGateway();'
+												    )
+												);
+							?>
 							<div class="input-append">
-  								<input type="text" class="span1" />
+								<?php  echo form_input(array(
+											'name'	=> 'setting[deposit_percentage]',
+											'class'	=> 'span1',
+											'value'	=> set_value('setting[deposit_percentage]')
+											));
+								?>
   								<span class="add-on">%</span>			
 							</div>
 							
@@ -64,17 +101,21 @@
 			-->
 			</script>
 
-			<fieldset id="gateway" class="hide">
+			<fieldset id="gateway" class="<?php echo (set_value('setting[deposit]') == null || set_value('setting[deposit]') == 'none') ? 'hide' : ''; ?>">
 				<legend>Payment Gateway</legend>
 
 				<div class="control-group">
 					<label class="control-label">PayPal Email Address</label>
 					<div class="controls">
 						<?php echo form_input(array(
-											'name'	=> 'account[account_email]',
-											'class'	=> 'span4'
+											'name'	=> 'setting[paypal_email]',
+											'class'	=> 'span4',
+											'value'	=> set_value('setting[paypal_email]')
 											));
+
+						echo form_hidden('setting[payment_gateway]', 'paypal');
 						?>
+						<span class="help-block alert">For testing purposes use <code>vendor_1360309502_biz@othertribe.com</code></span>
 					</div>
 				</div>
 

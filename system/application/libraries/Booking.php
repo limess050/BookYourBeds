@@ -15,7 +15,7 @@ class Booking
 							$footprint = null, 
 							$price = null, 
 							$deposit = null, 
-							$user_id = null)
+							$user_id = 0)
 	{
 		// Yes? Let's go!
 		$booking = array(
@@ -165,6 +165,8 @@ class Booking
 		$booking = $this->model('booking')->get($booking->booking_id);
 
 		// Notifications
+		ci()->load->library('mandrill');
+
 		$this->internal_notification($booking);
 
 		$this->customer_notification($booking);
@@ -175,6 +177,21 @@ class Booking
 	private function internal_notification($booking)
 	{
 		// Send email
+		$message = array(
+				'html'		=> ci()->load->view('messages/internal_booking_confirmation', array('booking' => $booking), TRUE),
+				'subject'	=> 'You have a new booking',
+				'from_email'	=> 'bybsystem@othertribe.com',
+				'from_name'		=> 'BookYourBeds.com',
+				'to'			=> array(
+										array(
+											'email'	=> account('email')
+											)
+										),
+				'auto_text'		=> TRUE,
+				'url_strip_qs'	=> TRUE
+				);
+
+		ci()->mandrill->call('messages/send', array('message' => $message));
 
 
 		// Send to webhook
@@ -183,6 +200,21 @@ class Booking
 	private function customer_notification($booking)
 	{
 		// Send email
+		$message = array(
+				'html'		=> ci()->load->view('messages/customer_booking_confirmation', array('booking' => $booking), TRUE),
+				'subject'	=> 'Your Booking with ' . account('name'),
+				'from_email'	=> 'bybsystem@othertribe.com',
+				'from_name'		=> account('name'),
+				'to'			=> array(
+										array(
+											'email'	=> $booking->customer->customer_email
+											)
+										),
+				'auto_text'		=> TRUE,
+				'url_strip_qs'	=> TRUE
+				);
+
+		ci()->mandrill->call('messages/send', array('message' => $message));
 		
 	}
 

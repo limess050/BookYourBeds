@@ -8,3 +8,9 @@
 	}
 	?>
 </ul>
+
+<script type="text/javascript">
+<!--
+
+-->
+</script>

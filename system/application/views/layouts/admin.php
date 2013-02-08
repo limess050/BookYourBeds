@@ -75,7 +75,9 @@
 				<li class="dropdown">
 				    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="icon-cog icon-white"></i> <b class="caret"></b></a>
 				    <ul class="dropdown-menu">
-				        <li><a href="<?php echo site_url('admin/users'); ?>"><i class="icon-user"></i> Users</a></li>
+				        <!--<li><a href="<?php echo site_url('admin/users'); ?>"><i class="icon-user"></i> Users</a></li>-->
+				        <li><a href="<?php echo site_url('admin/settings/account'); ?>"><i class="icon-home"></i> Account Settings</a></li>
+				        <li><a href="<?php echo site_url('admin/settings/payments'); ?>"><i class="icon-shopping-cart"></i> Payment Options</a></li>
 				    </ul>
 				</li>
 				<?php } ?>
@@ -88,10 +90,6 @@
 					<ul class="dropdown-menu">
 						<li><?php echo anchor('admin/signout', 'Sign Out'); ?></li>
 						<li><?php echo anchor('admin/users/me', 'Edit Your Details'); ?></li>
-						<!--<li class="divider"></li>
-						<li><?php echo anchor('admin/account', 'Settings'); ?></li>
-						<li><?php echo anchor('admin/users', 'Users'); ?></li>
-						<li><?php echo anchor('admin/seasons', 'Seasons'); ?></li>-->
 					</ul>
 				</li>
             </ul>

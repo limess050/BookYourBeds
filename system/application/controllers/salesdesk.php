@@ -150,11 +150,40 @@ class Salesdesk extends Front_Controller {
 		{
 			$this->session->set_userdata('booking', (object) array_merge((array) session('booking'), (array) $this->input->post()));
 
-			redirect(site_url('salesdesk/sagepay'));
+			//redirect(site_url('salesdesk/sagepay'));
+			redirect(site_url('salesdesk/payment'));
 		}
 	}
 
 
+	public function payment()
+	{
+		$this->booking->dump();
+
+		$this->load->library('payment');
+
+		
+
+		$data['form'] = $this->payment->form(setting('payment_gateway'), session('booking'));
+		
+		$this->template->build('salesdesk/payment', $data);
+	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*
 	public function sagepay()
 	{
 		// Heading off to SagePay - time to dump all of the session data into the booking...
@@ -202,28 +231,57 @@ class Salesdesk extends Front_Controller {
 			$crypt[] = "DeliveryState={$billing['state']}";
 		}
 
-		/* Basket
-		$row = array();
-
-		foreach($params['resources'] as $resource)
-		{
-			$row[] = str_replace(':', '-', $resource->resource_title) 
-				. " ({$resource->str_footprint} {$resource->resource_priced_per}" . (($resource->str_footprint > 1) ? 's' : '') . '):'
-			 	. $resource->str_footprint . ':'
-			 	. $params['booking_price'] 
-			 	. ':0.00:' 
-			 	. $params['booking_price'] . ':' 
-			 	. $params['booking_price'];
-		}
-
-		$crypt[] = "Basket=" . count($row) . ":" . implode(':', $row); */
+		
 
 		$data['crypt'] = $this->_encrypt_and_encode(implode('&', $crypt));
 
 		$this->template->build('salesdesk/sagepay', $data);
-	}
+	}*/
 
-	public function process()
+	public function process($submission_type = null)
+	{
+		// $submission_type can also be 'ipn' - won't redirect after completion
+ 		echo 'foo';
+
+		$this->load->library('payment');
+
+		$results = $this->payment->process(setting('payment_gateway'), array_merge($_POST, $_GET));
+
+		switch($results['action'])
+		{
+			case 'abort':
+				// Aborted - die!
+				$this->booking->aborted($results['booking_id']);
+
+				$this->session->unset_userdata('booking');
+
+				$this->session->set_flashdata('reason', $results['message']);
+				redirect(site_url('salesdesk/aborted'));
+				break;
+
+			case 'create':
+				$this->session->set_flashdata('booking_id', $this->booking->process($results['booking_id'], $results['results']));
+
+				redirect(site_url('salesdesk/complete'));
+				break;
+
+			case 'fail':
+				// Try again?
+				$this->booking->failed($results['booking_id']);
+
+				$this->session->set_flashdata('reason', $results['message']);
+				$this->session->set_flashdata('booking_id', $results['booking_id']);
+
+				redirect(site_url('salesdesk/try_again'));
+				break;
+
+			default:
+
+				break;
+		}
+	}
+/*
+	public function old_process()
 	{
 		if ($this->input->get('crypt'))
 		{
@@ -241,8 +299,8 @@ class Salesdesk extends Front_Controller {
 
 					$this->session->unset_userdata('booking');
 
-					$this->session->set_flashdata('reason', 'You aborted the payment process. You have not been charged.');
-					redirect(site_url('salesdesk/aborted'));
+					//$this->session->set_flashdata('reason', 'You aborted the payment process. You have not been charged.');
+					//redirect(site_url('salesdesk/aborted'));
 					break;
 
 				case 'OK':
@@ -279,7 +337,7 @@ class Salesdesk extends Front_Controller {
 			redirect(site_url());
 		}
 	}
-
+*/
 	public function complete()
 	{
 		if( ! $this->session->flashdata('booking_id'))
@@ -296,7 +354,11 @@ class Salesdesk extends Front_Controller {
 			$data['booking'] = $this->model('booking')->get($this->session->flashdata('booking_id'));
 		}
 
-		$data['gateway_data'] = ( ! empty($data['booking']->booking_gateway_data)) ? unserialize($data['booking']->booking_gateway_data) : null;
+		$this->load->library('payment');
+
+		$gateway_data = ( ! empty($data['booking']->booking_gateway_data)) ? unserialize($data['booking']->booking_gateway_data) : null;
+		
+		$data['billing_info'] = ( ! empty($gateway_data)) ? $this->payment->receipt(setting('payment_gateway'), $gateway_data) : null;
 
 		$this->template->build('salesdesk/complete', $data);
 	}

@@ -4,6 +4,7 @@ class Account
 {
 	public $ac;
 	public $bookings = null;
+	private $settings;
 
 	public function __construct()
 	{
@@ -163,6 +164,7 @@ class Account
 	{
 		// Things to check...
 		$steps = array();
+		$append = array();
 		$can_launch = TRUE;
 
 		// Has the account email been confirmed?
@@ -173,14 +175,30 @@ class Account
 		}
 
 		// Has the account been a wee bit personalised?
-		// 
-		$steps[] = 'account';
+		if( ! $this->ac->account_personalised)
+		{
+			$steps[] = 'account';
+			$can_launch = FALSE;
+		}
 
 		// How many rooms does the account have?
-		$steps[] = 'add_room';
+		
+		$this->rooms = $this->model('resource')->count_by('resource_account_id', $this->ac->account_id);
+		if($this->rooms == 0)
+		{
+			$steps[] = 'add_room';
+			$can_launch = FALSE;
+		} else
+		{
+			$append[] = 'add_room';
+		}
 
 		// Are there any payment options set?
-		$steps[] = 'payment_options';
+		if( ! $this->setting('deposit'))
+		{
+			$steps[] = 'payment_options';
+			$can_launch = FALSE;
+		}
 
 		// Any Terms and Conditions?
 		// $steps[] = 'terms';
@@ -191,9 +209,48 @@ class Account
 			$steps[] = 'launch';
 		}
 
-		return $steps;
+		return array_merge($steps, $append);
 	}
 
+	public function launch()
+	{
+		$steps = $this->wizard_steps();
+
+		if(in_array('launch', $steps))
+		{
+			return $this->model('account')->launch($this->ac->account_id);
+		}
+
+		return FALSE;
+	}
+
+	public function setting($key = null)
+	{
+		if(empty($key))
+		{
+			return FALSE;
+		}
+
+		$this->set_settings();
+
+		return (isset($this->settings[$key])) ? $this->settings[$key] : FALSE;
+	}
+
+	private function set_settings()
+	{
+		if(empty($this->settings))
+		{
+			//$this->settings = ci()->config->item('default_settings');
+			$this->settings = array();
+
+			$custom = $this->model('setting')->get_all();
+
+			foreach($custom as $setting)
+			{
+				$this->settings[$setting->setting_key] = $setting->setting_value;
+			}
+		}
+	}
 
 	protected function model($name)
 	{

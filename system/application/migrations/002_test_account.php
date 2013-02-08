@@ -6,9 +6,10 @@ class Migration_Test_account extends CI_Migration
 	public function up()
 	{
 		$account = array(
-					'account_name'	=> 'Phil\'s Bunkhouse',
-					'account_slug'	=> 'phils-bunkhouse',
-					'account_email'	=> 'phil@othertribe.com'
+					'account_name'		=> 'The Bunkhouse',
+					'account_slug'		=> 'the-bunkhouse',
+					'account_email'		=> 'phil@othertribe.com',
+					'account_confirmed'	=> 1
 					);
 
 		$account_id = $this->model('account')->insert($account);
@@ -24,6 +25,17 @@ class Migration_Test_account extends CI_Migration
 					);
 
 		$this->model('user')->insert($user);
+
+		$settings = array(
+					'deposit'	=> 'full',
+					'payment_gateway'	=> 'sagepay_form',
+					'sagepay_form_vendor_id'	=> 'applecart',
+					'sagepay_form_crypt'		=> 'oG1PDrzXanmXe5JE',
+					'sagepay_form_encryption_type'	=> 'AES'
+
+					);
+
+		$this->model('setting')->create_or_update_many($settings, $account_id);
 	}
 
 	public function down()

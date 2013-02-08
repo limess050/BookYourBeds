@@ -36,7 +36,7 @@
 
 
 	<footer>
-		&copy; Copyright <?php echo date('Y'); ?> | <?php echo account('name'); ?>
+		&copy; Copyright <?php echo date('Y'); ?> | <?php echo account('name'); ?> | <?php echo anchor('admin', 'Sign In...'); ?>
 	</footer>
 
 </div>

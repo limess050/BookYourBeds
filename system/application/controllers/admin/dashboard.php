@@ -29,8 +29,14 @@ class Dashboard extends Admin_Controller {
 
 	public function wizard()
 	{
-		
-		
+		$this->load->library('form_validation');
+
+		if($fn = $this->input->post('_form'))
+		{
+			$fn = 'wizard_' . $fn;
+			$data = $this->$fn();
+		}
+
 		$data['steps'] = $this->account->wizard_steps();
 
 		foreach($data['steps'] as $step)
@@ -39,6 +45,121 @@ class Dashboard extends Admin_Controller {
 		}
 
 		$this->template->build('admin/dashboard/wizard', $data);
+	}
+
+	private function wizard_account()
+	{
+		$this->form_validation->set_rules('account[account_name]', 'Account Name', 'trim|required');
+		$this->form_validation->set_rules('account[account_slug]', 'Account URL', 'trim|required');
+		$this->form_validation->set_rules('account[account_email]', 'Account Email', 'trim|required|valid_email');
+
+		$data = array();
+		if($this->form_validation->run() == FALSE)
+		{
+			$data['_account_open'] = TRUE;
+
+			return $data;
+		} else
+		{
+			$this->model('account')->update(account('id'), $this->input->post('account'));
+			
+			$this->account->ac = $this->model('account')->get(account('id'));
+
+			$this->session->set_flashdata('msg', 'Account updated');
+			redirect(site_url('admin/dashboard/wizard'));
+		}
+	}
+
+	private function wizard_add_room()
+	{
+		$this->form_validation->set_rules('resource[resource_title]', 'Resource Title', 'trim|required');
+		$this->form_validation->set_rules('resource[resource_default_release]', 'Default Release', 'trim|required|is_natural_no_zero');
+		$this->form_validation->set_rules('resource[resource_booking_footprint]', 'Booking Footprint', 'trim|required|is_natural_no_zero');
+		$this->form_validation->set_rules('resource[resource_priced_per]', 'Resource Priced Per', 'trim');
+		
+		$dow =  array('', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday');
+
+		for($i = 1; $i <= 7; $i++)
+		{
+			$this->form_validation->set_rules("price[{$i}]", $dow[$i] . ' Price', 'trim|required|is_numeric|as_currency');
+		}
+
+		$data = array();
+		if($this->form_validation->run() == FALSE)
+		{
+			$data['_add_room_open'] = TRUE;
+
+			return $data;
+		} else
+		{
+			$id = $this->model('resource')->insert($this->input->post('resource'));
+
+			$prices = $this->input->post('price');
+
+			foreach($prices as $key => $value)
+			{
+				$this->model('price')->insert(array(
+												'price_resource_id'	=> $id,
+												'price_day_id'		=> $key,
+												'price_price'		=> $value
+												));
+			}
+
+			$this->session->set_flashdata('msg', 'Room added');
+			redirect(site_url('admin/dashboard/wizard'));
+		}
+	}
+
+	private function wizard_payment_options()
+	{
+		
+		$this->form_validation->set_rules('setting[deposit]', 'Deposit', 'trim|required');
+		if($this->input->post('setting'))
+		{
+			if($_POST['setting']['deposit'] != 'none')
+			{
+				$this->form_validation->set_rules('setting[paypal_email]', 'PayPal email', 'trim|required|valid_email');
+
+				if($_POST['setting']['deposit'] == 'fraction')
+				{
+					$this->form_validation->set_rules('setting[deposit_percentage]', 'Percentage', 'trim|required|greater_than[0]');
+				}
+			}
+		}
+
+		if($this->form_validation->run() == FALSE)
+		{
+			$data['_payment_options_open'] = TRUE;
+
+			return $data;
+		} else
+		{
+			$settings = $this->input->post('setting');
+
+			if($settings['deposit'] != 'fraction')
+			{
+				unset($settings['deposit_percentage']);
+			}
+
+			if($settings['deposit'] == 'none')
+			{
+				unset($settings['payment_gateway'], $setting['paypal_email']);
+			}
+
+			$this->model('setting')->create_or_update_many($settings);
+
+			$this->session->set_flashdata('msg', 'Payment options added');
+			redirect(site_url('admin/dashboard/wizard'));
+		}
+	}
+
+	private function wizard_launch()
+	{
+		$this->account->launch();
+
+		$this->session->set_flashdata('msg', 'Your site has been launched!');
+
+		redirect(site_url('admin/dashboard'));
 	}
 
 }

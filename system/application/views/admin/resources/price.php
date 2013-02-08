@@ -82,7 +82,7 @@
 </table>
 </div>
 </div>
-
+<!--
 <div class="row">
 	<div class="span4 columns">
 		<h2>Seasonal Pricing</h2>
@@ -126,7 +126,7 @@
 				echo (isset($season->prices[1]->price_id)) ? form_hidden("season[{$season->season_id}][1][id]", $season->prices[1]->price_id) : '';
 				?>
 
-				<!--<a href="#" onclick="$('.season_<?php echo $season->season_id; ?>').val($('.season_<?php echo $season->season_id; ?>.first_price').val()); return false;" class="link_fields" title="Link">j</a>-->
+				
 			</td>
 			<?php for($i = 2; $i <= 7; $i++) { ?>
 			<td<?php echo ($i == 5 || $i == 6) ? ' class="weekend"' : ''; ?>>
@@ -159,4 +159,4 @@
 </form>
 
 </div>
-</div>
+</div>-->

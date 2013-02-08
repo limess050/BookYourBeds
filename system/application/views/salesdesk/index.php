@@ -59,9 +59,7 @@ $_guests = (booking('booking_guests')) ? booking('booking_guests') : 1;
 			
 				echo form_dropdown('guests', $g, set_value('guests', $_guests), 'class="span1"');
 				?>
-				<div class="alert">
-					If any member of your party is under the age of 18 you MUST contact the hostel directly before making your booking. Failure to do so may invalidate your booking.
-				</div>
+				
 			</div>
 		</div> <!-- /clearfix -->
 

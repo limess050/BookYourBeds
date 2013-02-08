@@ -1,16 +1,18 @@
-<li class="well well-small media">
+<li class="well well-small media" id="add_room">
 	<a class="pull-left" href="#">
 		<img class="media-object" data-src="holder.js/64x64">
 	</a>
 	
 	<div class="media-body">
-		<h4 class="media-heading">Add your first room</h4>
+		<h4 class="media-heading">Add <?php echo ($this->account->rooms == 0) ? 'your first' : 'another' ;?> room</h4>
 
 		<p>Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo.</p>
 
 		<a href="#" onclick="$('#room_form').slideToggle(); return false;">Do this...</a>
 
-		<?php echo form_open('admin/dashboard/wizard', 'class="form-horizontal hide" id="room_form"'); ?>
+		<?php echo form_open('admin/dashboard/wizard', 'class="form-horizontal' . ((empty($_add_room_open)) ? ' hide' : '') . '" id="room_form"', array('_form' => 'add_room', 'resource[resource_account_id]' => account('id'))); ?>
+			<?php echo $template['partials']['form_errors']; ?>
+
 			<fieldset>
 				<legend>About the Room</legend>
 
@@ -22,6 +24,7 @@
 							'name'	=> 'resource[resource_title]',
 							'id'	=> 'resource_title',
 							'class'	=> 'span4',
+							'value'	=> set_value('resource[resource_title]')
 							));
 						?>
 					</div>
@@ -34,7 +37,8 @@
 						echo form_input(array(
 							'name'	=> 'resource[resource_booking_footprint]',
 							'id'	=> 'resource_booking_footprint',
-							'class'	=> 'span1'
+							'class'	=> 'span1',
+							'value'	=> set_value('resource[resource_booking_footprint]')
 							));
 						?>
 						<span class="help-block">This is the number of guests each one of these resources can accommodate.</span>
@@ -48,7 +52,8 @@
 						echo form_input(array(
 							'name'	=> 'resource[resource_default_release]',
 							'id'	=> 'resource_default_release',
-							'class'	=> 'span1'
+							'class'	=> 'span1',
+							'value'	=> set_value('resource[resource_default_release]')
 							));
 						?>
 						<span class="help-block">This is the number of rooms/beds of this type, not the number of guests you can accommodate.</span>
@@ -62,7 +67,7 @@
 						<?php
 						echo form_dropdown('resource[resource_priced_per]', 
 											array('guest' => 'guest', 'room' => 'room'), 
-											null,
+											set_value('resource[resource_priced_per]'),
 											'class="span2"');	
 						?>
 					</div>
@@ -94,8 +99,9 @@
   											<span class="add-on">&pound;</span>
   											<?php
 											$input = array(
-												'name'	=> 'season[0][1][price]',
-												'class'	=> 'season_0 span1'
+												'name'	=> 'price[1]',
+												'class'	=> 'span1',
+												'value'	=> set_value('price[1]')
 											);
 											
 											echo form_input($input);
@@ -111,8 +117,9 @@
   											<span class="add-on">&pound;</span>
 											<?php
 											$input = array(
-												'name'	=> "season[0][{$i}][price]",
-												'class'	=> 'season_0 span1'
+												'name'	=> "price[{$i}]",
+												'class'	=> 'span1',
+												'value'	=> set_value("price[{$i}]")
 											);
 											
 											echo form_input($input);

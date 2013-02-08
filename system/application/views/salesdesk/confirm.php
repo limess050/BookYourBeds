@@ -49,7 +49,8 @@
 		
 <h2 class="page-header">Billing Information</h2>
 
-<?php echo validation_errors(); ?>
+
+<?php echo $template['partials']['form_errors']; ?>
 
 <?php echo form_open('salesdesk/confirm', array('class' => 'form-horizontal')); ?>
 	<fieldset>
@@ -61,7 +62,8 @@
 				echo form_input(array(
 					'name'	=> 'billing[firstname]',
 					'id'	=> 'billing_firstname',
-					'class'	=> 'span3'
+					'class'	=> 'span3',
+					'value'	=> set_value('billing[firstname]', $customer['customer_firstname'])
 					));
 				?> *
 			</div>
@@ -74,7 +76,8 @@
 				echo form_input(array(
 					'name'	=> 'billing[lastname]',
 					'id'	=> 'billing_lastname',
-					'class'	=> 'span3'
+					'class'	=> 'span3',
+					'value'	=> set_value('billing[lastname]', $customer['customer_lastname'])
 					));
 				?> *
 			</div>
@@ -87,7 +90,8 @@
 				echo form_input(array(
 					'name'	=> 'billing[email]',
 					'id'	=> 'billing_email',
-					'class'	=> 'span4'
+					'class'	=> 'span4',
+					'value'	=> set_value('billing[email]', $customer['customer_email'])
 					));
 				?> *
 			</div>
@@ -111,7 +115,8 @@
 				echo form_input(array(
 					'name'	=> 'billing[address1]',
 					'id'	=> 'billing_address1',
-					'class'	=> 'span4'
+					'class'	=> 'span4',
+					'value'	=> set_value('billing[address1]')
 					));
 				?> *
 			</div>
@@ -124,7 +129,8 @@
 				echo form_input(array(
 					'name'	=> 'billing[address2]',
 					'id'	=> 'billing_address2',
-					'class'	=> 'span4'
+					'class'	=> 'span4',
+					'value'	=> set_value('billing[address2]')
 					));
 				?>
 			</div>
@@ -137,7 +143,8 @@
 				echo form_input(array(
 					'name'	=> 'billing[city]',
 					'id'	=> 'billing_city',
-					'class'	=> 'span3'
+					'class'	=> 'span3',
+					'value'	=> set_value('billing[city]')
 					));
 				?> *
 			</div>
@@ -161,7 +168,8 @@
 				echo form_input(array(
 					'name'	=> 'billing[postcode]',
 					'id'	=> 'billing_postcode',
-					'class'	=> 'span2'
+					'class'	=> 'span2',
+					'value'	=> set_value('billing[postcode]')
 					));
 				?> *
 			</div>
