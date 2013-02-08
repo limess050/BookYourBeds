@@ -162,4 +162,20 @@ class Dashboard extends Admin_Controller {
 		redirect(site_url('admin/dashboard'));
 	}
 
+	public function wizard_confirm_email()
+	{
+		$this->form_validation->set_rules('confirm_email', 'Account Email', 'trim|required|valid_email');
+
+		if($this->form_validation->run() == FALSE)
+		{
+			return;
+		} else
+		{
+			$this->account->send_confirmation_email($this->input->post('confirm_email'));
+
+			$this->session->set_flashdata('msg', 'Confirmation email sent');
+			redirect(site_url('admin/dashboard/wizard'));
+		}
+	}
+
 }

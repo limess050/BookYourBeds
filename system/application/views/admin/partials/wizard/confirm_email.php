@@ -6,6 +6,17 @@
 	<div class="media-body">
 		<h4 class="media-heading">Confirm Account Email Address</h4>
 
-		Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.
+		<p>Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo.</p>
+
+		<?php echo form_open('admin/dashboard/wizard', 'class="form-horizontal"', array('_form' => 'confirm_email')); ?>
+			<div class="input-append">
+			  <?php echo form_input(array(
+			  					'name'	=> 'confirm_email',
+			  					'class'	=> 'span3',
+			  					'value'	=> set_value('confirm_email', account('email'))
+			  					)); ?>
+			  <button class="btn" type="submit">Send confirmation email again</button>
+			</div>
+		</form>
 	</div>
 </li>

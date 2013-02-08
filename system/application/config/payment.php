@@ -19,7 +19,7 @@ $config['supported_methods'] = array(
   * Supported Gateways
 */
 $config['supported_gateways'] = array(
-	'nogateway'			=> 'No payment gateway',
-	'sagepay_form'		=> 'Sage Pay FORM',
-	'paypal'			=> 'PayPal Web Payments Standard'
+	'NoGateway'			=> 'No payment gateway',
+	'SagePay_Form'		=> 'Sage Pay FORM',
+	'PayPal'			=> 'PayPal Web Payments Standard'
 	);

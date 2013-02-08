@@ -113,6 +113,39 @@ class Account
 		return $user_id;
 	}
 
+	public function send_confirmation_email($email)
+	{
+		if($this->val('email') != $email)
+		{
+			$this->model('account')->update($this->val('id'), array('account_email' => $email));
+			$this->ac = $this->model('account')->get($this->val('id'));
+		}
+
+		$data = array(
+					'account'	=> $this->ac,
+					'email'		=> $email
+					);
+
+		ci()->load->library('mandrill');
+
+		// Send confirmation mail
+		$message = array(
+				'html'		=> ci()->load->view('messages/confirm_account', $data, TRUE),
+				'subject'	=> 'Confirm you BookYourBeds.com account',
+				'from_email'	=> 'bookyourbeds@othertribe.com',
+				'from_name'		=> 'BookYourBeds.com',
+				'to'			=> array(
+										array(
+											'email'	=> $email
+											)
+										),
+				'auto_text'		=> TRUE,
+				'url_strip_qs'	=> TRUE
+				);
+
+			ci()->mandrill->call('messages/send', array('message' => $message));
+	}
+
 	public function confirm($auth)
 	{
 		if($this->model('account')->update_by('account_confirmation_code', $auth, array('account_confirmed' => 1)))
@@ -204,7 +237,7 @@ class Account
 		// $steps[] = 'terms';
 
 		// Let's Activate!
-		if($can_launch)
+		if($can_launch && ! $this->val('active'))
 		{
 			$steps[] = 'launch';
 		}

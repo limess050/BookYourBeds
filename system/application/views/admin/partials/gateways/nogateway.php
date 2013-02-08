@@ -1,0 +1,1 @@
+<div id="NoGateway" class="gateway_block<?php echo (setting('payment_gateway') != 'NoGateway') ? ' hide' : ''; ?>"></div>

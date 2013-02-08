@@ -13,8 +13,7 @@
 									array(
 									    'name'		=> 'setting[deposit]',
 									    'value'		=> 'none',
-									    'checked'	=> set_radio('setting[deposit]', 'none', (setting('deposit') == 'none')),
-									    'onchange'	=> 'toggleGateway();'
+									    'checked'	=> set_radio('setting[deposit]', 'none', (setting('deposit') == 'none'))
 									    )
 									);
 				?>
@@ -26,8 +25,7 @@
 									array(
 									    'name'		=> 'setting[deposit]',
 									    'value'		=> 'full',
-									    'checked'	=> set_radio('setting[deposit]', 'full', (setting('deposit') == 'full')),
-									    'onchange'	=> 'toggleGateway();'
+									    'checked'	=> set_radio('setting[deposit]', 'full', (setting('deposit') == 'full'))
 									    )
 									);
 				?>
@@ -39,8 +37,7 @@
 									array(
 									    'name'		=> 'setting[deposit]',
 									    'value'		=> 'first',
-									    'checked'	=> set_radio('setting[deposit]', 'first', (setting('deposit') == 'first')),
-									    'onchange'	=> 'toggleGateway();'
+									    'checked'	=> set_radio('setting[deposit]', 'first', (setting('deposit') == 'first'))
 									    )
 									);
 				?>
@@ -52,8 +49,7 @@
 									array(
 									    'name'		=> 'setting[deposit]',
 									    'value'		=> 'fraction',
-									    'checked'	=> set_radio('setting[deposit]', 'fraction', (setting('deposit') == 'fraction')),
-									    'onchange'	=> 'toggleGateway();'
+									    'checked'	=> set_radio('setting[deposit]', 'fraction', (setting('deposit') == 'fraction'))
 									    )
 									);
 				?>
@@ -78,15 +74,13 @@
 
 <script type="text/javascript">
 <!--
-	function toggleGateway()
+	function toggleGateway(elem)
 	{
-		if($('input[name="setting[deposit]"]:checked').val() == 'none')
-		{
-			$('#gateway').slideUp();
-		} else
-		{
-			$('#gateway').slideDown();
-		}
+		$('div.gateway_block').each(function() {
+			$(this).addClass('hide');
+		});
+
+		$('div#' + $(elem).val()).removeClass('hide');
 	}
 -->
 </script>
@@ -95,20 +89,20 @@
 	<legend>Payment Gateway</legend>
 
 	<div class="control-group">
-		<label class="control-label">PayPal Email Address</label>
+		<label class="control-label">Payment Gateway</label>
 		<div class="controls">
-			<?php echo form_input(array(
-								'name'	=> 'setting[paypal_email]',
-								'class'	=> 'span4',
-								'value'	=> set_value('setting[paypal_email]', setting('paypal_email'))
-								));
-
-			echo form_hidden('setting[payment_gateway]', 'PayPal');
-			?>
-			<span class="help-block alert">For testing purposes use <code>vendor_1360309502_biz@othertribe.com</code></span>
+			<?php echo form_dropdown('setting[payment_gateway]', 
+									$this->config->item('supported_gateways'), 
+									setting('payment_gateway'), 
+									'class="span3" onchange="toggleGateway(this);"'); ?>
+			
 
 		</div>
 	</div>
+
+	<?php foreach($this->config->item('supported_gateways') as $key => $val) { 
+		echo $template['partials'][$key];
+	} ?>
 
 </fieldset>
 
