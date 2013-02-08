@@ -13,113 +13,109 @@
 		<?php echo form_open('admin/dashboard/wizard', 'class="form-horizontal' . ((empty($_payment_options_open)) ? ' hide' : '') . '" id="payment_form"', array('_form' => 'payment_options')); ?>
 			<?php echo $template['partials']['form_errors']; ?>
 			<fieldset>
-				<legend>Deposit</legend>
+	<legend>Deposit</legend>
 
-				<div class="control-group">
-					<label class="control-label">Deposit</label>
-					<div class="controls">
-						<label class="radio">
-							<?php echo form_radio(
-												array(
-												    'name'		=> 'setting[deposit]',
-												    'value'		=> 'none',
-												    'checked'	=> set_radio('setting[deposit]', 'none', TRUE),
-												    'onchange'	=> 'toggleGateway();'
-												    )
-												);
-							?>
-							No payment up front
-						</label>
-						
-						<label class="radio">
-							<?php echo form_radio(
-												array(
-												    'name'		=> 'setting[deposit]',
-												    'value'		=> 'full',
-												    'checked'	=> set_radio('setting[deposit]', 'full'),
-												    'onchange'	=> 'toggleGateway();'
-												    )
-												);
-							?>
-							Payment in full
-						</label>
+	<div class="control-group">
+		<label class="control-label">Deposit</label>
+		<div class="controls">
+			<label class="radio">
+				<?php echo form_radio(
+									array(
+									    'name'		=> 'setting[deposit]',
+									    'value'		=> 'none',
+									    'checked'	=> set_radio('setting[deposit]', 'none', ((setting('deposit') == 'none') || ! setting('deposit')))
+									    )
+									);
+				?>
+				No payment up front
+			</label>
+			
+			<label class="radio">
+				<?php echo form_radio(
+									array(
+									    'name'		=> 'setting[deposit]',
+									    'value'		=> 'full',
+									    'checked'	=> set_radio('setting[deposit]', 'full', (setting('deposit') == 'full'))
+									    )
+									);
+				?>
+				Payment in full
+			</label>
 
-						<label class="radio">
-							<?php echo form_radio(
-												array(
-												    'name'		=> 'setting[deposit]',
-												    'value'		=> 'first',
-												    'checked'	=> set_radio('setting[deposit]', 'first'),
-												    'onchange'	=> 'toggleGateway();'
-												    )
-												);
-							?>
-							First night
-						</label>
+			<label class="radio">
+				<?php echo form_radio(
+									array(
+									    'name'		=> 'setting[deposit]',
+									    'value'		=> 'first',
+									    'checked'	=> set_radio('setting[deposit]', 'first', (setting('deposit') == 'first'))
+									    )
+									);
+				?>
+				First night
+			</label>
 
-						<label class="radio">
-							<?php echo form_radio(
-												array(
-												    'name'		=> 'setting[deposit]',
-												    'value'		=> 'fraction',
-												    'checked'	=> set_radio('setting[deposit]', 'fraction'),
-												    'onchange'	=> 'toggleGateway();'
-												    )
-												);
-							?>
-							<div class="input-append">
-								<?php  echo form_input(array(
-											'name'	=> 'setting[deposit_percentage]',
-											'class'	=> 'span1',
-											'value'	=> set_value('setting[deposit_percentage]')
-											));
-								?>
-  								<span class="add-on">%</span>			
-							</div>
-							
-							 of full price
-
-						</label>
-					</div>
+			<label class="radio">
+				<?php echo form_radio(
+									array(
+									    'name'		=> 'setting[deposit]',
+									    'value'		=> 'fraction',
+									    'checked'	=> set_radio('setting[deposit]', 'fraction', (setting('deposit') == 'fraction'))
+									    )
+									);
+				?>
+				<div class="input-append">
+					<?php  echo form_input(array(
+								'name'	=> 'setting[deposit_percentage]',
+								'class'	=> 'span1',
+								'value'	=> set_value('setting[deposit_percentage]', setting('deposit_percentage'))
+								));
+					?>
+						<span class="add-on">%</span>			
 				</div>
-
 				
-			</fieldset>
+				 of full price
 
-			<script type="text/javascript">
-			<!--
-				function toggleGateway()
-				{
-					if($('input[name="payment"]:checked').val() == 'none')
-					{
-						$('#gateway').slideUp();
-					} else
-					{
-						$('#gateway').slideDown();
-					}
-				}
-			-->
-			</script>
+			</label>
+		</div>
+	</div>
 
-			<fieldset id="gateway" class="<?php echo (set_value('setting[deposit]') == null || set_value('setting[deposit]') == 'none') ? 'hide' : ''; ?>">
-				<legend>Payment Gateway</legend>
+	
+</fieldset>
 
-				<div class="control-group">
-					<label class="control-label">PayPal Email Address</label>
-					<div class="controls">
-						<?php echo form_input(array(
-											'name'	=> 'setting[paypal_email]',
-											'class'	=> 'span4',
-											'value'	=> set_value('setting[paypal_email]')
-											));
+<script type="text/javascript">
+<!--
+	function toggleGateway(elem)
+	{
+		$('div.gateway_block').each(function() {
+			$(this).addClass('hide');
+		});
 
-						echo form_hidden('setting[payment_gateway]', 'PayPal');
-						?>
-						<span class="help-block alert">For testing purposes use <code>vendor_1360309502_biz@othertribe.com</code></span>
-					</div>
-				</div>
+		$('div#' + $(elem).val()).removeClass('hide');
+	}
+-->
+</script>
 
-			</fieldset>
+<fieldset id="gateway">
+	<legend>Payment Gateway</legend>
+
+	<div class="control-group">
+		<label class="control-label">Payment Gateway</label>
+		<div class="controls">
+			<?php echo form_dropdown('setting[payment_gateway]', 
+									$this->config->item('supported_gateways'), 
+									set_value('setting[payment_gateway]', setting('payment_gateway')), 
+									'class="span3" onchange="toggleGateway(this);"'); ?>
+			
+
+		</div>
+	</div>
+
+	<?php foreach($this->config->item('supported_gateways') as $key => $val) { 
+		//echo $template['partials'][$key];
+		$this->load->view('admin/partials/gateways/' . $key);
+	} ?>
+
+</fieldset>
 
 			<div class="control-group">
 				

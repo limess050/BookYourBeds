@@ -1,4 +1,4 @@
-<div id="PayPal" class="gateway_block<?php echo (setting('payment_gateway') != 'PayPal') ? ' hide' : ''; ?>">
+<div id="PayPal" class="gateway_block<?php echo (set_value('setting[payment_gateway]', setting('payment_gateway')) != 'PayPal') ? ' hide' : ''; ?>">
 	<div class="control-group">
 		<label class="control-label">PayPal Email Address</label>
 		<div class="controls">

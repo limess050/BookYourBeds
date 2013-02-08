@@ -9,6 +9,7 @@ class Settings extends Admin_Controller {
 		$this->form_validation->set_rules('account[account_name]', 'Account Name', 'trim|required');
 		$this->form_validation->set_rules('account[account_slug]', 'Account URL', 'trim|required');
 		$this->form_validation->set_rules('account[account_email]', 'Account Email', 'trim|required|valid_email');
+		$this->form_validation->set_rules('account[account_phone]', 'Contact Telephone', 'trim');
 
 		if($this->form_validation->run() == FALSE)
 		{
@@ -34,7 +35,17 @@ class Settings extends Admin_Controller {
 		{
 			if($_POST['setting']['deposit'] != 'none')
 			{
-				$this->form_validation->set_rules('setting[paypal_email]', 'PayPal email', 'trim|required|valid_email');
+				$this->form_validation->set_rules('setting[payment_gateway]', 'Payment Gateway', 'required');
+
+				if($_POST['setting']['payment_gateway'] == 'PayPal')
+				{
+					$this->form_validation->set_rules('setting[paypal_email]', 'PayPal email', 'trim|required|valid_email');
+				} else if($_POST['setting']['payment_gateway'] == 'SagePay Form')
+				{
+					$this->form_validation->set_rules('setting[sagepay_form_vendor_id]', 'SagePay Vendor ID', 'trim|required');
+					$this->form_validation->set_rules('setting[sagepay_form_crypt]', 'SagePay Crypt', 'trim|required');
+				}
+
 
 				if($_POST['setting']['deposit'] == 'fraction')
 				{

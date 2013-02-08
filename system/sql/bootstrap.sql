@@ -25,6 +25,7 @@ CREATE TABLE `accounts` (
 `account_name` VARCHAR(64) NOT NULL DEFAULT '',
 `account_slug` VARCHAR(100) NOT NULL DEFAULT '',
 `account_email` VARCHAR(100) NOT NULL DEFAULT '',
+`account_phone` VARCHAR(100) NOT NULL DEFAULT '',
 `account_confirmation_code` VARCHAR(100) NOT NULL DEFAULT '',
 `account_updated_at` TIMESTAMP NOT NULL,
 `account_created_at` DATETIME NOT NULL,

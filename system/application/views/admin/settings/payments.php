@@ -93,7 +93,7 @@
 		<div class="controls">
 			<?php echo form_dropdown('setting[payment_gateway]', 
 									$this->config->item('supported_gateways'), 
-									setting('payment_gateway'), 
+									set_value('setting[payment_gateway]', setting('payment_gateway')), 
 									'class="span3" onchange="toggleGateway(this);"'); ?>
 			
 

@@ -12,7 +12,7 @@
 				<?php echo form_input(array(
 									'name'	=> 'account[account_name]',
 									'class'	=> 'span4',
-									'value'	=> account('name')
+									'value'	=> set_value('account[account_name]', account('name'))
 									));
 				?>
 			</div>
@@ -25,7 +25,7 @@
 					<?php echo form_input(array(
 									'name'	=> 'account[account_slug]',
 									'class'	=> 'span2',
-									'value'	=> account('slug')
+									'value'	=> set_value('account[account_slug]', account('slug'))
 									));
 					?>
 			</div>
@@ -41,7 +41,7 @@
 				<?php echo form_input(array(
 									'name'	=> 'account[account_email]',
 									'class'	=> 'span4',
-									'value'	=> account('email')
+									'value'	=> set_value('account[account_email]', account('email'))
 									));
 				?>
 			</div>
@@ -52,9 +52,9 @@
 			<label class="control-label">Contact Telephone</label>
 			<div class="controls">
 				<?php echo form_input(array(
-									'name'	=> 'account_phone',
+									'name'	=> 'account[account_phone]',
 									'class'	=> 'span4',
-									'value'	=> account('telephone')
+									'value'	=> set_value('account[account_phone]', account('phone'))
 									));
 				?>
 			</div>
