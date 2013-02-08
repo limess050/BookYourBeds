@@ -250,7 +250,7 @@ class Salesdesk extends Front_Controller {
 		print_r($results);
 		echo '</pre>';
 
-		
+		echo $this->booking->process($results['booking_id'], $results['results']);
 
 		/*switch($results['action'])
 		{
