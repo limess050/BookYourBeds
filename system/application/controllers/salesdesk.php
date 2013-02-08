@@ -246,7 +246,11 @@ class Salesdesk extends Front_Controller {
 
 		$results = $this->payment->process(setting('payment_gateway'), array_merge($_POST, $_GET));
 
+		echo '<pre>';
 		print_r($results);
+		echo '</pre>';
+
+		
 
 		/*switch($results['action'])
 		{

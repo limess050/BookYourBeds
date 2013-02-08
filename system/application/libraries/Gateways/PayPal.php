@@ -54,7 +54,6 @@ class PayPal
 
 	public function paypal_process($data)
 	{
-		print_r($data);
 		// PayPal only sends successful payments back...
 		return array(
 					'valid'			=> TRUE,
