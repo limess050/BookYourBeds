@@ -139,7 +139,7 @@ $autoload['config'] = array();
 |
 */
 
-$autoload['language'] = array('extra_validation');
+$autoload['language'] = array();
 
 
 /*

@@ -32,9 +32,7 @@ class MY_Form_validation extends CI_Form_validation {
 	function __construct()
 	{
 		parent::__construct();
-		//$this->CI->load->language('extra_validation');
-
-		echo 'foo';
+		$this->CI->load->language('extra_validation');
 	}
  
 	public function numeric_or_empty($str)
