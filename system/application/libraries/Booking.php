@@ -167,9 +167,9 @@ class Booking
 		// Notifications
 		ci()->load->library('mandrill');
 
-		$this->internal_notification($booking);
+		//$this->internal_notification($booking);
 
-		$this->customer_notification($booking);
+		//$this->customer_notification($booking);
 
 		return $booking->booking_id;
 	}
