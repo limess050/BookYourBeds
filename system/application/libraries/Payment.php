@@ -92,7 +92,7 @@ class Payment {
 		}
 		else
 		{
-			ci()->load->config('gateways/'.$payment_module);
+			ci()->load->config(strtolower('gateways/'.$payment_module));
 
 			if($this->_check_settings() === FALSE)
 			{
@@ -136,7 +136,7 @@ class Payment {
 	{
 		ci()->load->library('form_validation');
 
-		ci()->load->config('gateways/'.$payment_module);
+		ci()->load->config(strtolower('gateways/'.$payment_module));
 
 		$settings = ci()->config->item('gateway_settings');
 
