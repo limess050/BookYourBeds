@@ -241,7 +241,6 @@ class Salesdesk extends Front_Controller {
 	public function process($submission_type = null)
 	{
 		// $submission_type can also be 'ipn' - won't redirect after completion
- 		echo 'foo';
 
 		$this->load->library('payment');
 

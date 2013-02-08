@@ -28,7 +28,7 @@ class Migration_Test_account extends CI_Migration
 
 		$settings = array(
 					'deposit'	=> 'full',
-					'payment_gateway'	=> 'sagepay_form',
+					'payment_gateway'	=> 'SagePay_Form',
 					'sagepay_form_vendor_id'	=> 'applecart',
 					'sagepay_form_crypt'		=> 'oG1PDrzXanmXe5JE',
 					'sagepay_form_encryption_type'	=> 'AES'

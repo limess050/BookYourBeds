@@ -103,7 +103,7 @@
 								'value'	=> set_value('setting[paypal_email]', setting('paypal_email'))
 								));
 
-			echo form_hidden('setting[payment_gateway]', 'paypal');
+			echo form_hidden('setting[payment_gateway]', 'PayPal');
 			?>
 			<span class="help-block alert">For testing purposes use <code>vendor_1360309502_biz@othertribe.com</code></span>
 

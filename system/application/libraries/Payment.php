@@ -83,7 +83,6 @@ class Payment {
 
 		if($module_exists === FALSE)
 		{
-			echo 'foo';
 			/*return $this->return_response(
 				'failure', 
 				'not_a_module', 
