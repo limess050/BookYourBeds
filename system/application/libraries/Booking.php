@@ -25,6 +25,8 @@ class Booking
 							'booking_deposit'		=> $deposit,
 							'booking_session_id'	=> ci()->session->userdata('session_id'),
 							'booking_user_id'		=> $user_id,
+							'booking_ip_address' 	=> ci()->input->ip_address(),
+							'booking_user_agent' 	=> ci()->input->user_agent(),
 							'resource_id'			=> $resource_id,
 							'footprint'				=> $footprint,
 							'duration'				=> $duration,
@@ -106,8 +108,6 @@ class Booking
 			return FALSE;
 		}
 
-		$booking->booking_ip_address = ci()->input->ip_address();
-		$booking->booking_user_agent = ci()->input->user_agent();
 		$booking->booking_session_id = NULL;
 		
 		$booking->booking_reference = $booking->booking_id;
