@@ -154,7 +154,7 @@ class Payment {
 	 */		
 	private function _load_module($payment_module)
 	{
-		$module = dirname(__FILE__).'/gateways/'.$payment_module.'.php';
+		$module = dirname(__FILE__).'/Gateways/'.$payment_module.'.php';
 		
 		if (!is_file($module))
 		{
