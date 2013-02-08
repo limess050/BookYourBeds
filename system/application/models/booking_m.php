@@ -61,9 +61,11 @@ class Booking_m extends MY_Model
 			->row();
 
 		// ->join('customers', 'customer_id = booking_customer_id')
-		
-		$booking->customer = ( ! empty($booking->booking_customer_id)) ? $this->model('customer')->get($booking->booking_customer_id) : null;	
-		$booking->resources = $this->model('reservation')->get_many_by('reservation_booking_id', $primary_value);
+		if( ! empty($booking))
+		{
+			$booking->customer = $this->model('customer')->get($booking->booking_customer_id);	
+			$booking->resources = $this->model('reservation')->get_many_by('reservation_booking_id', $primary_value);
+		}
 
 		return $booking;
 	}

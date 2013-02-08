@@ -89,7 +89,7 @@ class Booking
 
 		if( ! empty($booking_id))
 		{
-			$_booking = $this->model('booking')->get($booking_id, true);
+			$_booking = $this->model('booking')->get($booking_id);
 			$booking = unserialize(( ! empty($_booking->booking_session_dump)) ? $_booking->booking_session_dump : null);
 			unset($_booking);
 		} else
