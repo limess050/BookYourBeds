@@ -246,7 +246,9 @@ class Salesdesk extends Front_Controller {
 
 		$results = $this->payment->process(setting('payment_gateway'), array_merge($_POST, $_GET));
 
-		switch($results['action'])
+		print_r($results);
+
+		/*switch($results['action'])
 		{
 			case 'abort':
 				// Aborted - die!
@@ -277,7 +279,7 @@ class Salesdesk extends Front_Controller {
 			default:
 
 				break;
-		}
+		}*/
 	}
 /*
 	public function old_process()
