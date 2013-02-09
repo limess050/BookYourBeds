@@ -47,7 +47,7 @@ class Dashboard extends Admin_Controller {
 		$this->load->config('payment');
 		
 		foreach($this->config->item('supported_gateways') as $key => $val) { 
-			$this->template->set_partial($key, 'admin/partials/gateways/' . $key);
+			$this->template->set_partial($key, 'admin/partials/gateways/' . strtolower($key));
 		} 
 
 		$this->template->build('admin/dashboard/wizard', $data);
