@@ -101,7 +101,8 @@
 	</div>
 
 	<?php foreach($this->config->item('supported_gateways') as $key => $val) { 
-		echo $template['partials'][$key];
+		//echo $template['partials'][$key];
+		$this->load->view('admin/partials/gateways/' . strtolower($key));
 	} ?>
 
 </fieldset>
