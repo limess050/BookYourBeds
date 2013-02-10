@@ -45,12 +45,16 @@ class Dashboard extends Admin_Controller {
 		}
 
 		$this->load->config('payment');
+
+		$this->template->set_partial('NoGateway', 'admin/partials/gateways/nogateway';
+		$this->template->set_partial('PayPal', 'admin/partials/gateways/paypal';
+		$this->template->set_partial('SagePay_Form', 'admin/partials/gateways/sagepay_form';
 		
-		foreach($this->config->item('supported_gateways') as $key => $val) { 
-echo 'admin/partials/gateways/' . strtolower($key) . '<br />';
+		/*foreach($this->config->item('supported_gateways') as $key => $val) { 
+
 
 			$this->template->set_partial($key, 'admin/partials/gateways/' . strtolower($key));
-		} 
+		}*/ 
 
 		$this->template->build('admin/dashboard/wizard', $data);
 	}
