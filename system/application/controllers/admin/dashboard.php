@@ -38,7 +38,7 @@ class Dashboard extends Admin_Controller {
 		$this->template->set_partial('SagePay_Form', 'admin/partials/gateways/sagepay_form');*/
 		
 		foreach($this->config->item('supported_gateways') as $key => $val) { 
-			
+
 			$this->template->set_partial($key, 'admin/partials/gateways/' . strtolower($key));
 		}
 
@@ -52,7 +52,7 @@ class Dashboard extends Admin_Controller {
 		if($fn = $this->input->post('_form'))
 		{
 			$fn = 'wizard_' . $fn;
-			$data = $this->$fn();
+			$data = array_merge($data, $this->$fn());
 		}
 
 		$this->template->build('admin/dashboard/wizard', $data);
@@ -125,7 +125,9 @@ class Dashboard extends Admin_Controller {
 	private function wizard_payment_options()
 	{
 		
-		$this->form_validation->set_rules('setting[deposit]', 'Deposit', 'trim|required');
+		$this->form_validation->set_rules('setting[deposit]', 'Deposit', 'trim|required|callback_gateway_needed');
+		$this->form_validation->set_rules('setting[balance_due]', 'Balance Due', 'trim|required');
+
 		if($this->input->post('setting'))
 		{
 			if($_POST['setting']['deposit'] != 'none')
@@ -135,10 +137,12 @@ class Dashboard extends Admin_Controller {
 				if($_POST['setting']['payment_gateway'] == 'PayPal')
 				{
 					$this->form_validation->set_rules('setting[paypal_email]', 'PayPal email', 'trim|required|valid_email');
+					unset($_POST['setting']['sagepay_form_vendor_id'], $_POST['setting']['sagepay_form_crypt'], $_POST['setting']['sagepay_form_encryption_type']);
 				} else if($_POST['setting']['payment_gateway'] == 'SagePay Form')
 				{
 					$this->form_validation->set_rules('setting[sagepay_form_vendor_id]', 'SagePay Vendor ID', 'trim|required');
 					$this->form_validation->set_rules('setting[sagepay_form_crypt]', 'SagePay Crypt', 'trim|required');
+					unset($_POST['setting']['paypal_email']);
 				}
 
 
@@ -146,6 +150,9 @@ class Dashboard extends Admin_Controller {
 				{
 					$this->form_validation->set_rules('setting[deposit_percentage]', 'Percentage', 'trim|required|greater_than[0]');
 				}
+			} else
+			{
+				unset($_POST['setting']['paypal_email'], $_POST['setting']['sagepay_form_vendor_id'], $_POST['setting']['sagepay_form_crypt'], $_POST['setting']['sagepay_form_encryption_type']);
 			}
 		}
 
@@ -174,6 +181,12 @@ class Dashboard extends Admin_Controller {
 			$this->session->set_flashdata('msg', 'Payment options added');
 			redirect(site_url('admin/dashboard/wizard'));
 		}
+	}
+
+	public function gateway_needed($str)
+	{
+		$this->form_validation->set_message('gateway_needed', 'You need to select a payment gateway if you are taking a deposit.');
+		return ($str != 'none' && $_POST['setting']['payment_gateway'] == 'NoGateway') ? FALSE : TRUE;
 	}
 
 	private function wizard_launch()

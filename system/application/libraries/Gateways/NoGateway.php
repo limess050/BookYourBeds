@@ -25,11 +25,10 @@ class NoGateway
 		$output = (ci()->session->flashdata('err')) ? ci()->session->flashdata('err') : '';
 		
 		// 'a/' . $this->payments->ci->account->access_domain() . '/process'
-		$output .= form_open('payments/process', 
+		$output .= form_open('salesdesk/process', 
 								null, 
 								array(
-									'booking_id'			=> $params['booking_id'],
-									'booking_reference' 	=> $params['booking_reference']
+									'booking_id'			=> $params->booking_id
 									));
   		
   		$output .= $this->recaptcha_get_html( ci()->config->item('recaptcha_public_key') );
@@ -54,7 +53,6 @@ class NoGateway
 						'valid'			=> FALSE,
 						'action'		=> 'fail',
 						'booking_id'	=> $data['booking_id'],
-						'booking_ref'	=> $data['booking_reference'],
 						'message'		=> 'No reCAPTCHA data'
 						);
 
@@ -71,8 +69,7 @@ class NoGateway
 		    			'valid'			=> TRUE,
 						'action'		=> 'retry',
 						'message'		=> 'Words don\'t match',
-						'booking_id'	=> $data['booking_id'],
-						'booking_ref'	=> $data['booking_reference']
+						'booking_id'	=> $data['booking_id']
 						);
 
 		} else {
@@ -81,8 +78,7 @@ class NoGateway
 						'valid'			=> TRUE,
 						'action'		=> 'create',
 						'message'		=> 'Booking Successful',
-						'booking_id'	=> $data['booking_id'],
-						'booking_ref'	=> $data['booking_reference']
+						'booking_id'	=> $data['booking_id']
 						);
 		}
 

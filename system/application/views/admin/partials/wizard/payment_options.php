@@ -82,6 +82,19 @@
 	
 </fieldset>
 
+<fieldset>
+	<legend>Balance</legend>
+
+	<div class="control-group">
+		<label class="control-label">Balance is due</label>
+		<div class="controls">
+			<?php echo form_dropdown('setting[balance_due]', array('checkin' => 'at check-in', 'checkout' => 'at check-out'), set_value('setting[balance_due]', setting('balance_due')), 'class="span2"'); ?>
+		</div>
+	</div>
+
+	
+</fieldset>
+
 <script type="text/javascript">
 <!--
 	function toggleGateway(elem)
@@ -112,7 +125,6 @@
 
 	<?php foreach($this->config->item('supported_gateways') as $key => $val) { 
 		echo $template['partials'][$key];
-		//$this->load->view('admin/partials/gateways/' . strtolower($key));
 	} ?>
 
 </fieldset>

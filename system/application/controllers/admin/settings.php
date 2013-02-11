@@ -30,21 +30,25 @@ class Settings extends Admin_Controller {
 	public function payments()
 	{
 		$this->load->library('form_validation');
-		$this->form_validation->set_rules('setting[deposit]', 'Deposit', 'trim|required');
+
+		$this->form_validation->set_rules('setting[deposit]', 'Deposit', 'trim|required|callback_gateway_needed');
+		$this->form_validation->set_rules('setting[balance_due]', 'Balance Due', 'trim|required');
+		$this->form_validation->set_rules('setting[payment_gateway]', 'Payment Gateway', 'trim|required');
+
 		if($this->input->post('setting'))
 		{
 			if($_POST['setting']['deposit'] != 'none')
 			{
-				$this->form_validation->set_rules('setting[payment_gateway]', 'Payment Gateway', 'required');
-
 				if($_POST['setting']['payment_gateway'] == 'PayPal')
 				{
 					$this->form_validation->set_rules('setting[paypal_email]', 'PayPal email', 'trim|required|valid_email');
+					unset($_POST['setting']['sagepay_form_vendor_id'], $_POST['setting']['sagepay_form_crypt'], $_POST['setting']['sagepay_form_encryption_type']);
 				} else if($_POST['setting']['payment_gateway'] == 'SagePay Form')
 				{
 					$this->form_validation->set_rules('setting[sagepay_form_vendor_id]', 'SagePay Vendor ID', 'trim|required');
 					$this->form_validation->set_rules('setting[sagepay_form_crypt]', 'SagePay Crypt', 'trim|required');
 					$this->form_validation->set_rules('setting[sagepay_form_crypt]', 'SagePay Crypt', 'trim|required');
+					unset($_POST['setting']['paypal_email']);
 				}
 
 
@@ -52,6 +56,9 @@ class Settings extends Admin_Controller {
 				{
 					$this->form_validation->set_rules('setting[deposit_percentage]', 'Percentage', 'trim|required|greater_than[0]');
 				}
+			} else
+			{
+				unset($_POST['setting']['paypal_email'], $_POST['setting']['sagepay_form_vendor_id'], $_POST['setting']['sagepay_form_crypt'], $_POST['setting']['sagepay_form_encryption_type']);
 			}
 		}
 
@@ -63,9 +70,9 @@ class Settings extends Admin_Controller {
 			//$this->template->set_partial('PayPal', 'admin/partials/gateways/paypal');
 			//$this->template->set_partial('SagePay_Form', 'admin/partials/gateways/sagepay_form');
 			
-			/*foreach($this->config->item('supported_gateways') as $key => $val) { 
+			foreach($this->config->item('supported_gateways') as $key => $val) { 
 				$this->template->set_partial($key, 'admin/partials/gateways/' . strtolower($key));
-			} */
+			}
 
 			$this->template->build('admin/settings/payments');
 		} else
@@ -77,16 +84,17 @@ class Settings extends Admin_Controller {
 				unset($settings['deposit_percentage']);
 			}
 
-			if($settings['deposit'] == 'none')
-			{
-				unset($settings['payment_gateway'], $setting['paypal_email']);
-			}
-
 			$this->model('setting')->create_or_update_many($settings);
 
 			$this->session->set_flashdata('msg', 'Payment options added');
 			redirect(site_url('admin/settings/payments'));
 		}
+	}
+
+	public function gateway_needed($str)
+	{
+		$this->form_validation->set_message('gateway_needed', 'You need to select a payment gateway if you are taking a deposit.');
+		return ($str != 'none' && $_POST['setting']['payment_gateway'] == 'NoGateway') ? FALSE : TRUE;
 	}
 
 	
