@@ -30,15 +30,14 @@
 			<h1><?php echo account('name'); ?></h1>
 
 			<?php echo auto_typography(account('description')); ?>
+
+			<?php echo (account('website')) ? auto_link(prep_url(account('website'))) : '' ; ?>
 		</div>
 	</header>
 
 	<div class="container body">
-
 		
 		<?php echo $template['body']; ?>
-
-
 
 	</div>
 
