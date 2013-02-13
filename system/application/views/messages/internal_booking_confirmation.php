@@ -2,6 +2,8 @@ You have a new booking!<br /><br />
 
 Visit <?php echo anchor('admin/bookings/show/' . $booking->booking_id); ?> to acknowledge this booking.<br /><br />
 
+Booking Reference: <?php echo $booking->booking_reference; ?><br /><br />
+
 <?php foreach($booking->resources as $resource) { ?>
 Room Booked: <?php echo $resource->resource_title; ?><br />
 Arriving: <?php echo mysql_to_format($resource->reservation_start_at); ?><br />

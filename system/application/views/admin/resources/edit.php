@@ -97,7 +97,7 @@
 					<div class="controls">
 						<?php
 						echo form_dropdown('resource[resource_priced_per]', 
-											array('guest' => 'guest', 'room' => 'room'), 
+											array('bed' => 'bed', 'room' => 'room'), 
 											set_value('resource[resource_priced_per]', $resource->resource_priced_per),
 											'class="span2"');	
 						?>

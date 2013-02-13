@@ -1,13 +1,23 @@
 <?php echo form_open('salesdesk/new_booking', array('method' => 'POST'), array('guests' => $guests)); ?>
 
-<table class="table table-condensed table-striped table-hover">
+<strong>Prices shown are for <?php echo $guests . ' ' . (($guests > 1) ? 'guests' : 'guest'); ?></strong>
+
+<?php foreach($resources as $resource) { 
+			
+$availability =& $resource->availability; ?>
+<div>
+	<h4><?php echo $resource->resource_title; ?> <small><?php
+				$footprint = ceil($guests / $resource->resource_booking_footprint);
+				echo "<strong>{$footprint} {$resource->resource_priced_per}" . (($footprint > 1) ? 's' : '') . "</strong>";
+				?></small></h4>
+
+	<table class="table table-condensed table-striped table-hover">
 	<thead>
 		<tr>
-			<th colspan="2"><strong>Prices are for <?php echo $guests . ' ' . (($guests > 1) ? 'guests' : 'guest'); ?></strong></th>
 			<?php for($i = 0; $i < $duration; $i++) { ?>
 			<th class="align_center<?php echo (date("w", strtotime('+' . $i . ' day', $start_timestamp)) > 4 ) ? ' weekend' : ''; ?>">
 			<?php
-			echo date("D", strtotime('+' . $i . ' day', $start_timestamp)); ?><br /><small><?php echo date("d/m", strtotime('+' . $i . ' day', $start_timestamp)); ?></small>
+			echo date("D", strtotime('+' . $i . ' day', $start_timestamp)); ?> <small><?php echo date("d/m", strtotime('+' . $i . ' day', $start_timestamp)); ?></small>
 			</th>
 			<?php } ?>
 			<th class="span1"></th>
@@ -15,20 +25,9 @@
 	</thead>
 
 	<tbody id="availability_results">
-		<?php foreach($resources as $resource) { 
-			
-		$availability =& $resource->availability;
-		?>
 		<tr id="row_<?php echo $resource->resource_id; ?>">
 			
-			<td><?php echo $resource->resource_title; ?></td>
 			
-			<td>
-				<?php
-				$footprint = ceil($guests / $resource->resource_booking_footprint);
-				echo "<strong>{$footprint} {$resource->resource_priced_per}" . (($footprint > 1) ? 's' : '') . "</strong>";
-				?>
-			</td>
 			
 			<?php 
 			$available = TRUE;
@@ -77,14 +76,21 @@
 			
 			<td>
 				<?php if($available) { ?>
-				<a href="#" class="btn btn-small btn-success" onclick="fillRow(<?php echo $resource->resource_id; ?>); return false;">&pound;<?php echo as_currency($total_price); ?></a>
+				<a href="#" class="btn btn-large btn-success" onclick="fillRow(<?php echo $resource->resource_id; ?>); return false;">&pound;<?php echo as_currency($total_price); ?></a>
 				<?php } ?>
 			</td>
 		</tr>
-		<?php } ?>
 	
 	</tbody>
 </table>
+
+</div>
+<?php } ?>
+
+
+
+
+
 
 <div id="price_total" style="display: none;">
 	<h2 class="page-header">Your Booking</h2>

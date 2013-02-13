@@ -72,6 +72,37 @@
 
 			</fieldset>
 
+			<fieldset>
+				<legend>A Bit About You</legend>
+
+				<div class="control-group">
+					<label class="control-label">Description</label>
+					<div class="controls">
+						<?php echo form_textarea(array(
+											'name'	=> 'account[account_description]',
+											'class'	=> 'span4',
+											'rows'	=> 4,
+											'value'	=> set_value('account[account_description]', account('description'))
+											));
+						?>
+					</div>
+				</div>
+
+				<div class="control-group">
+					<label class="control-label">Website</label>
+					<div class="controls">
+						http://
+						<?php echo form_input(array(
+											'name'	=> 'account[account_website]',
+											'class'	=> 'span3',
+											'value'	=> set_value('account[account_website]', account('website'))
+											));
+						?>
+					</div>
+				</div>
+
+			</fieldset>
+
 			<div class="control-group">
 				
 				<div class="controls">

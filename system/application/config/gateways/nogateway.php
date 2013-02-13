@@ -1,7 +1,6 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-$config['gateway_settings'] = array(
-	);
+$config['gateway_settings'] = array();
 
 $config['recaptcha_public_key'] = '6Lek48cSAAAAAHllImP_SEkbXcnZrAOnGyQmCh6k';
 $config['recaptcha_private_key'] = '6Lek48cSAAAAANgg5-gHotaCs8w3FZf8rG9owBqT';

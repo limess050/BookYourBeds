@@ -1,5 +1,7 @@
 Your booking with <?php echo $booking->resources[0]->account_name; ?><br /><br />
 
+Booking Reference: <?php echo $booking->booking_reference; ?><br /><br />
+
 <?php foreach($booking->resources as $resource) { ?>
 Room Booked: <?php echo $resource->resource_title; ?><br />
 Arriving: <?php echo mysql_to_format($resource->reservation_start_at); ?><br />

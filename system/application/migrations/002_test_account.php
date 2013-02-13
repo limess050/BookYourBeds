@@ -31,8 +31,8 @@ class Migration_Test_account extends CI_Migration
 					'payment_gateway'	=> 'SagePay_Form',
 					'sagepay_form_vendor_id'	=> 'applecart',
 					'sagepay_form_crypt'		=> 'oG1PDrzXanmXe5JE',
-					'sagepay_form_encryption_type'	=> 'AES'
-
+					'sagepay_form_encryption_type'	=> 'AES',
+					'balance_due'	=> 'checkin'
 					);
 
 		$this->model('setting')->create_or_update_many($settings, $account_id);

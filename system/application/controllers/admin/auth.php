@@ -2,6 +2,13 @@
 
 class Auth extends Admin_Controller {
 
+	public function __construct()
+	{
+		parent::__construct();
+
+		$this->template->set_layout('default');
+	}
+
 	public function forgotten_password()
 	{
 		$this->load->library('form_validation');

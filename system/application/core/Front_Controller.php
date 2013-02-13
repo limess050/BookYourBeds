@@ -16,7 +16,7 @@ class Front_Controller extends MY_Controller
 			->append_metadata( js('jquery.js') )
 			->append_metadata( js('bootstrap-dropdown.js') )
 
-			->append_metadata( css('bootstrap.css') )
+			->append_metadata( css('front.css') )
 			->append_metadata( js('application.js') )
 			->append_metadata( js('spin.js') )
 
@@ -27,5 +27,7 @@ class Front_Controller extends MY_Controller
 		{
 			redirect('roadblock/coming_soon');
 		}
+
+		$this->load->helper('typography');
 	}
 }

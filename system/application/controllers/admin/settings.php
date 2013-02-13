@@ -10,7 +10,9 @@ class Settings extends Admin_Controller {
 		$this->form_validation->set_rules('account[account_slug]', 'Account URL', 'trim|required');
 		$this->form_validation->set_rules('account[account_email]', 'Account Email', 'trim|required|valid_email');
 		$this->form_validation->set_rules('account[account_phone]', 'Contact Telephone', 'trim');
-
+		$this->form_validation->set_rules('account[account_description]', 'Description', 'trim');
+		$this->form_validation->set_rules('account[account_website]', 'Website', 'trim');
+ 
 		if($this->form_validation->run() == FALSE)
 		{
 			$this->template->build('admin/settings/account');
@@ -25,6 +27,78 @@ class Settings extends Admin_Controller {
 		}
 
 		
+	}
+
+	function upload_logo()
+	{
+		$this->load->library('upload');
+		
+		$config['upload_path'] = BASEPATH . '../../uploads/';
+		$config['allowed_types'] = 'gif|jpg|png';
+		$config['max_size']	= '500';
+		$config['encrypt_name'] = TRUE;
+		
+		$this->upload->initialize($config);
+
+		if($this->upload->do_upload())
+		{
+			$img_data = $this->upload->data();
+			
+			$config['image_library'] = 'gd2';
+			$config['source_image']	= BASEPATH . '../../uploads/' . $img_data['file_name'];
+			$config['create_thumb'] = FALSE;
+			$config['maintain_ratio'] = TRUE;
+			//$config['width'] = 200;
+			$config['height'] = 200;
+			
+			$this->load->library('image_lib', $config); 
+
+			$this->image_lib->resize();
+			
+			$this->model('setting')->create_or_update('account_logo', site_url('uploads/' . $img_data['file_name'], FALSE), account('id'));
+			
+			$this->session->set_flashdata('msg', 'New logo successfully uploaded');
+			redirect(site_url('admin/settings/account'));
+		} else
+		{
+			$this->upload->display_errors('<p>', '</p>');
+		}
+	}
+
+	function upload_bg()
+	{
+		$this->load->library('upload');
+		
+		$config['upload_path'] = BASEPATH . '../../uploads/';
+		$config['allowed_types'] = 'gif|jpg|png';
+		$config['max_size']	= '1000';
+		$config['encrypt_name'] = TRUE;
+		
+		$this->upload->initialize($config);
+
+		if($this->upload->do_upload())
+		{
+			$img_data = $this->upload->data();
+			
+			$config['image_library'] = 'gd2';
+			$config['source_image']	= BASEPATH . '../../uploads/' . $img_data['file_name'];
+			$config['create_thumb'] = FALSE;
+			$config['maintain_ratio'] = TRUE;
+			//$config['width'] = 200;
+			$config['height'] = 1000;
+			
+			$this->load->library('image_lib', $config); 
+
+			$this->image_lib->resize();
+			
+			$this->model('setting')->create_or_update('account_bg', site_url('uploads/' . $img_data['file_name'], FALSE), account('id'));
+			
+			$this->session->set_flashdata('msg', 'New logo successfully uploaded');
+			redirect(site_url('admin/settings/account'));
+		} else
+		{
+			$this->upload->display_errors('<p>', '</p>');
+		}
 	}
 
 	public function payments()

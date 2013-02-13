@@ -13,33 +13,40 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 		
 	<!--[if lt IE 9]><script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]--> 
-	
-	<script type="text/javascript">
-	    var APPPATH_URI = "<?php //echo APPPATH_URI;?>";
-	    var BASE_URL = "<?php //echo rtrim(site_url(), '/').'/';?>";
-	    var BASE_URI = "<?php //echo BASE_URI;?>";
-	    var MODAL = 0;
-	</script>
 
 	<?php echo $template['metadata']; ?>
 </head>
 
 <body>
-
-
-<div class="container">
+<section>
 	<header>
-		<h1><a href="<?php echo site_url(); ?>"><?php echo account('name'); ?></a></h1>
-	</header>
-	
-	<?php echo $template['body']; ?>
+		<div class="account_bg" style="background-image: url(<?php echo (setting('account_bg')) ?  setting('account_bg') : site_url('assets/img/default/style_bg.jpg', FALSE); ; ?>);">
+			<div class="account_logo">
+				<a href="<?php echo site_url(); ?>" style="background-image: url(<?php echo (setting('account_logo')) ?  setting('account_logo') : site_url('assets/img/default/style_logo_200.jpg', FALSE); ; ?>);"><?php echo account('name'); ?></a>
+			</div>
+		</div>
 
+		<div class="container">
+			<h1><?php echo account('name'); ?></h1>
+
+			<?php echo auto_typography(account('description')); ?>
+		</div>
+	</header>
+
+	<div class="container body">
+
+		
+		<?php echo $template['body']; ?>
+
+
+
+	</div>
 
 	<footer>
-		&copy; Copyright <?php echo date('Y'); ?> | <?php echo account('name'); ?> | <?php echo anchor('admin', 'Sign In...'); ?>
+		<!--&copy; Copyright <?php echo date('Y'); ?> | <?php echo account('name'); ?> | <?php echo anchor('admin', 'Sign In...'); ?>-->
+		Powered by BookYourBeds.com
 	</footer>
-
-</div>
+</section>
 
 </body>
 </html>

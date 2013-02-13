@@ -64,6 +64,8 @@ class Dashboard extends Admin_Controller {
 		$this->form_validation->set_rules('account[account_slug]', 'Account URL', 'trim|required');
 		$this->form_validation->set_rules('account[account_email]', 'Account Email', 'trim|required|valid_email');
 		$this->form_validation->set_rules('account[account_phone]', 'Contact Telephone', 'trim');
+		$this->form_validation->set_rules('account[account_description]', 'Description', 'trim');
+		$this->form_validation->set_rules('account[account_website]', 'Website', 'trim');
 
 		$data = array();
 		if($this->form_validation->run() == FALSE)
