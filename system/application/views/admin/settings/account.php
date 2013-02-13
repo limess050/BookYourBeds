@@ -1,6 +1,6 @@
 <h1 class="page-header">Account Settings</h1>
 
-<?php echo form_open('admin/settings/account', 'class="form-horizontal"'); ?>
+<?php echo form_open_multipart('admin/settings/account', 'class="form-horizontal"'); ?>
 	<?php echo $template['partials']['form_errors']; ?>
 
 	<fieldset>
@@ -93,62 +93,33 @@
 
 			</fieldset>
 
-	<div class="control-group">
+	<fieldset>
+			<legend>Appearance</legend>
+
+			<div class="control-group">
+				<label class="control-label">Account Logo</label>
+				<div class="controls">
+					<div class="image_logo_holder" style="background-image: url(<?php echo (setting('account_logo')) ?  setting('account_logo') : site_url('assets/img/default/style_logo_200.jpg', FALSE); ; ?>);"></div>
+					<input type="file" name="account_logo" />
+				</div>
+			</div>
+
+			<div class="control-group">
+				<label class="control-label">Account Background</label>
+				<div class="controls">
+					<div class="image_bg_holder" style="background-image: url(<?php echo (setting('account_bg')) ?  setting('account_bg') : site_url('assets/img/default/style_bg.jpg', FALSE); ; ?>);"></div>
+					<input type="file" name="account_bg" />
+				</div>
+			</div>
+
+
+	</fieldset>
+
+		<div class="control-group">
 		
 		<div class="controls">
 			<button type="submit" class="btn btn-primary">Save Changes</button>
 		</div>
 	</div>
 
-</form>	
-
-<?php echo form_open_multipart('admin/settings/upload_logo', 'class="form-horizontal"'); ?>
-	<fieldset>
-			<legend>Logo</legend>
-
-			<div class="control-group">
-				<div class="controls">
-					<div class="image_logo_holder" style="background-image: url(<?php echo (setting('account_logo')) ?  setting('account_logo') : site_url('assets/img/default/style_logo_200.jpg', FALSE); ; ?>);"></div>
-				</div>
-			</div>
-
-			<div class="control-group">
-				<div class="controls">
-					<input type="file" name="userfile" />
-				</div>
-			</div>
-
-			<div class="control-group">
-				<div class="controls">
-					<button type="submit" class="btn btn-primary">Upload Logo</button>
-				</div>
-			</div>
-
-	</fieldset>
-</form>
-
-
-<?php echo form_open_multipart('admin/settings/upload_bg', 'class="form-horizontal"'); ?>
-	<fieldset>
-			<legend>Background</legend>
-
-			<div class="control-group">
-				<div class="controls">
-					<div class="image_bg_holder" style="background-image: url(<?php echo (setting('account_bg')) ?  setting('account_bg') : site_url('assets/img/default/style_bg.jpg', FALSE); ; ?>);"></div>
-				</div>
-			</div>
-
-			<div class="control-group">
-				<div class="controls">
-					<input type="file" name="userfile" />
-				</div>
-			</div>
-
-			<div class="control-group">
-				<div class="controls">
-					<button type="submit" class="btn btn-primary">Upload Background Image</button>
-				</div>
-			</div>
-
-	</fieldset>
 </form>

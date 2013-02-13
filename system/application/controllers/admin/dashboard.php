@@ -75,6 +75,16 @@ class Dashboard extends Admin_Controller {
 			return $data;
 		} else
 		{
+			if( ! empty($_FILES['account_logo']))
+			{
+				$this->account->upload_logo();
+			}
+
+			if( ! empty($_FILES['account_bg']))
+			{
+				$this->account->upload_bg();
+			}
+			
 			$this->model('account')->update(account('id'), $this->input->post('account'));
 			
 			$this->account->ac = $this->model('account')->get(account('id'));

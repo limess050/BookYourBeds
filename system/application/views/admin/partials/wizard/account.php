@@ -10,7 +10,7 @@
 
 		<a href="#" onclick="$('#account_form').slideToggle(); return false;">Do this...</a>
 
-		<?php echo form_open('admin/dashboard/wizard', 'class="form-horizontal' . ((empty($_account_open)) ? ' hide' : '') . '" id="account_form"', array('_form' => 'account', 'account[account_personalised]' => 1)); ?>
+		<?php echo form_open_multipart('admin/dashboard/wizard', 'class="form-horizontal' . ((empty($_account_open)) ? ' hide' : '') . '" id="account_form"', array('_form' => 'account', 'account[account_personalised]' => 1)); ?>
 			<?php echo $template['partials']['form_errors']; ?>
 
 			<fieldset>
@@ -103,12 +103,34 @@
 
 			</fieldset>
 
+				<fieldset>
+			<legend>Appearance</legend>
+
 			<div class="control-group">
-				
+				<label class="control-label">Account Logo</label>
 				<div class="controls">
-					<button type="submit" class="btn btn-primary">Save Changes</button>
+					<div class="image_logo_holder" style="background-image: url(<?php echo (setting('account_logo')) ?  setting('account_logo') : site_url('assets/img/default/style_logo_200.jpg', FALSE); ; ?>);"></div>
+					<input type="file" name="account_logo" />
 				</div>
 			</div>
+
+			<div class="control-group">
+				<label class="control-label">Account Background</label>
+				<div class="controls">
+					<div class="image_bg_holder" style="background-image: url(<?php echo (setting('account_bg')) ?  setting('account_bg') : site_url('assets/img/default/style_bg.jpg', FALSE); ; ?>);"></div>
+					<input type="file" name="account_bg" />
+				</div>
+			</div>
+
+
+	</fieldset>
+
+		<div class="control-group">
+		
+		<div class="controls">
+			<button type="submit" class="btn btn-primary">Save Changes</button>
+		</div>
+	</div>
 
 		</form>	
 	</div>

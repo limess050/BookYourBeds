@@ -18,86 +18,22 @@ class Settings extends Admin_Controller {
 			$this->template->build('admin/settings/account');
 		} else
 		{
+			if( ! empty($_FILES['account_logo']))
+			{
+				$this->account->upload_logo();
+			}
+
+			if( ! empty($_FILES['account_bg']))
+			{
+				$this->account->upload_bg();
+			}
+
 			$this->model('account')->update(account('id'), $this->input->post('account'));
 			
 			$this->account->ac = $this->model('account')->get(account('id'));
 
 			$this->session->set_flashdata('msg', 'Account updated');
 			redirect(site_url('admin/settings/account'));
-		}
-
-		
-	}
-
-	function upload_logo()
-	{
-		$this->load->library('upload');
-		
-		$config['upload_path'] = BASEPATH . '../../uploads/';
-		$config['allowed_types'] = 'gif|jpg|png';
-		$config['max_size']	= '500';
-		$config['encrypt_name'] = TRUE;
-		
-		$this->upload->initialize($config);
-
-		if($this->upload->do_upload())
-		{
-			$img_data = $this->upload->data();
-			
-			$config['image_library'] = 'gd2';
-			$config['source_image']	= BASEPATH . '../../uploads/' . $img_data['file_name'];
-			$config['create_thumb'] = FALSE;
-			$config['maintain_ratio'] = TRUE;
-			//$config['width'] = 200;
-			$config['height'] = 200;
-			
-			$this->load->library('image_lib', $config); 
-
-			$this->image_lib->resize();
-			
-			$this->model('setting')->create_or_update('account_logo', site_url('uploads/' . $img_data['file_name'], FALSE), account('id'));
-			
-			$this->session->set_flashdata('msg', 'New logo successfully uploaded');
-			redirect(site_url('admin/settings/account'));
-		} else
-		{
-			$this->upload->display_errors('<p>', '</p>');
-		}
-	}
-
-	function upload_bg()
-	{
-		$this->load->library('upload');
-		
-		$config['upload_path'] = BASEPATH . '../../uploads/';
-		$config['allowed_types'] = 'gif|jpg|png';
-		$config['max_size']	= '1000';
-		$config['encrypt_name'] = TRUE;
-		
-		$this->upload->initialize($config);
-
-		if($this->upload->do_upload())
-		{
-			$img_data = $this->upload->data();
-			
-			$config['image_library'] = 'gd2';
-			$config['source_image']	= BASEPATH . '../../uploads/' . $img_data['file_name'];
-			$config['create_thumb'] = FALSE;
-			$config['maintain_ratio'] = TRUE;
-			//$config['width'] = 200;
-			$config['height'] = 1000;
-			
-			$this->load->library('image_lib', $config); 
-
-			$this->image_lib->resize();
-			
-			$this->model('setting')->create_or_update('account_bg', site_url('uploads/' . $img_data['file_name'], FALSE), account('id'));
-			
-			$this->session->set_flashdata('msg', 'New logo successfully uploaded');
-			redirect(site_url('admin/settings/account'));
-		} else
-		{
-			$this->upload->display_errors('<p>', '</p>');
 		}
 	}
 

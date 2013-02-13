@@ -257,6 +257,77 @@ class Account
 		return FALSE;
 	}
 
+	public function upload_logo()
+	{
+		ci()->load->library('upload');
+		
+		$config['upload_path'] = BASEPATH . '../../uploads/';
+		$config['allowed_types'] = 'gif|jpg|png';
+		$config['max_size']	= '500';
+		$config['encrypt_name'] = TRUE;
+		
+		ci()->upload->initialize($config);
+
+		if(ci()->upload->do_upload('account_logo'))
+		{
+			$img_data = ci()->upload->data();
+			
+			$config['image_library'] = 'gd2';
+			$config['source_image']	= BASEPATH . '../../uploads/' . $img_data['file_name'];
+			$config['create_thumb'] = FALSE;
+			$config['maintain_ratio'] = TRUE;
+			//$config['width'] = 200;
+			$config['height'] = 200;
+			
+			ci()->load->library('image_lib', $config); 
+
+			ci()->image_lib->resize();
+			
+			$this->model('setting')->create_or_update('account_logo', site_url('uploads/' . $img_data['file_name'], FALSE), $this->val('id'));
+			
+			//$this->session->set_flashdata('msg', 'New logo successfully uploaded');
+			//redirect(site_url('admin/settings/account'));
+
+			return TRUE;
+		}
+
+		return FALSE;
+	}
+
+	public function upload_bg()
+	{
+		ci()->load->library('upload');
+		
+		$config['upload_path'] = BASEPATH . '../../uploads/';
+		$config['allowed_types'] = 'gif|jpg|png';
+		$config['max_size']	= '1000';
+		$config['encrypt_name'] = TRUE;
+		
+		ci()->upload->initialize($config);
+
+		if(ci()->upload->do_upload('account_bg'))
+		{
+			$img_data = ci()->upload->data();
+			
+			$config['image_library'] = 'gd2';
+			$config['source_image']	= BASEPATH . '../../uploads/' . $img_data['file_name'];
+			$config['create_thumb'] = FALSE;
+			$config['maintain_ratio'] = TRUE;
+			//$config['width'] = 200;
+			$config['height'] = 1000;
+			
+			ci()->load->library('image_lib', $config); 
+
+			ci()->image_lib->resize();
+			
+			$this->model('setting')->create_or_update('account_bg', site_url('uploads/' . $img_data['file_name'], FALSE), $this->val('id'));
+			
+			return TRUE;
+		}
+
+		return FALSE;
+	}
+
 	public function setting($key = null)
 	{
 		if(empty($key))

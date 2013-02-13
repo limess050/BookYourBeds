@@ -6,8 +6,8 @@ class Migration_Test_account extends CI_Migration
 	public function up()
 	{
 		$account = array(
-					'account_name'		=> 'The Bunkhouse',
-					'account_slug'		=> 'the-bunkhouse',
+					'account_name'		=> 'Castle Rock Hostel',
+					'account_slug'		=> 'castlerockhostel',
 					'account_email'		=> 'phil@othertribe.com',
 					'account_confirmed'	=> 1
 					);
