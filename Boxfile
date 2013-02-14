@@ -1,7 +1,8 @@
-web1: #component type & number
-  php_version: 5.3.8
-  php_extensions:
-    - mysql
-    - gd
-    - eaccelerator
+--- 
+web1: 
+  php_extensions: 
+    - mysql
+    - gd
     - curl
+    - eaccelerator
+  php_version: "5.3.8"
