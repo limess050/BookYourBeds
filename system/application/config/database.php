@@ -103,10 +103,10 @@ $db['development'] = array(
 
 $db['testing'] = array(
 	'dsn'	=> '',
-	'hostname' => 'internal-db.s145262.gridserver.com',
-	'username' => 'db145262',
-	'password' => 'pcr34t366',
-	'database' => 'db145262_bookyourbeds',
+	'hostname' => 'tunnel.pagodabox.com:3306',
+	'username' => 'valencia',
+	'password' => 'kQteyzxr',
+	'database' => 'jalisa',
 	'dbdriver' => 'mysql',
 	'dbprefix' => '',
 	'pconnect' => TRUE,

@@ -185,11 +185,11 @@ class Booking
 		$message = array(
 				'html'		=> ci()->load->view('messages/internal_booking_confirmation', array('booking' => $booking), TRUE),
 				'subject'	=> 'You have a new booking',
-				'from_email'	=> 'bybsystem@othertribe.com',
+				'from_email'	=> 'robot@bookyourbeds.com',
 				'from_name'		=> 'BookYourBeds.com',
 				'to'			=> array(
 										array(
-											'email'	=> account('email')
+											'email'	=> $booking->account_email
 											)
 										),
 				'auto_text'		=> TRUE,
@@ -208,8 +208,8 @@ class Booking
 		$message = array(
 				'html'		=> ci()->load->view('messages/customer_booking_confirmation', array('booking' => $booking), TRUE),
 				'subject'	=> 'Your Booking with ' . account('name'),
-				'from_email'	=> 'bybsystem@othertribe.com',
-				'from_name'		=> account('name'),
+				'from_email'	=> 'robot@bookyourbeds.com',
+				'from_name'		=> $booking->account_name,
 				'to'			=> array(
 										array(
 											'email'	=> $booking->customer->customer_email
