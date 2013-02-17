@@ -1,12 +1,4 @@
-<?php if( ! $resource->resource_active) { ?>
-<div class="alert alert-success clearfix">
-	<?php echo anchor('admin/resources/enable/' . $resource->resource_id,
-							'<i class="icon-ok icon-white"></i> Enable now</a>',
-							'class="btn btn-success pull-right" onclick="return confirm(\'Are you sure you want to enable this room?\')"'
-							); ?>
-	<strong>This room is currently disabled.</strong><br />It cannot be booked and will not appear on your diary or availability screens.
-</div>
-<?php } ?>
+<?php echo $template['partials']['inactive_room_alert']; ?>
 
 <div class="page-header row">
 	<h1>Edit Room <small><?php echo $resource->resource_title; ?></small></h1>
@@ -17,7 +9,7 @@
 <div class="row">
 	<div class="span4">
 		<h2>General Settings</h2>
-		<p>All forms are given default styles to present them in a readable and scalable way.</p>
+		<!--<p>All forms are given default styles to present them in a readable and scalable way.</p>-->
 
 		<?php if($resource->resource_active) { ?>
 		<div class="alert alert-danger">
@@ -39,7 +31,7 @@
 		<?php echo form_open("admin/resources/edit/{$resource->resource_id}", 'class="form-horizontal"', array('resource_id' => $resource->resource_id)); ?>
 			<fieldset>
 				<div class="control-group">
-					<label class="control-label" for="resource_title">Resource Title</label>
+					<label class="control-label" for="resource_title">Room Name</label>
 					<div class="controls">
 						<?php
 						echo form_input(array(

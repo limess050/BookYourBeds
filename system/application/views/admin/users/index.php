@@ -3,7 +3,7 @@
 <div class="row">
 	<div class="span4">
 		<h2>Your Users</h2>
-		<p>All forms are given default styles to present them in a readable and scalable way.</p>
+		<!--<p>All forms are given default styles to present them in a readable and scalable way.</p>-->
 
 
 

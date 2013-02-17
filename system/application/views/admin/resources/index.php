@@ -5,7 +5,7 @@
 <div class="row">
 	<div class="span4">
 		<h2>Your Rooms</h2>
-		<p>All forms are given default styles to present them in a readable and scalable way.</p>
+		<!--<p>All forms are given default styles to present them in a readable and scalable way.</p>-->
 
 
 
@@ -17,7 +17,7 @@
 		<table class="table zebra-striped">
 			<thead>
 				<tr>
-					<th>Resource Title</th>
+					<th>Room Name</th>
 					<th></th>
 				</tr>
 			</thead>

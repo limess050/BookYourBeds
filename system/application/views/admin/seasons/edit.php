@@ -5,7 +5,7 @@
 <div class="row">
 	<div class="span4">
 		<h2>Edit Season</h2>
-		<p>All forms are given default styles to present them in a readable and scalable way.</p>
+		<!--<p>All forms are given default styles to present them in a readable and scalable way.</p>-->
 
 	</div>
 	

@@ -62,6 +62,7 @@ class Resources extends Admin_Controller {
 			}
 
 			$this->template
+				->set_partial('inactive_room_alert', 'admin/partials/inactive_room_alert')
 				->build('admin/resources/edit', $data);
 		} else
 		{
@@ -104,6 +105,7 @@ class Resources extends Admin_Controller {
 		
 		
 			$this->template
+				->set_partial('inactive_room_alert', 'admin/partials/inactive_room_alert')
 				->build('admin/resources/price', $data);
 		} else
 		{

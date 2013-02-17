@@ -139,6 +139,7 @@ class Availability extends Admin_Controller {
 			$data['request_string'] = 'start_timestamp=' . $start . '&resource_id=' . $id;
 					
 			$this->template
+				->set_partial('inactive_room_alert', 'admin/partials/inactive_room_alert')
 				->build('admin/availability/resource', $data);
 		} else
 		{
