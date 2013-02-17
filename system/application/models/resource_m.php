@@ -119,9 +119,27 @@ class Resource_m extends MY_Model
 							(SELECT `price_price` FROM (`prices`) JOIN `seasons` ON `season_id` = `price_season_id` WHERE `price_resource_id` = '{$id}' AND `price_day_id` = '" . date("N", $current_date) . "' AND `season_start_at` <= '" . date("Y-m-d", $current_date) . "' AND `season_end_at` >= '" . date("Y-m-d", $current_date) . "' ORDER BY `season_sort_order` asc, `season_id` asc LIMIT 1),
 							(SELECT `price_price` FROM (`prices`) WHERE `price_resource_id` = '{$id}' AND `price_season_id` = 0 AND `price_day_id` = '" . date("N", $current_date) . "')
 							)
+							) as default_price", FALSE);
+
+			$this->db->select("(
+							IF(
+							(SELECT release_price FROM releases WHERE release_resource_id = '{$id}' AND release_date = '" . date("Y-m-d", $current_date) . "') IS NOT NULL,
+
+							(SELECT release_price FROM releases WHERE release_resource_id = '{$id}' AND release_date = '" . date("Y-m-d", $current_date) . "'),
+							(
+								IF(
+								(SELECT `price_price` FROM (`prices`) JOIN `seasons` ON `season_id` = `price_season_id` WHERE `price_resource_id` = '{$id}' AND `price_day_id` = '" . date("N", $current_date) . "' AND `season_start_at` <= '" . date("Y-m-d", $current_date) . "' AND `season_end_at` >= '" . date("Y-m-d", $current_date) . "' ORDER BY `season_sort_order` asc, `season_id` asc LIMIT 1) IS NOT NULL,
+								
+								(SELECT `price_price` FROM (`prices`) JOIN `seasons` ON `season_id` = `price_season_id` WHERE `price_resource_id` = '{$id}' AND `price_day_id` = '" . date("N", $current_date) . "' AND `season_start_at` <= '" . date("Y-m-d", $current_date) . "' AND `season_end_at` >= '" . date("Y-m-d", $current_date) . "' ORDER BY `season_sort_order` asc, `season_id` asc LIMIT 1),
+								(SELECT `price_price` FROM (`prices`) WHERE `price_resource_id` = '{$id}' AND `price_season_id` = 0 AND `price_day_id` = '" . date("N", $current_date) . "')
+								)
+							)
+
+							)
+
+							
 							) as price", FALSE);
-			
-			
+			 
 			$resource[$i] = $this->db->where('resource_id', $id)
 										->where($this->account_id_field, $this->account_id)
 										->get('resources')

@@ -18,6 +18,11 @@ class Availability extends Admin_Controller {
 						"{$resource['resource_title']} - " . date('j M Y', $resource['day'][$i]['timestamp']) . " - ",
 						'trim|required|is_natural'
 						);
+
+					$this->form_validation->set_rules("resource[{$key}][day][{$i}][price]",
+						"{$resource['resource_title']} - " . date('j M Y', $resource['day'][$i]['timestamp']) . " - ",
+						'trim|required|is_numeric'
+						);
 				}
 			}
 		}
@@ -35,7 +40,7 @@ class Availability extends Admin_Controller {
 				$start = $data['start_timestamp'] = mktime(0, 0, 0, date('m'), date('d'), date('Y'));
 			}
 			
-			$end = $data['end_timestamp'] = strtotime('+13 days', $start);
+			$end = $data['end_timestamp'] = strtotime('+ ' . (AVAILABILITY_DAYS - 1) . ' days', $start);
 			
 			$data['today'] = mktime(0, 0, 0, date('m'), date('d'), date('Y'));
 			
@@ -64,7 +69,7 @@ class Availability extends Admin_Controller {
 
 		$start = $data['start_timestamp'] = $this->input->get('start_timestamp');
 
-		$end = strtotime('+13 days', $start);
+		$end = strtotime('+' . (AVAILABILITY_DAYS - 1) . ' days', $start);
 		
 		$data['today'] = mktime(0, 0, 0, date('m'), date('d'), date('Y'));
 		
@@ -103,6 +108,11 @@ class Availability extends Admin_Controller {
 						date('j M Y', $resource['day'][$i]['timestamp']),
 						'trim|required|is_natural'
 						);
+
+					$this->form_validation->set_rules("resource[{$key}][day][{$i}][price]",
+						date('j M Y', $resource['day'][$i]['timestamp']),
+						'trim|required|is_numeric'
+						);
 				}
 			}
 		}
@@ -120,7 +130,7 @@ class Availability extends Admin_Controller {
 				$start = $data['start_timestamp'] = mktime(0, 0, 0, date('m'), date('d'), date('Y'));
 			}
 			
-			$end = strtotime('+13 days', $start);
+			$end = strtotime('+' . (AVAILABILITY_DAYS - 1) . ' days', $start);
 			
 			$data['today'] = mktime(0, 0, 0, date('m'), date('d'), date('Y'));
 			

@@ -20,8 +20,25 @@ class Bookings extends Admin_Controller {
 		{
 			$data['current_date'] = mktime(0, 0, 0, date('m'), date('d'), date('Y'));
 		}
-				
-		$data['resources'] = $this->model('booking')->get_date_by_resource($data['current_date'], $this->account->val('id'));
+
+		if($this->input->get('checkingin'))
+		{
+			set_cookie(array(
+					    'name'   => 'hideOther',
+					    'value'  => '1',
+					    'expire' => '86500'
+					));
+			
+			redirect(site_url('admin/bookings?timestamp=' . $data['current_date']));
+		} else if($this->input->get('all'))
+		{	
+			delete_cookie('hideOther');
+			redirect(site_url('admin/bookings?timestamp=' . $data['current_date']));
+		} 
+		
+		$show_all = ! get_cookie('hideOther');
+
+		$data['resources'] = $this->model('booking')->get_date_by_resource($data['current_date'], $this->account->val('id'), $show_all);
 		
 		$this->template
 			->build('admin/bookings/index', $data);
@@ -37,7 +54,38 @@ class Bookings extends Admin_Controller {
 		$data['booking'] = $this->model('booking')->get($id, $this->account->val('id')); 
 		
 		$this->template
+			->set_partial('booking_button_group', 'admin/partials/booking_button_group')
 			->build('admin/bookings/show', $data);
+	}
+
+	public function email($id)
+	{
+		if(empty($id))
+		{
+			show_404();
+		}
+
+		$this->load->library('form_validation');
+
+		$this->form_validation->set_rules('email', 'Email Address', 'trim|required|valid_email');
+		$this->form_validation->set_rules('subject', 'Subject', 'trim|required');
+		$this->form_validation->set_rules('message', 'Message', 'trim');
+
+		if($this->form_validation->run() === FALSE)
+		{
+			$data['booking'] = $this->model('booking')->get($id, $this->account->val('id')); 
+			
+			$this->template
+				->set_partial('booking_button_group', 'admin/partials/booking_button_group')
+				->build('admin/bookings/email', $data);
+		} else
+		{
+			$this->booking->email($id, $this->input->post('email'), $this->input->post('subject'), $this->input->post('message'));
+
+			$this->session->set_flashdata('msg', 'Booking details emailed');
+
+			redirect('admin/bookings/show/' . $id);
+		}
 	}
 
 	public function edit($id)
@@ -61,6 +109,7 @@ class Bookings extends Admin_Controller {
 			$data['booking'] = $this->model('booking')->get($id, $this->account->val('id')); 
 			
 			$this->template
+				->set_partial('booking_button_group', 'admin/partials/booking_button_group')
 				->build('admin/bookings/edit', $data);
 		} else
 		{

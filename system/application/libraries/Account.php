@@ -93,7 +93,7 @@ class Account
 
 
 			// Send confirmation mail
-			$message = array(
+			/*$message = array(
 				'html'		=> ci()->load->view('messages/confirm_account', $data, TRUE),
 				'subject'	=> 'Confirm you BookYourBeds.com account',
 				'from_email'	=> 'bookyourbeds@othertribe.com',
@@ -107,7 +107,7 @@ class Account
 				'url_strip_qs'	=> TRUE
 				);
 
-			ci()->mandrill->call('messages/send', array('message' => $message));
+			ci()->mandrill->call('messages/send', array('message' => $message));*/
 		}
 
 		return $user_id;

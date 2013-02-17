@@ -15,12 +15,13 @@ class Release_m extends MY_Model
 					->where('release_date', unix_to_mysql($day['timestamp']))
 					->delete('releases');
 
-			if($day['availability'] + $day['bookings'] != $day['default_release'])
+			if($day['availability'] + $day['bookings'] != $day['default_release'] || $day['price'] != $day['default_price'])
 			{
 				$data = array(
 					'release_resource_id'	=> $resource_id,
 					'release_date'			=> unix_to_mysql($day['timestamp']),
-					'release_amount'		=> ($day['availability'] + $day['bookings'])
+					'release_amount'		=> $day['availability'] + $day['bookings'] != $day['default_release'] ? ($day['availability'] + $day['bookings']) : null,
+					'release_price'			=> ($day['price'] != $day['default_price']) ? $day['price'] : null
 					);
 
 				$this->db->insert('releases', $data);

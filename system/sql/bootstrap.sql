@@ -146,7 +146,8 @@ DROP TABLE IF EXISTS `releases`;
 CREATE TABLE `releases` (
 `release_resource_id` INT(11) NOT NULL DEFAULT '0',
 `release_date` DATETIME NOT NULL,
-`release_amount` INT(6) NOT NULL DEFAULT '0',
+`release_amount` INT(6) NULL,
+`release_price` DOUBLE NULL,
 INDEX (`release_resource_id`),
 INDEX (`release_date`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='Releases';

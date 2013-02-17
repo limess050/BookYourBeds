@@ -132,7 +132,7 @@ class Booking_m extends MY_Model
 				
 	}
 
-	public function get_date_by_resource($datetime = null, $account_id = null)
+	public function get_date_by_resource($datetime = null, $account_id = null, $show_all = TRUE)
 	{
 		$this->_set_account_id($account_id);
 
@@ -147,14 +147,15 @@ class Booking_m extends MY_Model
 		
 		foreach($resources as $key => $resource)
 		{
-			$resources[$key]->bookings = $this->get_date($datetime, $resource->resource_id, $this->account_id);
+			$resources[$key]->bookings = $this->get_date($datetime, $resource->resource_id, $this->account_id, $show_all);
+			$resources[$key]->availability = $this->model('resource')->availability($resource->resource_id, $datetime, $datetime, $this->account_id);
 		}
 		
 		return $resources;
 	}
 	
 	// Gets all bookings that are in progress on a given date
-	public function get_date($datetime = null, $resource_id = null, $account_id = null)
+	public function get_date($datetime = null, $resource_id = null, $account_id = null, $show_all = TRUE)
 	{
 		$this->_set_account_id($account_id);
 
@@ -169,6 +170,15 @@ class Booking_m extends MY_Model
 		{
 			$this->db->where('resource_id', $resource_id);
 		}
+
+		if($show_all)
+		{
+			$this->db->where('reservation_start_at <=', date("Y-m-d", $datetime))
+					->where('(reservation_start_at + INTERVAL (reservation_duration - 1) DAY) >=', date("Y-m-d", $datetime));
+		} else
+		{
+			$this->db->where('reservation_start_at', date("Y-m-d", $datetime));
+		}
 		
 		return $this->db
 				->select('bookings.*, resources.*, reservations.*, customers.*')
@@ -176,8 +186,6 @@ class Booking_m extends MY_Model
 				->join('resources', 'resource_id = reservation_resource_id')
 				->join('customers', 'customer_id = booking_customer_id')
 				->select("DATEDIFF('" . date("Y-m-d", $datetime) . "', reservation_start_at) as stage", FALSE)
-				->where('reservation_start_at <=', date("Y-m-d", $datetime))
-				->where('(reservation_start_at + INTERVAL (reservation_duration - 1) DAY) >=', date("Y-m-d", $datetime))
 				->where($this->account_id_field, $this->account_id)
 				->where('booking_completed', '1')
 				->order_by('booking_created_at')

@@ -78,6 +78,7 @@
 				        <!--<li><a href="<?php echo site_url('admin/users'); ?>"><i class="icon-user"></i> Users</a></li>-->
 				        <li><a href="<?php echo site_url('admin/settings/account'); ?>"><i class="icon-home"></i> Account Settings</a></li>
 				        <li><a href="<?php echo site_url('admin/settings/payments'); ?>"><i class="icon-shopping-cart"></i> Payment Options</a></li>
+				        <li><a href="<?php echo site_url('admin/seasons'); ?>"><i class="icon-calendar"></i> Seasons</a></li>
 				    </ul>
 				</li>
 				<?php } ?>
@@ -88,7 +89,7 @@
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="icon-user icon-white"></i> <b class="caret"></b></a>
 					
 					<ul class="dropdown-menu">
-						<li><?php echo anchor('admin/signout', 'Sign Out'); ?></li>
+						<li><?php echo anchor('signout', 'Sign Out', null, FALSE); ?></li>
 						<li><?php echo anchor('admin/users/me', 'Edit Your Details'); ?></li>
 					</ul>
 				</li>

@@ -17,11 +17,11 @@
 <?php echo $template['partials']['form_errors']; ?>
 
 <p class="align_center">
-<?php echo anchor('admin/availability/resource/' . $resource->resource_id . '?timestamp=' . strtotime('-14 day', $start_timestamp), '&laquo; Previous 14 days', 'class="btn" id="prev_link"'); ?>&nbsp;
+<?php echo anchor('admin/availability/resource/' . $resource->resource_id . '?timestamp=' . strtotime('-' . AVAILABILITY_DAYS . ' day', $start_timestamp), '&laquo; Previous ' . AVAILABILITY_DAYS . ' days', 'class="btn" id="prev_link"'); ?>&nbsp;
 <?php echo anchor('admin/availability/resource/' . $resource->resource_id, 'TODAY', 'class="btn btn-primary" id="today_link"'); ?>&nbsp; 
 <input type="hidden" value="<?php echo date("Y-m-d", $start_timestamp); ?>" id="datepicker" />&nbsp;
 
-<?php echo anchor('admin/availability/resource/' . $resource->resource_id . '?timestamp=' . strtotime('+14 day', $start_timestamp), 'Next 14 days &raquo;', 'class="btn" id="next_link"'); ?>
+<?php echo anchor('admin/availability/resource/' . $resource->resource_id . '?timestamp=' . strtotime('+' . AVAILABILITY_DAYS . ' day', $start_timestamp), 'Next ' . AVAILABILITY_DAYS . ' days &raquo;', 'class="btn" id="next_link"'); ?>
 </p>
 
 
@@ -30,7 +30,7 @@
 	<table class="table table-condensed table-hover table-striped table-bordered">
 		<thead>
 			<tr>
-				<?php for($i = 0; $i < 14; $i++) { ?>
+				<?php for($i = 0; $i < AVAILABILITY_DAYS; $i++) { ?>
 				<th class="align_center<?php echo (date("w", strtotime('+' . $i . ' day', $start_timestamp)) > 4 ) ? ' weekend' : ''; echo ((strtotime('+' . ($i) . ' day', $start_timestamp)) == $today) ? ' today' : ''; ?>">
 				<?php
 				echo date("D", strtotime('+' . $i . ' day', $start_timestamp)); ?><br />

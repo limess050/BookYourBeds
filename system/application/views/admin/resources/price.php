@@ -82,7 +82,7 @@
 </table>
 </div>
 </div>
-<!--
+
 <div class="row">
 	<div class="span4 columns">
 		<h2>Seasonal Pricing</h2>
@@ -159,4 +159,4 @@
 </form>
 
 </div>
-</div>-->
+</div>

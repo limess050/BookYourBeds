@@ -87,6 +87,7 @@ class Booking
 	{
 		ci()->load->helper('date');
 		ci()->load->helper('text');
+		ci()->load->helper('typography');
 
 		if( ! empty($booking_id))
 		{
@@ -221,6 +222,35 @@ class Booking
 
 		ci()->mandrill->call('messages/send', array('message' => $message));
 		
+	}
+
+	public function email($booking_id, $email, $subject, $message = null)
+	{
+		$data['booking'] = $this->model('booking')->get($booking_id);
+		$data['message'] = $message;
+
+		ci()->load->library('mandrill');
+		ci()->load->helper('typography');
+
+		$message = array(
+				'html'		=> ci()->load->view('messages/customer_booking_confirmation', $data, TRUE),
+				'subject'	=> $subject,
+				'from_email'	=> $data['booking']->account_email,
+				'from_name'		=> $data['booking']->account_name,
+				'auto_text'		=> TRUE,
+				'url_strip_qs'	=> TRUE
+				);
+
+		$to = explode(',', $email);
+			
+		foreach($to as $e)
+		{
+			$message['to'][] = array('email' => $e);
+		}
+
+		ci()->mandrill->call('messages/send', array('message' => $message));
+
+
 	}
 
 	public function aborted($booking_id)

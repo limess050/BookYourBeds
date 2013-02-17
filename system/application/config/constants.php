@@ -77,6 +77,8 @@ define('MODEL_SUFFIX', '_m');
 
 define('EXT_MAX_GUESTS', 6);
 
+define('AVAILABILITY_DAYS', 7);
+
 /**
  * The reCAPTCHA server URL's
  */
@@ -85,29 +87,6 @@ define("RECAPTCHA_API_SECURE_SERVER", "https://www.google.com/recaptcha/api");
 define("RECAPTCHA_VERIFY_SERVER", "www.google.com");
 
 define('MANDRILL_APIKEY', '5Ifu-v6LhEf5iHqbvpsZwQ');
-
-if (defined('ENVIRONMENT'))
-{
-	switch (ENVIRONMENT)
-	{
-		case 'development':
-		case 'testing':
-			define('SAGEPAY_VENDOR', 'applecart');
-			define('SAGEPAY_CRYPT', 'oG1PDrzXanmXe5JE');
-			define('SAGEPAY_ENDPOINT', 'https://test.sagepay.com/Simulator/VSPFormGateway.asp');
-			define('SAGEPAY_VENDOR_EMAIL', 'phil@othertribe.com');
-		break;
-		case 'production':
-			/* Needs to change! */
-			define('SAGEPAY_VENDOR', 'macbs');
-			define('SAGEPAY_CRYPT', 'AiKgqVHRyzBP5fpF');
-			define('SAGEPAY_ENDPOINT', 'https://live.sagepay.com/gateway/service/vspform-register.vsp');
-			define('SAGEPAY_VENDOR_EMAIL', 'info@macbackpackerstours.com');
-		break;
-		default:
-			exit('The application environment is not set correctly.');
-	}
-}
 
 
 /* End of file constants.php */
