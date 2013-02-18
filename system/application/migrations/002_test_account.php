@@ -121,6 +121,7 @@ class Migration_Test_account extends CI_Migration
 
 			// Pick a random room
 			$room = $this->db->order_by('resource_id', 'random')
+							->where('resource_account_id', $this->account_id)
 							->get('resources')
 							->row();
 

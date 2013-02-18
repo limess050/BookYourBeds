@@ -52,6 +52,20 @@
 		</div>
 
 		<div class="control-group">
+			<label class="control-label" for="emailconf">Confirm Email Address</label>
+			<div class="controls">
+				<?php
+				echo form_input(array(
+					'name'	=> 'emailconf',
+					'value'	=> set_value('emailconf', booking('emailconf')),
+					'class'	=> 'span4',
+					'id'	=> 'emailconf'
+					));
+				?> *
+			</div>
+		</div>
+
+		<div class="control-group">
 			<label class="control-label" for="customer_phone">Contact Telephone</label>
 			<div class="controls">
 				<?php

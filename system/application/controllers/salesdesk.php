@@ -86,7 +86,8 @@ class Salesdesk extends Front_Controller {
 
 		$this->form_validation->set_rules('customer[customer_firstname]', 'First Name', 'trim|required');
 		$this->form_validation->set_rules('customer[customer_lastname]', 'Last Name', 'trim|required');
-		$this->form_validation->set_rules('customer[customer_email]', 'Email Address', 'trim|required|valid_email');
+		$this->form_validation->set_rules('customer[customer_email]', 'Email Address', 'trim|required|valid_email|matches[emailconf]');
+		$this->form_validation->set_rules('emailconf', 'Confirm Email Address', 'trim|required');
 		$this->form_validation->set_rules('customer[customer_phone]', 'Contact Telephone', 'trim');
 
 		if($this->form_validation->run() === FALSE)

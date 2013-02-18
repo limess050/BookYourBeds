@@ -283,7 +283,21 @@ class Account
 
 			ci()->image_lib->resize();
 			
-			$this->model('setting')->create_or_update('account_logo', site_url('uploads/' . $img_data['file_name'], FALSE), $this->val('id'));
+			
+			ci()->load->config('s3');
+			ci()->load->library('s3');
+
+			ci()->s3->putObject(ci()->s3->inputFile('uploads/' . $img_data['file_name'], false), ci()->config->item('s3_bucket_name'), $img_data['file_name']);
+
+
+			$url = array(
+						ci()->config->item('s3_bucket_location'),
+						ci()->config->item('s3_bucket_name'),
+						$img_data['file_name']
+						);
+
+
+			$this->model('setting')->create_or_update('account_logo', implode('/', $url), $this->val('id'));
 			
 			//$this->session->set_flashdata('msg', 'New logo successfully uploaded');
 			//redirect(site_url('admin/settings/account'));
