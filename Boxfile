@@ -6,5 +6,5 @@ web1:
     - curl
     - eaccelerator
   php_version: "5.3.8"
-  shared_writable_dirs:
-    - s3_cache
+  shared_writable_dirs: 
+    - s3_cache
