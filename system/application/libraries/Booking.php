@@ -33,37 +33,72 @@ class Booking
 							'start_at'				=> $start_timestamp
 							);
 
-		if( ! session('booking', 'booking_id'))
+		if( ! booking('booking_id'))
 		{
 			$booking_id = $this->model('booking')->insert($booking);
 			
 			// Create an empty booking for this session...
-			ci()->session->set_userdata('booking', $this->model('booking')->get($booking_id));
+			$this->update_session($this->model('booking')->get($booking_id));
 		} else
 		{
 			$this->model('booking')->update(session('booking', 'booking_id'), $booking);
 
 			// Update the booking we're using for this session...
-			ci()->session->set_userdata('booking', $this->model('booking')->get(session('booking', 'booking_id')));
+			$this->update_session($this->model('booking')->get(booking('booking_id')));
 		}
 
 		return TRUE;
 	}
 
+	public function session()
+	{
+		return session('booking', ( ! account('id')) ? '0' : account('id'));
+	}
+
+	public function update_session($data, $force_reset = FALSE)
+	{
+		$session = session('booking');
+
+		if(empty($session[account('id')]) || $force_reset)
+		{
+			$session[account('id')] = $data;
+
+			ci()->session->set_userdata('booking', $session);
+		} else
+		{
+			$session[account('id')] = (object) array_merge((array) $session[account('id')], (array) $data);
+		}
+
+		ci()->session->set_userdata('booking', $session);
+	}
+
+	public function clear_session()
+	{
+		$session = session('booking');
+
+		unset($session[account('id')]);
+
+		ci()->session->set_userdata('booking', $session);
+	}
+
+
+
 	public function reset()
 	{
-		$booking = ci()->session->userdata('booking');
+		$booking = $this->session();
 
-		$this->dump();
+		if($booking)
+		{
+			$this->dump();
 
-		ci()->db->where('reservation_booking_id', $booking->booking_id)->delete('reservations');
-		ci()->session->unset_userdata('booking');
-
+			ci()->db->where('reservation_booking_id', $booking->booking_id)->delete('reservations');
+			$this->clear_session();
+		}
 	}
 
 	public function dump()
 	{
-		$booking = ci()->session->userdata('booking');
+		$booking = $this->session();
 
 		if($booking)
 		{
@@ -79,7 +114,8 @@ class Booking
 
 		if($booking)
 		{
-			ci()->session->set_userdata('booking', unserialize($booking->booking_session_dump));
+			$this->update_session(unserialize($booking->booking_session_dump), TRUE);
+			//ci()->session->set_userdata('booking', unserialize($booking->booking_session_dump));
 		}
 	} 
 
@@ -94,14 +130,15 @@ class Booking
 			$_booking = $this->model('booking')->get($booking_id);
 			if($_booking->booking_completed)
 			{
-				ci()->session->unset_userdata('booking');
+				$this->clear_session();
 				return $_booking->booking_id;
 			}
 			$booking = unserialize(( ! empty($_booking->booking_session_dump)) ? $_booking->booking_session_dump : null);
 			unset($_booking);
 		} else
 		{
-			$booking = ci()->session->userdata('booking');
+			$booking = $this->session();
+			//$booking = ci()->session->userdata('booking');
 		}
 		
 		if(empty($booking))
@@ -166,7 +203,8 @@ class Booking
 		// Confirmations etc ---------------------------------------------------------------------------------
 
 		// Cleanup
-		ci()->session->unset_userdata('booking');
+		$this->clear_session();
+		//ci()->session->unset_userdata('booking');
 		
 		$booking = $this->model('booking')->get($booking->booking_id);
 

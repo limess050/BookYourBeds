@@ -4,7 +4,7 @@ function booking($key = null, $subkey = null)
 {
 	$CI =& get_instance();
 	
-	$booking = $CI->session->userdata('booking');
+	$booking = $CI->booking->session();
 
 	if( ! empty($booking))
 	{

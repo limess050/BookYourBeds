@@ -102,7 +102,8 @@ class Salesdesk extends Admin_Controller {
 			$this->template->build('admin/salesdesk/details');
 		} else
 		{
-			$this->session->set_userdata('booking', (object) array_merge((array) session('booking'), (array) $this->input->post()));
+			$this->booking->update_session($this->input->post());
+			//$this->session->set_userdata('booking', (object) array_merge((array) session('booking'), (array) $this->input->post()));
 
 			redirect(site_url('admin/salesdesk/supplements'));
 		}
@@ -116,7 +117,8 @@ class Salesdesk extends Admin_Controller {
 	public function confirm()
 	{
 		// Merge any data that might have come from a failed submission
-		$this->session->set_userdata('booking', (object) array_merge((array) session('booking'), (array) $this->input->post()));
+		$this->booking->update_session($this->input->post());
+		//$this->session->set_userdata('booking', (object) array_merge((array) session('booking'), (array) $this->input->post()));
 
 		$this->load->library('form_validation');
 
@@ -124,7 +126,7 @@ class Salesdesk extends Admin_Controller {
 
 		if($this->form_validation->run() === FALSE)
 		{
-			$data['booking'] = session('booking');
+			$data['booking'] = $this->booking->session();
 			$data['resources'] = booking('resources');
 			$data['customer'] = booking('customer');
 

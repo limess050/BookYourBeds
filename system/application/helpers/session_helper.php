@@ -6,7 +6,7 @@ function session($key, $subkey = null)
 	
 	$item = $CI->session->userdata($key);
 
-	if(empty($subkey))
+	if(empty($subkey) && $subkey !== '0') 
 	{
 		return $item;
 	} else
