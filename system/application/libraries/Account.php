@@ -262,7 +262,7 @@ class Account
 		ci()->load->library('upload');
 		
 		//$config['upload_path'] = BASEPATH . '../../uploads/';
-		$config['upload_path'] = 's3_cache/';
+		$config['upload_path'] = 'temp_uploads/';
 		$config['allowed_types'] = 'gif|jpg|png';
 		$config['max_size']	= '500';
 		$config['encrypt_name'] = TRUE;
@@ -275,7 +275,7 @@ class Account
 			
 			$config['image_library'] = 'gd2';
 			//$config['source_image']	= BASEPATH . '../../uploads/' . $img_data['file_name'];
-			$config['source_image']	= 's3_cache/' . $img_data['file_name'];
+			$config['source_image']	= 'temp_uploads/' . $img_data['file_name'];
 			$config['create_thumb'] = FALSE;
 			$config['maintain_ratio'] = TRUE;
 			//$config['width'] = 200;
@@ -289,7 +289,7 @@ class Account
 			ci()->load->config('s3');
 			ci()->load->library('s3');
 
-			ci()->s3->putObject(ci()->s3->inputFile('s3_cache/' . $img_data['file_name'], false), ci()->config->item('s3_bucket_name'), $img_data['file_name']);
+			ci()->s3->putObject(ci()->s3->inputFile('temp_uploads/' . $img_data['file_name'], false), ci()->config->item('s3_bucket_name'), $img_data['file_name']);
 
 
 			$url = array(
@@ -301,6 +301,8 @@ class Account
 
 			$this->model('setting')->create_or_update('account_logo', implode('/', $url), $this->val('id'));
 			
+			unlink('temp_uploads/' . $img_data['file_name']);
+
 			//$this->session->set_flashdata('msg', 'New logo successfully uploaded');
 			//redirect(site_url('admin/settings/account'));
 
@@ -314,7 +316,8 @@ class Account
 	{
 		ci()->load->library('upload');
 		
-		$config['upload_path'] = BASEPATH . '../../uploads/';
+		//$config['upload_path'] = BASEPATH . '../../uploads/';
+		$config['upload_path'] = 'temp_uploads/';
 		$config['allowed_types'] = 'gif|jpg|png';
 		$config['max_size']	= '1000';
 		$config['encrypt_name'] = TRUE;
@@ -326,7 +329,8 @@ class Account
 			$img_data = ci()->upload->data();
 			
 			$config['image_library'] = 'gd2';
-			$config['source_image']	= BASEPATH . '../../uploads/' . $img_data['file_name'];
+			//$config['source_image']	= BASEPATH . '../../uploads/' . $img_data['file_name'];
+			$config['source_image']	= 'temp_uploads/' . $img_data['file_name'];
 			$config['create_thumb'] = FALSE;
 			$config['maintain_ratio'] = TRUE;
 			//$config['width'] = 200;
@@ -336,7 +340,21 @@ class Account
 
 			ci()->image_lib->resize();
 			
-			$this->model('setting')->create_or_update('account_bg', site_url('uploads/' . $img_data['file_name'], FALSE), $this->val('id'));
+			ci()->load->config('s3');
+			ci()->load->library('s3');
+
+			ci()->s3->putObject(ci()->s3->inputFile('temp_uploads/' . $img_data['file_name'], false), ci()->config->item('s3_bucket_name'), $img_data['file_name']);
+
+			$url = array(
+						ci()->config->item('s3_bucket_location'),
+						ci()->config->item('s3_bucket_name'),
+						$img_data['file_name']
+						);
+
+
+			$this->model('setting')->create_or_update('account_bg', implode('/', $url), $this->val('id'));
+
+			unlink('temp_uploads/' . $img_data['file_name']);
 			
 			return TRUE;
 		}
