@@ -3,3 +3,4 @@
 uploads/*.jpg
 uploads/*.png
 uploads/*.gif
+s3_cache/

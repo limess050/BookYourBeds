@@ -261,7 +261,8 @@ class Account
 	{
 		ci()->load->library('upload');
 		
-		$config['upload_path'] = BASEPATH . '../../uploads/';
+		//$config['upload_path'] = BASEPATH . '../../uploads/';
+		$config['upload_path'] = 's3_cache/';
 		$config['allowed_types'] = 'gif|jpg|png';
 		$config['max_size']	= '500';
 		$config['encrypt_name'] = TRUE;
@@ -273,7 +274,8 @@ class Account
 			$img_data = ci()->upload->data();
 			
 			$config['image_library'] = 'gd2';
-			$config['source_image']	= BASEPATH . '../../uploads/' . $img_data['file_name'];
+			//$config['source_image']	= BASEPATH . '../../uploads/' . $img_data['file_name'];
+			$config['source_image']	= 's3_cache/' . $img_data['file_name'];
 			$config['create_thumb'] = FALSE;
 			$config['maintain_ratio'] = TRUE;
 			//$config['width'] = 200;
@@ -287,7 +289,7 @@ class Account
 			ci()->load->config('s3');
 			ci()->load->library('s3');
 
-			ci()->s3->putObject(ci()->s3->inputFile('uploads/' . $img_data['file_name'], false), ci()->config->item('s3_bucket_name'), $img_data['file_name']);
+			ci()->s3->putObject(ci()->s3->inputFile('s3_cache/' . $img_data['file_name'], false), ci()->config->item('s3_bucket_name'), $img_data['file_name']);
 
 
 			$url = array(
