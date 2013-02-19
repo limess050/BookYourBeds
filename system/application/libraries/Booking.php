@@ -108,6 +108,15 @@ class Booking
 		}
 	}
 
+	public function sent_for_payment()
+	{
+		$booking = $this->session();
+
+		ci()->db->where('booking_id', $booking->booking_id)
+				->set('booking_sent_for_payment', 1)
+				->update('bookings');
+	}
+
 	public function get_session($booking_id)
 	{
 		$booking = $this->model('booking')->get($booking_id);

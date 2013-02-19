@@ -162,6 +162,7 @@ class Salesdesk extends Front_Controller {
 
 	public function payment()
 	{
+		$this->booking->sent_for_payment();
 		$this->booking->dump();
 
 		$this->load->library('payment');

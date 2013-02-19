@@ -168,6 +168,7 @@ CREATE TABLE `bookings` (
 `booking_price` FLOAT NOT NULL DEFAULT '0',
 `booking_deposit` FLOAT NOT NULL DEFAULT '0',
 `booking_acknowledged` TINYINT(1) NOT NULL DEFAULT '0',
+`booking_sent_for_payment` TINYINT(1) NOT NULL DEFAULT '0',
 `booking_completed` TINYINT(1) NOT NULL DEFAULT '0',
 `booking_failed` TINYINT(1) NOT NULL DEFAULT '0',
 `booking_aborted` TINYINT(1) NOT NULL DEFAULT '0',

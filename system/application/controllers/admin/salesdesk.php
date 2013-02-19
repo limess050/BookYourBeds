@@ -136,7 +136,8 @@ class Salesdesk extends Admin_Controller {
 		} else
 		{
 			//$this->session->set_userdata('booking', (object) array_merge((array) session('booking'), (array) $this->input->post()));
-
+			$this->booking->sent_for_payment();
+			
 			$this->session->set_flashdata('msg', 'Booking Complete');
 
 			redirect(site_url('admin/bookings/show/' . $this->booking->process()));
