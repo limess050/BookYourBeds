@@ -40,3 +40,8 @@ function is_cancelled($booking)
 {
 	return ($booking->booking_deleted_at != '0000-00-00 00:00:00');
 }
+
+function is_verified($booking)
+{
+	return $booking->booking_completed;
+}

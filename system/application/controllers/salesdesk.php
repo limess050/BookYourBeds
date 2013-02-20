@@ -385,6 +385,22 @@ class Salesdesk extends Front_Controller {
 
 	}
 
+	public function verify()
+	{
+		if($this->input->get('auth'))
+		{
+			if($id = $this->model('booking')->verify($this->input->get('auth')))
+			{
+				$booking = $this->model('booking')->get($id);
+
+				$this->booking->email($id, $booking->customer->customer_email, 'Your confirmed booking with ' . account('name'), 'Thank you for verifiying your booking with ' . account('name') . '.');
+			}
+		} else
+		{
+			echo 'FALSE';
+		}
+	}
+
 
 	/* Loads of SagePay-specific encryption stuff */
 

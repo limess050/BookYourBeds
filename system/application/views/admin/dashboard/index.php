@@ -66,3 +66,37 @@
 	</tbody>
 </table>
 <?php } ?>
+
+<?php if( ! empty($unverified)) { ?>
+<h1 class="page-header">Bookings Awaiting Verification</h1>
+
+<table class="table table-condensed table-striped table-hover">
+	<thead>
+		<tr>
+			<th>Customer Name</th>
+			<th>Arrival</th>
+			<th>Booking Reference</th>
+			<th>Resource Booked</th>
+			<th>Guests</th>
+			<th>Duration</th>
+			<th>Bill</th>
+			<th>Time Remaining</th>
+		</tr>
+	<thead>
+	
+	<tbody>
+		<?php foreach($unverified as $booking) { ?>
+		<tr>
+			<td><?php echo $booking->customer_firstname . ' ' . $booking->customer_lastname; ?></td>
+			<td><?php echo mysql_to_format($booking->reservation_start_at); ?></td>
+			<td><?php echo anchor("admin/bookings/show/{$booking->booking_id}", $booking->booking_reference); ?></td>
+			<td><?php echo $booking->resource_title; ?></td>
+			<td><?php echo $booking->booking_guests; ?></td>
+			<td><?php echo duration($booking->reservation_duration); ?></td>
+			<td>&pound;<?php echo as_currency($booking->booking_price); ?></td>
+			<td></td>
+		</tr>
+		<?php } ?>
+	</tbody>
+</table>
+<?php } ?>

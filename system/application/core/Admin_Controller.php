@@ -11,6 +11,7 @@ class Admin_Controller extends MY_Controller
 		if(account('id'))
 		{
 			$this->account->new_bookings();
+			$this->account->bookings_awaiting_verification();
 			$this->template->set_layout('admin');
 		} else
 		{

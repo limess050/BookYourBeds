@@ -1,5 +1,14 @@
+
 <div class="btn-group pull-right">
-	<?php if ( ! $booking->booking_acknowledged) { 
+	<?php if( ! is_verified($booking)) { ?>
+	<a href="<?php echo site_url('admin/bookings/remove/' . $booking->booking_id); ?>" class="btn btn-danger" onclick="return confirm('Are you sure you want to remove this booking?');"><i class="icon-remove icon-white"></i> Remove this booking</a>
+
+	<button class="btn btn-danger dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></button>
+	<ul class="dropdown-menu">
+		<li><a href="<?php echo site_url('admin/bookings/verify/' . $booking->booking_id); ?>" onclick="return confirm('Are you sure you want to verify this booking?');"><i class="icon-ok"></i> Verify this booking</a></li>
+	</ul>
+	<?php } else { 
+	if ( ! $booking->booking_acknowledged) { 
 		$btn_state = 'warning';
 	?>
 	<a href="<?php echo site_url('admin/bookings/acknowledge/' . $booking->booking_id); ?>" class="btn btn-<?php echo $btn_state; ?>"><i class="icon-check icon-white"></i> Acknowledge this booking</a>
@@ -29,4 +38,5 @@
 			}
 		 ?></li>
 	</ul>
+	<?php } ?>
 </div>

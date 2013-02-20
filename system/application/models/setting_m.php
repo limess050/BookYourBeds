@@ -9,6 +9,18 @@ class Setting_m extends MY_Model
 		return $this->db->where($this->account_id_field, $this->account_id)
 				->get($this->_table)->result();
 	}
+
+	public function get_setting($key, $account_id = null)
+	{
+		$this->_set_account_id($account_id);
+
+		$setting = $this->db->where($this->account_id_field, $this->account_id)
+							->where('setting_key', $key)
+							->get('settings')
+							->row();
+
+		return ( ! empty($setting)) ? $setting->setting_value : FALSE;
+	}
 	
 	public function create_or_update($key, $value = 0, $account_id = null)
 	{

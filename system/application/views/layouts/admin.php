@@ -39,7 +39,7 @@
 			
 			<ul class="nav">
 				<li>
-					<?php echo anchor('admin', account('name') . " <span class=\"badge badge-success\">{$this->account->bookings}</span>"); ?>
+					<?php echo anchor('admin', account('name') . " <span class=\"badge badge-success\">{$this->account->bookings}</span> <span class=\"badge badge-warning\">{$this->account->unverified}</span>"); ?>
 				</li>
 
 				<?php if(session('user', 'user_id')) { ?>

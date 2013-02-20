@@ -170,6 +170,35 @@ class Bookings extends Admin_Controller {
 		}
 	}
 
+	public function remove($id)
+	{
+		if(empty($id))
+		{
+			show_404();
+		}
+
+		$this->model('booking')->remove($id);
+
+		$this->session->set_flashdata('msg', 'Booking removed');
+
+		redirect('admin/dashboard');
+	}
+
+
+	public function verify($id)
+	{
+		if(empty($id))
+		{
+			show_404();
+		}
+
+		$this->model('booking')->verify(null, $id);
+
+		$this->session->set_flashdata('msg', 'Booking manually verified');
+
+		redirect('admin/bookings/show/' . $id);
+	}
+
 	public function search()
 	{
 		$this->load->library('form_validation');

@@ -4,6 +4,7 @@ class Account
 {
 	public $ac;
 	public $bookings = null;
+	public $unverified = null;
 	private $settings;
 
 	public function __construct()
@@ -31,6 +32,26 @@ class Account
 		if($this->bookings == '0')
 		{
 			$this->bookings = null;
+		}
+	}
+
+	public function bookings_awaiting_verification($account_id = null)
+	{
+		$account_id = ( ! empty($account_id)) ? $account_id : $this->ac->account_id;
+
+		if( ! empty($account_id))
+		{
+			if($this->model('setting')->get_setting('payment_gateway', $account_id) == 'NoGateway')
+			{
+				$this->unverified = $this->model('booking')->unverified($account_id, TRUE);
+			}
+
+			$this->unverified = $this->model('booking')->unverified($account_id, TRUE);
+		}
+
+		if($this->unverified == '0')
+		{
+			$this->unverified = null;
 		}
 	}
 

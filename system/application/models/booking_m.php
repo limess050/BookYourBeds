@@ -70,6 +70,45 @@ class Booking_m extends MY_Model
 		return $booking;
 	}
 
+	public function remove($id, $account_id = null)
+	{
+		$this->_set_account_id($account_id);
+
+		$this->db->where('booking_id', $id)
+				->update($this->_table, array('booking_confirmation_sent_at' => 0));
+	}
+
+	public function verify($auth_code = null, $id = null, $account_id = null)
+	{
+		$this->_set_account_id($account_id);
+
+		if( ! empty($auth_code))
+		{
+			$this->db->where('booking_confirmation_code', $auth_code)
+					->where('booking_confirmation_sent_at >=', unix_to_mysql(strtotime('-24 hour', now()), TRUE, 'eu'));
+		} else if( ! empty($id))
+		{
+			$this->db->where('booking_id', $id);
+		}
+
+		if($this->db->update($this->_table, array('booking_completed' => 1)))
+		{
+			if(empty($id))
+			{
+				$booking = $this->db->where('booking_confirmation_code', $auth_code)
+									->get('bookings')
+									->row();
+
+				$id = $booking->booking_id;
+
+			}
+
+			return $id;
+		}
+
+		return false;
+	}
+
 	public function acknowledge($id, $account_id = null)
 	{
 		$this->_set_account_id($account_id);
@@ -96,6 +135,30 @@ class Booking_m extends MY_Model
 				->where($this->account_id_field, $this->account_id)
 				->where('booking_acknowledged', '0')
 				->where('booking_completed', '1')
+				->group_by('booking_id');
+
+		return ($count) ? count($this->db->get('bookings')->result()) : $this->db->get('bookings')->result();
+	}
+
+	public function unverified($account_id = null, $count = FALSE)
+	{
+		$this->_set_account_id($account_id);
+
+		$this->is_paranoid();
+
+		$this->db
+				->select('bookings.*, customers.*, resources.*')
+
+				->select('(SELECT SUM(reservation_duration) FROM reservations WHERE reservation_booking_id = booking_id) AS reservation_duration')
+				->select('(SELECT MIN(reservation_start_at) FROM reservations WHERE reservation_booking_id = booking_id) AS reservation_start_at')
+				->join('reservations', 'reservation_booking_id = booking_id')
+				->join('resources', 'resource_id = reservation_resource_id')
+				->join('customers', 'customer_id = booking_customer_id')
+				->where('reservation_start_at >=', date("Y-m-d", mktime(0, 0, 0, date('m'), date('d'), date('Y'))))
+				->where('booking_confirmation_sent_at >=', unix_to_mysql(strtotime('-24 hour', now()), TRUE, 'eu'))
+				->where($this->account_id_field, $this->account_id)
+				->where('booking_completed', '0')
+				->where('booking_confirmation_sent_at !=', 0)
 				->group_by('booking_id');
 
 		return ($count) ? count($this->db->get('bookings')->result()) : $this->db->get('bookings')->result();

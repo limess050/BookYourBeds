@@ -1,6 +1,6 @@
 <div class="page-header row">
 	<div class="pull-left">
-		<h1>Booking <small><?php echo $booking->booking_reference; ?></small></h1>
+		<h1><?php echo (! is_verified($booking)) ? 'Unverified ' : ''; ?>Booking <small><?php echo $booking->booking_reference; ?></small></h1>
 	</div>
 
 
