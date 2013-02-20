@@ -176,6 +176,8 @@ CREATE TABLE `bookings` (
 `booking_session_dump` TEXT NULL,
 `booking_billing_data` TEXT NULL,
 `booking_gateway_data` TEXT NULL,
+`booking_confirmation_code` VARCHAR(100) NULL,
+`booking_confirmation_sent_at` DATETIME NOT NULL,
 `booking_ip_address` VARCHAR(16) DEFAULT '0' NOT NULL,
 `booking_user_agent` VARCHAR(200) NOT NULL,
 `booking_updated_at` TIMESTAMP NOT NULL,

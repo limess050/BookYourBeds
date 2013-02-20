@@ -191,10 +191,27 @@ class Booking
 
 		$booking->booking_reference = $booking->booking_account_id . '-' . $booking->booking_id;
 
-		unset($resources, $booking->resources, $lastname);
-
 		$booking->booking_completed = 1;
 		$booking->booking_failed = $booking->booking_aborted = 0;
+
+		// Is this a booking that requires customer verification?
+		$verification_only = FALSE;
+
+		$method = ci()->db->where('setting_account_id', $booking->account_id)
+							->where('setting_key', 'payment_gateway')
+							->get('settings')
+							->row();
+
+		if(in_array($method->setting_value, array('NoGateway')) && $booking->booking_user_id == 0)
+		{
+			$verification_only = TRUE;
+
+			$booking->booking_completed = 0;
+			$booking->booking_confirmation_code = sha1($booking->booking_reference . $lastname . time());
+			$booking->booking_confirmation_sent_at = unix_to_human(time(), TRUE, 'eu');
+		}
+
+		unset($resources, $booking->resources, $lastname, $booking->emailconf);
 
 		// scrape off the accountdata...
 		foreach($booking as $key => $value)
@@ -220,9 +237,15 @@ class Booking
 		// Notifications
 		ci()->load->library('mandrill');
 
-		$this->internal_notification($booking);
+		if($verification_only)
+		{
+			$this->customer_verification($booking);
+		} else
+		{
+			$this->internal_notification($booking);
 
-		$this->customer_notification($booking);
+			$this->customer_notification($booking);
+		}
 
 		return $booking->booking_id;
 	}
@@ -256,6 +279,27 @@ class Booking
 		$message = array(
 				'html'		=> ci()->load->view('messages/customer_booking_confirmation', array('booking' => $booking), TRUE),
 				'subject'	=> 'Your Booking with ' . account('name'),
+				'from_email'	=> 'robot@bookyourbeds.com',
+				'from_name'		=> $booking->account_name,
+				'to'			=> array(
+										array(
+											'email'	=> $booking->customer->customer_email
+											)
+										),
+				'auto_text'		=> TRUE,
+				'url_strip_qs'	=> TRUE
+				);
+
+		ci()->mandrill->call('messages/send', array('message' => $message));
+		
+	}
+
+	private function customer_verification($booking)
+	{
+		// Send email
+		$message = array(
+				'html'		=> ci()->load->view('messages/customer_booking_verification', array('booking' => $booking), TRUE),
+				'subject'	=> 'Please confirm your booking with ' . account('name'),
 				'from_email'	=> 'robot@bookyourbeds.com',
 				'from_name'		=> $booking->account_name,
 				'to'			=> array(
