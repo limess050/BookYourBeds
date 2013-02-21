@@ -175,6 +175,7 @@
 			</div>
 		</div>
 
+		<?php if(setting('terms_and_conditions')) { ?>
 		<div class="control-group">
            
             
@@ -186,7 +187,24 @@
             </div>
         </div>
 
+        <div class="modal hide" id="myModal"> 
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">×</button>
+		    	<h3><?php echo account('name'); ?> Terms and Conditions</h3>
+		  	</div>
+		  
+		  	<div class="modal-body">
+		    	<?php echo auto_typography(setting('terms_and_conditions')); ?>
+		  	</div>
+		  
+		  	<div class="modal-footer">
+		    	<a href="#" class="btn btn-primary" data-dismiss="modal">OK</a>
+		  	</div>
+		</div>
 
+
+
+        <?php } ?>
 		
 	</fieldset>
 
@@ -198,20 +216,3 @@
 	</div>
 
 </form>
-
-
-
-<div class="modal hide" id="myModal"> 
-	<div class="modal-header">
-		<button type="button" class="close" data-dismiss="modal">×</button>
-    	<h3><?php echo account('name'); ?> Terms and Conditions</h3>
-  	</div>
-  
-  	<div class="modal-body">
-    	Foo
-  	</div>
-  
-  	<div class="modal-footer">
-    	<a href="#" class="btn btn-primary" data-dismiss="modal">OK</a>
-  	</div>
-</div>

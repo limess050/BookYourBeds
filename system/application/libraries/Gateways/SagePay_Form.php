@@ -86,7 +86,9 @@ class SagePay_Form
 
 		$output = ci()->config->item('form_preamble');
 
-		$output .= '<form action="' . ci()->config->item('api_endpoint') . '" method="POST" id="SagePayForm" name="SagePayForm">';
+		$output .= '<div class="spinner"></div>';
+
+		$output .= '<form action="' . ci()->config->item('api_endpoint') . '" method="POST" id="processForm">';
 		$output .= form_hidden('VPSProtocol', ci()->config->item('sagepay_form_gateway_protocol'));
 		$output .= form_hidden('TxType', 'PAYMENT');
 		$output .= form_hidden('Vendor', ci()->account->setting('sagepay_form_vendor_id'));
@@ -101,6 +103,18 @@ class SagePay_Form
 		$output .= '<a href="' . site_url('salesdesk/reset') . '" class="btn" onclick="return confirm(\'Are you sure you want to cancel this booking?\');">Cancel Booking</a>';
 		
 		$output .= '</form>';
+
+		$output .= '<script type="text/javascript">
+					<!--
+					    $(function(){
+					        $(".spinner").spin();
+					        $.doTimeout( 5000, function(){
+					                                    $("#processForm").submit();
+					                                    return true;
+					                                    });
+					    });
+					-->
+					</script>';
 
 
 		return $output;

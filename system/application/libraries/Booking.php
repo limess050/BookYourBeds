@@ -117,6 +117,21 @@ class Booking
 				->update('bookings');
 	}
 
+	public function verify($auth = null, $id = null, $account_id = null)
+	{
+		if($id = $this->model('booking')->verify($auth, $id, $account_id))
+		{
+			$data['booking'] = $this->model('booking')->get($id);
+
+			$this->email($id, $data['booking']->customer->customer_email, 'Your confirmed booking with ' . account('name'), 'Thank you for verifiying your booking with ' . account('name') . '.');
+			$this->internal_notification($data['booking']);
+
+			return $id;
+		}
+
+		return FALSE;
+	}
+
 	public function get_session($booking_id)
 	{
 		$booking = $this->model('booking')->get($booking_id);

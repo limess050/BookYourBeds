@@ -38,7 +38,7 @@ $availability =& $resource->availability; ?>
 			<td class="align_center<?php echo ((strtotime('+' . ($i - 1) . ' day', $start_timestamp)) < $today) ? ' disabled' : ''; ?>">
 				
 				<?php
-				$b = ( ! empty($availability[$i]->bookings_pending)) ? $availability[$i]->bookings - $availability[$i]->bookings_pending : $availability[$i]->bookings;
+				$b = ( ! empty($availability[$i]->bookings_pending)) ? $availability[$i]->bookings + $availability[$i]->bookings_pending + $availability[$i]->bookings_unverified  : $availability[$i]->bookings + $availability[$i]->bookings_unverified;
 				
 				if($footprint <= ($availability[$i]->release - $b))
 				{
@@ -86,11 +86,6 @@ $availability =& $resource->availability; ?>
 
 </div>
 <?php } ?>
-
-
-
-
-
 
 <div id="price_total" style="display: none;">
 	<h2 class="page-header">Your Booking</h2>

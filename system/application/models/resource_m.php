@@ -97,18 +97,29 @@ class Resource_m extends MY_Model
 			$this->db->select("(SELECT SUM(reservation_footprint) FROM reservations JOIN bookings ON booking_id = reservation_booking_id WHERE reservation_resource_id = '{$id}' AND reservation_start_at <= '" . date("Y-m-d", $current_date) . "' AND (reservation_start_at + INTERVAL (reservation_duration - 1) DAY) >= '" . date("Y-m-d", $current_date) . "' AND booking_completed = 1 AND booking_deleted_at = 0) as bookings");
 						
 			// Need to take account of sessions...
-			if($include_sessions)
+			if(  $include_sessions)
 			{
 				$this->db->select("(SELECT SUM(reservation_footprint) FROM reservations 
-										JOIN bookings ON booking_id = reservation_booking_id 
-										JOIN sessions ON session_id = booking_session_id
-										WHERE reservation_resource_id = '{$id}' 
-										AND booking_completed = 0
-										AND booking_aborted = 0
-										AND reservation_start_at <= '" . date("Y-m-d", $current_date) . "' 
-										AND (reservation_start_at + INTERVAL (reservation_duration - 1) DAY) >= '" . date("Y-m-d", $current_date) . "') 
-										as bookings_pending");
-			} 
+														JOIN bookings ON booking_id = reservation_booking_id 
+														JOIN sessions ON session_id = booking_session_id
+														WHERE reservation_resource_id = '{$id}' 
+														AND booking_completed = 0
+														AND booking_aborted = 0
+														AND reservation_start_at <= '" . date("Y-m-d", $current_date) . "' 
+														AND (reservation_start_at + INTERVAL (reservation_duration - 1) DAY) >= '" . date("Y-m-d", $current_date) . "') 
+									
+									
+									as bookings_pending");
+			}
+
+			$this->db->select("(SELECT SUM(reservation_footprint) FROM reservations 
+											JOIN bookings ON booking_id = reservation_booking_id 
+											WHERE reservation_resource_id = '{$id}' 
+											AND reservation_start_at <= '" . date("Y-m-d", $current_date) . "' 
+											AND (reservation_start_at + INTERVAL (reservation_duration - 1) DAY) >= '" . date("Y-m-d", $current_date) . "' 
+											AND booking_completed = 0 
+											AND booking_confirmation_sent_at >= '" . unix_to_mysql(strtotime('-24 hour', now()), TRUE, 'eu') . "')
+										as bookings_unverified");
 
 			$this->db->select('resource_default_release');
 			

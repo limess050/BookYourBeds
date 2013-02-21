@@ -80,30 +80,37 @@ class Booking_m extends MY_Model
 
 	public function verify($auth_code = null, $id = null, $account_id = null)
 	{
+		$verify = FALSE;
+
 		$this->_set_account_id($account_id);
+
+		$this->db->where('booking_completed', 0);
 
 		if( ! empty($auth_code))
 		{
 			$this->db->where('booking_confirmation_code', $auth_code)
 					->where('booking_confirmation_sent_at >=', unix_to_mysql(strtotime('-24 hour', now()), TRUE, 'eu'));
+			
+			$verify = TRUE;
 		} else if( ! empty($id))
 		{
 			$this->db->where('booking_id', $id);
+
+			$verify = TRUE;
 		}
 
-		if($this->db->update($this->_table, array('booking_completed' => 1)))
+		if($verify)
 		{
-			if(empty($id))
-			{
-				$booking = $this->db->where('booking_confirmation_code', $auth_code)
-									->get('bookings')
-									->row();
+			$booking = $this->db->get('bookings')->row();
 
-				$id = $booking->booking_id;
+			if( ! empty($booking))
+			{
+				$this->db->where('booking_id', $booking->booking_id)
+						->update($this->_table, array('booking_completed' => 1));
+
+				return $booking->booking_id;
 
 			}
-
-			return $id;
 		}
 
 		return false;

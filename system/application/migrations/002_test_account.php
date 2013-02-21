@@ -42,7 +42,7 @@ class Migration_Test_account extends CI_Migration
 		$account = array(
 					'account_name'		=> 'The Edinburgh Hostel',
 					'account_slug'		=> 'the-edinburgh-hostel',
-					'account_email'		=> 'test@bookyourbeds.com',
+					'account_email'		=> (ENVIRONMENT == 'development') ? 'phil@othertribe.com' : 'test@bookyourbeds.com',
 					'account_confirmed'	=> 1,
 					'account_personalised'	=> 1,
 					'account_active'		=> 1
@@ -62,7 +62,7 @@ class Migration_Test_account extends CI_Migration
 
 		$this->model('user')->insert($user);
 
-		/*$settings = array(
+		$settings = array(
 					'deposit'	=> 'full',
 					'payment_gateway'	=> 'SagePay_Form',
 					'sagepay_form_vendor_id'	=> 'applecart',
@@ -70,9 +70,9 @@ class Migration_Test_account extends CI_Migration
 					'sagepay_form_encryption_type'	=> 'AES',
 					'balance_due'	=> 'checkin',
 					'account_bg'	=> site_url('assets/img/default/style_edinburgh_bg.jpg', FALSE)
-					);*/
+					);
 
-		$settings = array(
+		$_settings = array(
 					'deposit'	=> 'none',
 					'payment_gateway'	=> 'NoGateway',
 					'balance_due'	=> 'checkin',

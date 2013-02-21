@@ -26,22 +26,32 @@ class NoGateway
 		
 		// 'a/' . $this->payments->ci->account->access_domain() . '/process'
 		$output .= form_open('salesdesk/process', 
-								null, 
+								'id="processForm"', 
 								array(
-									'booking_id'			=> $params->booking_id
+									'booking_id' => $params->booking_id
 									));
   		
-  		
-		$output .= form_button(array(
+		/*$output .= form_button(array(
 								    'name' 		=> 'button',
 								    'class' 	=> 'btn primary',
 								    'content' 	=> 'Complete Booking',
 								    'type'		=> 'submit'
 									));
 		$output .= '&nbsp;';
-		$output .= '<a href="' . site_url('salesdesk/reset') . '" class="btn" onclick="return confirm(\'Are you sure you want to cancel this booking?\');">Cancel Booking</a>';
+		$output .= '<a href="' . site_url('salesdesk/reset') . '" class="btn" onclick="return confirm(\'Are you sure you want to cancel this booking?\');">Cancel Booking</a>';*/
 
 		$output .= '</form>';
+
+		$output .= '<script type="text/javascript">
+					<!--
+					    $(function(){
+					        $.doTimeout( 100, function(){
+					                                    $("#processForm").submit();
+					                                    return true;
+					                                    });
+					    });
+					-->
+					</script>';
 
 		return $output;
 	}

@@ -23,8 +23,10 @@ class PayPal
 		ci()->load->helper('form');
 
 		$output = ci()->config->item('form_preamble');
+
+		$output .= '<div class="spinner"></div>';
 		
-		$output .= '<form action="' . ci()->config->item('api_endpoint') . '" method="POST">';
+		$output .= '<form action="' . ci()->config->item('api_endpoint') . '" method="POST" id="processForm">';
 		$output .= form_hidden('business', ci()->account->setting('paypal_email'));
 		$output .= form_hidden('cmd', '_xclick');
 		$output .= form_hidden('amount', $params->booking_deposit);
@@ -48,7 +50,17 @@ class PayPal
 
 		$output .= '<p class="alert">For testing use email address <code>buyer_1360309574_per@othertribe.com</code> and password <code>bookyourbeds</code> when paying.</p>';
 
-
+		$output .= '<script type="text/javascript">
+					<!--
+					    $(function(){
+					    	$(".spinner").spin();
+					        $.doTimeout( 5000, function(){
+					                                    $("#processForm").submit();
+					                                    return true;
+					                                    });
+					    });
+					-->
+					</script>';
 		return $output;
 	}
 

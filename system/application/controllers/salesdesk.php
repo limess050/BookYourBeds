@@ -142,6 +142,8 @@ class Salesdesk extends Front_Controller {
 
 		if($this->form_validation->run() === FALSE)
 		{
+			$this->load->helper('typography');
+
 			$data['booking'] = $this->booking->session();
 			$data['resources'] = booking('resources');
 			$data['customer'] = booking('customer');
@@ -171,7 +173,8 @@ class Salesdesk extends Front_Controller {
 
 		$data['form'] = $this->payment->form(setting('payment_gateway'), $this->booking->session());
 		
-		$this->template->build('salesdesk/payment', $data);
+		$this->template->append_metadata( js('jquery.dotimeout.js'))
+					->build('salesdesk/payment', $data);
 	}
 
 
@@ -387,18 +390,17 @@ class Salesdesk extends Front_Controller {
 
 	public function verify()
 	{
+		$data = array();
+
 		if($this->input->get('auth'))
 		{
-			if($id = $this->model('booking')->verify($this->input->get('auth')))
+			if($id = $this->booking->verify($this->input->get('auth')))
 			{
-				$booking = $this->model('booking')->get($id);
-
-				$this->booking->email($id, $booking->customer->customer_email, 'Your confirmed booking with ' . account('name'), 'Thank you for verifiying your booking with ' . account('name') . '.');
+				$data['booking'] = $this->model('booking')->get($id);
 			}
-		} else
-		{
-			echo 'FALSE';
 		}
+
+		$this->template->build('salesdesk/verify', $data);
 	}
 
 
