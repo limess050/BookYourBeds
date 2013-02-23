@@ -210,7 +210,7 @@
 
 	<div class="control-group">
 		<div class="controls">
- 			 <button type="submit" class="btn btn-primary">Proceed To Payment</button>&nbsp;
+ 			 <button type="submit" class="btn btn-primary">Proceed<?php echo (setting('payment_gateway') != 'NoGateway') ? ' To Payment' : ''; ?></button>&nbsp;
  			 <button type="reset" class="btn">Cancel</button>
 		</div>
 	</div>

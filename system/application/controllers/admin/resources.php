@@ -47,7 +47,7 @@ class Resources extends Admin_Controller {
 		$this->load->library('form_validation');
 		
 		$this->form_validation->set_rules('resource[resource_title]', 'Resource Title', 'trim|required');
-		$this->form_validation->set_rules('resource[resource_reference]', 'Resource Reference', 'trim');
+		//$this->form_validation->set_rules('resource[resource_reference]', 'Resource Reference', 'trim');
 		$this->form_validation->set_rules('resource[resource_default_release]', 'Default Release', 'trim|is_natural_no_zero');
 		$this->form_validation->set_rules('resource[resource_booking_footprint]', 'Booking Footprint', 'trim|is_natural_no_zero');
 		$this->form_validation->set_rules('resource[resource_priced_per]', 'Resource Priced Per', 'trim');
@@ -115,6 +115,21 @@ class Resources extends Admin_Controller {
 
 			redirect(site_url("admin/resources/price/{$this->input->post('resource_id')}"));
 		}
+	}
+
+	public function supplements($id = null)
+	{
+		if(empty($id))
+		{
+			show_404();
+		}
+
+		$data['resource'] = $this->model('resource')->get($id, $this->account->val('id'));
+		$data['supplements'] = $this->model('supplement')->get_for_resource($id, $this->account->val('id'));
+
+		$this->template
+				->set_partial('inactive_room_alert', 'admin/partials/inactive_room_alert')
+				->build('admin/resources/supplements', $data);
 	}
 
 	public function disable($id = null)

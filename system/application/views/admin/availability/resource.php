@@ -1,8 +1,6 @@
 <?php echo $template['partials']['inactive_room_alert']; ?>
 
-<div class="page-header row">
-	<h1>Room Availability <small><?php echo $resource->resource_title; ?></small></h1>
-</div>
+<h1 class="page-header">Room Availability <small><?php echo $resource->resource_title; ?></small></h1>
 
 <?php echo $template['partials']['resource_menu']; ?>
 

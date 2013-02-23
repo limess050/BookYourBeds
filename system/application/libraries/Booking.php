@@ -290,9 +290,14 @@ class Booking
 
 	private function customer_notification($booking)
 	{
+		ci()->load->helper('typography');
+
+		$data['booking'] = $booking;
+		$data['instructions'] = $this->model('setting')->get_setting('booking_instructions', $booking->account_id);
+
 		// Send email
 		$message = array(
-				'html'		=> ci()->load->view('messages/customer_booking_confirmation', array('booking' => $booking), TRUE),
+				'html'		=> ci()->load->view('messages/customer_booking_confirmation', $data, TRUE),
 				'subject'	=> 'Your Booking with ' . account('name'),
 				'from_email'	=> 'robot@bookyourbeds.com',
 				'from_name'		=> $booking->account_name,
@@ -334,6 +339,7 @@ class Booking
 	{
 		$data['booking'] = $this->model('booking')->get($booking_id);
 		$data['message'] = $message;
+		$data['instructions'] = $this->model('setting')->get_setting('booking_instructions', $data['booking']->account_id);
 
 		ci()->load->library('mandrill');
 		ci()->load->helper('typography');

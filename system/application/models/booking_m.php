@@ -142,6 +142,7 @@ class Booking_m extends MY_Model
 				->where($this->account_id_field, $this->account_id)
 				->where('booking_acknowledged', '0')
 				->where('booking_completed', '1')
+				->order_by('reservation_start_at', 'asc')
 				->group_by('booking_id');
 
 		return ($count) ? count($this->db->get('bookings')->result()) : $this->db->get('bookings')->result();

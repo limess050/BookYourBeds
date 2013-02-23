@@ -37,6 +37,26 @@ class Settings extends Admin_Controller {
 		}
 	}
 
+	public function bookings()
+	{
+		$this->load->library('form_validation');
+
+		$this->form_validation->set_rules('setting[terms_and_conditions]', 'Terms and Conditions', 'trim');
+		$this->form_validation->set_rules('setting[booking_instructions]', 'Additional Booking Information', 'trim');
+
+		if($this->form_validation->run() == FALSE)
+		{
+			$this->template->build('admin/settings/bookings');
+		} else
+		{
+			$this->model('setting')->create_or_update_many($this->input->post('setting'));
+
+			$this->session->set_flashdata('msg', 'Booking settings updated');
+			redirect(site_url('admin/settings/bookings'));
+		}
+
+	}
+
 	public function payments()
 	{
 		$this->load->library('form_validation');

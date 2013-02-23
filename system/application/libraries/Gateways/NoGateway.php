@@ -22,8 +22,10 @@ class NoGateway
 	{
 		ci()->load->helper('form');
 
-		$output = (ci()->session->flashdata('err')) ? ci()->session->flashdata('err') : '';
+		//$output = (ci()->session->flashdata('err')) ? ci()->session->flashdata('err') : '';
 		
+		$output = 'Processing...';
+
 		// 'a/' . $this->payments->ci->account->access_domain() . '/process'
 		$output .= form_open('salesdesk/process', 
 								'id="processForm"', 

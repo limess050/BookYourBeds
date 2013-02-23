@@ -125,6 +125,54 @@ INDEX (`resource_account_id`)
 
 -- COMMAND BREAK --
 
+DROP TABLE IF EXISTS `supplements`;
+
+-- COMMAND BREAK --
+
+CREATE TABLE `supplements` (
+`supplement_id` INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+`supplement_account_id` INT(11) NOT NULL DEFAULT '0',
+`supplement_short_description` VARCHAR(140) NOT NULL DEFAULT '',
+`supplement_long_description` TEXT NULL,
+`supplement_default_price` DOUBLE NOT NULL DEFAULT '0',
+`supplement_per_guest` TINYINT(1) NOT NULL DEFAULT '0', 
+`supplement_per_day` TINYINT(1) NOT NULL DEFAULT '0', 
+`supplement_active` TINYINT(1) NOT NULL DEFAULT '1',
+`supplement_updated_at` TIMESTAMP NOT NULL,
+`supplement_created_at` DATETIME NOT NULL,
+`supplement_deleted_at` DATETIME NOT NULL,
+INDEX (`supplement_account_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='Supplements';
+
+-- COMMAND BREAK --
+
+DROP TABLE IF EXISTS `supplement_to_resource`;
+
+-- COMMAND BREAK --
+
+CREATE TABLE `supplement_to_resource` (
+`str_supplement_id` INT(11) NOT NULL DEFAULT '0',
+`str_resource_id` INT(11) NOT NULL DEFAULT '0',
+`str_price` DOUBLE NULL,
+INDEX (`str_resource_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='Supplement to Resource';
+
+-- COMMAND BREAK --
+
+DROP TABLE IF EXISTS `supplement_to_booking`;
+
+-- COMMAND BREAK --
+
+CREATE TABLE `supplement_to_booking` (
+`stb_supplement_id` INT(11) NOT NULL DEFAULT '0',
+`stb_booking_id` INT(11) NOT NULL DEFAULT '0',
+`stb_quantity` INT(3) NOT NULL DEFAULT '0',
+`stb_price` DOUBLE NULL,
+INDEX (`stb_booking_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='Supplement to Booking';
+
+-- COMMAND BREAK --
+
 DROP TABLE IF EXISTS `prices`;
 
 -- COMMAND BREAK --

@@ -1,8 +1,6 @@
 <?php echo $template['partials']['inactive_room_alert']; ?>
 
-<div class="page-header row">
-	<h1>Edit Room <small><?php echo $resource->resource_title; ?></small></h1>
-</div>
+<h1 class="page-header">Edit Room <small><?php echo $resource->resource_title; ?></small></h1>
 
 <?php echo $template['partials']['resource_menu']; ?>
 
@@ -43,7 +41,7 @@
 					</div>
 				</div>
 
-				<div class="control-group">
+				<!--<div class="control-group">
 					<label class="control-label" for="resource_reference">Your Reference</label>
 					<div class="controls">
 						<?php
@@ -52,6 +50,18 @@
 							'id'	=> 'resource_reference',
 							'class'	=> 'xlarge',
 							'value'	=> set_value('resource[resource_reference]', $resource->resource_reference)));
+						?>
+					</div>
+				</div>-->
+
+				<div class="control-group">
+					<label class="control-label" for="resource_priced_per">Priced per</label>
+					<div class="controls">
+						<?php
+						echo form_dropdown('resource[resource_priced_per]', 
+											array('bed' => 'bed', 'room' => 'room'), 
+											set_value('resource[resource_priced_per]', $resource->resource_priced_per),
+											'class="span2"');	
 						?>
 					</div>
 				</div>
@@ -71,7 +81,7 @@
 				</div>
 
 				<div class="control-group">
-					<label class="control-label" for="resource_booking_footprint">Booking Footprint</label>
+					<label class="control-label" for="resource_booking_footprint">Occupancy</label>
 					<div class="controls">
 						<?php
 						echo form_input(array(
@@ -81,18 +91,6 @@
 							'value'	=> set_value('resource[resource_booking_footprint]', $resource->resource_booking_footprint)));
 						?>
 						<span class="help-block">This is the number of guests each one of these resources can accommodate.</span>
-					</div>
-				</div>
-
-				<div class="control-group">
-					<label class="control-label" for="resource_priced_per">Resource priced per</label>
-					<div class="controls">
-						<?php
-						echo form_dropdown('resource[resource_priced_per]', 
-											array('bed' => 'bed', 'room' => 'room'), 
-											set_value('resource[resource_priced_per]', $resource->resource_priced_per),
-											'class="span2"');	
-						?>
 					</div>
 				</div>
 

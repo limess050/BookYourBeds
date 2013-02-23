@@ -35,6 +35,7 @@
 
 			<div class="btn-group pull-right" style="margin-top: 5px;">
 				<a href="<?php echo site_url('admin/availability/resource/' . $resource->resource_id . '?timestamp=' . $current_date); ?>" class="btn btn-<?php echo ($resource->availability[1]->release - $resource->availability[1]->bookings <= 0) ? 'danger' : 'success'; ?>"><?php echo $resource->availability[1]->release - $resource->availability[1]->bookings; ?></a>
+				<a href="#" onclick="return false;" class="btn btn-<?php echo ($resource->availability[1]->release - $resource->availability[1]->bookings <= 0) ? 'danger' : 'success'; ?>"><i class="icon-plus icon-white"></i><i class="icon-user icon-white"></i></a>
 				<a href="<?php echo site_url('admin/availability/resource/' . $resource->resource_id . '?timestamp=' . $current_date); ?>" class="btn">&pound;<?php echo as_currency($resource->availability[1]->price); ?></a>
 			</div>
 

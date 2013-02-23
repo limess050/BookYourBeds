@@ -81,8 +81,31 @@ class Migration_Test_account extends CI_Migration
 
 		$this->model('setting')->create_or_update_many($settings, $this->account_id);
 
+		$this->supplements();
 		$this->rooms();
 		$this->bookings();
+	}
+
+	private function supplements()
+	{
+		$supplements = array(
+							array(
+								'supplement_account_id'			=> $this->account_id,
+								'supplement_short_description'	=> 'Early check-in',
+								'supplement_default_price'		=> 20,
+								'supplement_active'				=> 1
+								),
+							array(
+								'supplement_account_id'			=> $this->account_id,
+								'supplement_short_description'	=> 'Breakfast',
+								'supplement_default_price'		=> 10,
+								'supplement_per_guest'			=> 1,
+								'supplement_per_day'			=> 1,
+								'supplement_active'				=> 1
+								)
+							);
+
+		$this->model('supplement')->insert_many($supplements);
 	}
 
 	private function rooms()
@@ -108,6 +131,14 @@ class Migration_Test_account extends CI_Migration
 													'price_day_id'			=> $i,
 													'price_price'			=> $room['price']
 													));
+			}
+
+			for($s = 1; $s <= 2; $s++)
+			{
+				$this->db->insert('supplement_to_resource', array(
+																'str_supplement_id'	=> $s,
+																'str_resource_id'	=> $resource_id
+																));
 			}
 		}
 	}

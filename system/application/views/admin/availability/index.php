@@ -1,7 +1,4 @@
-<div class="page-header row">
-	<h1>Availability</h1>
-</div>
-
+<h1 class="page-header">Availability</h1>
 
 <?php echo $template['partials']['form_errors']; ?>
 
