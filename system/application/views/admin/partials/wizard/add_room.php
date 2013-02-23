@@ -31,7 +31,19 @@
 				</div>
 
 				<div class="control-group">
-					<label class="control-label" for="resource_booking_footprint">Booking Footprint</label>
+					<label class="control-label" for="resource_priced_per">Priced per</label>
+					<div class="controls">
+						<?php
+						echo form_dropdown('resource[resource_priced_per]', 
+											array('bed' => 'bed', 'room' => 'room'), 
+											set_value('resource[resource_priced_per]'),
+											'class="span2"');	
+						?>
+					</div>
+				</div>
+
+				<div class="control-group">
+					<label class="control-label" for="resource_booking_footprint">Occupancy</label>
 					<div class="controls">
 						<?php
 						echo form_input(array(
@@ -57,19 +69,6 @@
 							));
 						?>
 						<span class="help-block">This is the number of rooms/beds of this type, not the number of guests you can accommodate.</span>
-					</div>
-				</div>
-
-
-				<div class="control-group">
-					<label class="control-label" for="resource_priced_per">Resource priced per</label>
-					<div class="controls">
-						<?php
-						echo form_dropdown('resource[resource_priced_per]', 
-											array('bed' => 'bed', 'room' => 'room'), 
-											set_value('resource[resource_priced_per]'),
-											'class="span2"');	
-						?>
 					</div>
 				</div>
 

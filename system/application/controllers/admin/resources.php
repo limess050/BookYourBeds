@@ -111,7 +111,7 @@ class Resources extends Admin_Controller {
 		{
 			$this->model('price')->create_or_update($this->input->post('resource_id'), $this->input->post('season'));
 
-			$this->session->set_flashdata('msg', 'Resource pricing successfully updated');
+			$this->session->set_flashdata('msg', 'Room pricing successfully updated');
 
 			redirect(site_url("admin/resources/price/{$this->input->post('resource_id')}"));
 		}
@@ -125,11 +125,35 @@ class Resources extends Admin_Controller {
 		}
 
 		$data['resource'] = $this->model('resource')->get($id, $this->account->val('id'));
-		$data['supplements'] = $this->model('supplement')->get_for_resource($id, $this->account->val('id'));
+		$data['supplements'] = $this->model('supplement')->get_for_resource($id, $this->account->val('id'), TRUE);
 
-		$this->template
+		$this->load->library('form_validation');
+
+		foreach($data['supplements'] as $supplement)
+		{
+			$this->form_validation->set_rules("supplement[$supplement->supplement_id][str_resource_id]", '', 'trim');
+			$this->form_validation->set_rules("supplement[$supplement->supplement_id][str_supplement_id]", '', 'trim');
+			$this->form_validation->set_rules("supplement[$supplement->supplement_id][str_price]", 'Supplement Price', 'trim|numeric_or_empty');
+		}
+
+		if($this->form_validation->run() == FALSE)
+		{
+			$this->template
 				->set_partial('inactive_room_alert', 'admin/partials/inactive_room_alert')
 				->build('admin/resources/supplements', $data);
+
+		} else
+		{
+
+			$this->model('supplement')->update_resource($id, $this->input->post('supplement'));
+
+			$this->session->set_flashdata('msg', 'Supplements successfully updated');
+
+			redirect(site_url("admin/resources/supplements/{$id}"));
+		}
+
+		
+		 
 	}
 
 	public function disable($id = null)

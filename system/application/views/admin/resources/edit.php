@@ -67,20 +67,6 @@
 				</div>
 
 				<div class="control-group">
-					<label class="control-label" for="resource_default_release">Default Release</label>
-					<div class="controls">
-						<?php
-						echo form_input(array(
-							'name'	=> 'resource[resource_default_release]',
-							'id'	=> 'resource_default_release',
-							'class'	=> 'span1',
-							'value'	=> set_value('resource[resource_default_release]', $resource->resource_default_release)));
-						?>
-						<span class="help-block">This is the number of resources of this type, not the number of guests you can accommodate.</span>
-					</div>
-				</div>
-
-				<div class="control-group">
 					<label class="control-label" for="resource_booking_footprint">Occupancy</label>
 					<div class="controls">
 						<?php
@@ -91,6 +77,20 @@
 							'value'	=> set_value('resource[resource_booking_footprint]', $resource->resource_booking_footprint)));
 						?>
 						<span class="help-block">This is the number of guests each one of these resources can accommodate.</span>
+					</div>
+				</div>
+
+				<div class="control-group">
+					<label class="control-label" for="resource_default_release">Default Release</label>
+					<div class="controls">
+						<?php
+						echo form_input(array(
+							'name'	=> 'resource[resource_default_release]',
+							'id'	=> 'resource_default_release',
+							'class'	=> 'span1',
+							'value'	=> set_value('resource[resource_default_release]', $resource->resource_default_release)));
+						?>
+						<span class="help-block">This is the number of resources of this type, not the number of guests you can accommodate.</span>
 					</div>
 				</div>
 

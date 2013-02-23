@@ -35,29 +35,58 @@ class Supplement_m extends MY_Model
 				->get($this->_table)->result();
 	}
 
-	public function get_for_resource($resource_id, $account_id = null)
+	public function get_for_resource($resource_id, $account_id = null, $return_all = FALSE)
 	{
-		$_supplements = $this->get_all($account_id);
+		$this->_set_account_id($account_id);
 
-		$supplements = array();
+		$this->db->select('supplements.*');
 
-		foreach($_supplements as $supplement)
+		if(! $return_all)
 		{
-			$supplements[$supplement->supplement_id] = $supplement;
+			$this->db->join('supplement_to_resource', 'str_supplement_id = supplement_id AND str_resource_id = ' . $resource_id);
 		}
 
-		// Now get all for the resource
-		$resource = $this->db->where('str_resource_id', $resource_id)
-							->get('supplement_to_resource')
-							->result();
+		$this->db->select("(
+							IF(
+							(SELECT str_price FROM supplement_to_resource WHERE str_supplement_id = supplement_id AND str_resource_id = '{$resource_id}') IS NOT NULL,
+							(SELECT str_price FROM supplement_to_resource WHERE str_supplement_id = supplement_id AND str_resource_id = '{$resource_id}'),
+							(SELECT supplement_default_price)
+							)
+							) as 'resource_price'");
 
-		foreach($resource as $r)
+		$this->db->select("(
+							IF(
+							(SELECT str_resource_id FROM supplement_to_resource WHERE str_supplement_id = supplement_id AND str_resource_id = '{$resource_id}') IS NOT NULL,
+							(SELECT str_resource_id FROM supplement_to_resource WHERE str_supplement_id = supplement_id AND str_resource_id = '{$resource_id}'),
+							'0'
+							)
+							) as 'resource_id'");
+
+		return $this->db->where($this->account_id_field, $this->account_id)
+									->get($this->_table)->result();
+	}
+
+	public function update_resource($resource_id, $supplements)
+	{
+		// Clear the decks
+		$this->db->where('str_resource_id', $resource_id)
+					->delete('supplement_to_resource');
+
+		// Reinsert
+		foreach($supplements as $supplement)
 		{
-			$supplements[$r->str_supplement_id]->resource_id = $resource_id;
-			$supplements[$r->str_supplement_id]->resource_price = $r->str_price;
-		}
+			if( ! empty($supplement['str_resource_id']))
+			{
+				if($supplement['str_price'] == $supplement['supplement_default_price'])
+				{
+					unset($supplement['str_price']);
+				}
 
-		return $supplements;
+				unset($supplement['supplement_default_price']);
+
+				$this->db->insert('supplement_to_resource', $supplement);
+			}
+		}
 	}
 
 }
