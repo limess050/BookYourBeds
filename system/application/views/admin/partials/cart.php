@@ -23,7 +23,7 @@ if( ! empty($_r)) { ?>
 				<td><?php echo mysql_to_format($resource->reservation_start_at); ?></td>
 				<td><?php echo duration($resource->reservation_duration); ?></td>
 				<td><?php echo booking('booking_guests'); ?> (<?php echo "{$resource->reservation_footprint} {$resource->resource_priced_per}" . (($resource->reservation_footprint > 1) ? 's' : ''); ?>)</td>
-				<td><a href="<?php echo site_url('admin/salesdesk/reset'); ?>" class="btn btn-danger btn-small">Cancel</a></td>
+				<td><a href="<?php echo site_url('admin/salesdesk/reset'); ?>" onclick="return confirm('Are you sure you want to cancel this booking?');" class="btn btn-danger btn-small">Cancel</a></td>
 			</tr>
 			<?php } ?>
 		</tbody>

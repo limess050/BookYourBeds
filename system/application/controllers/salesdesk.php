@@ -30,7 +30,7 @@ class Salesdesk extends Front_Controller {
 			$data['duration'] = $this->input->post('duration');
 			$data['account_id'] = account('id');
 		}
-
+ 
 		$this->template->build('salesdesk/index', $data);	
 	}
 
@@ -82,6 +82,11 @@ class Salesdesk extends Front_Controller {
 
 	public function details()
 	{
+		if( ! booking('booking_id'))
+		{
+			redirect(site_url('salesdesk'));
+		}
+
 		$this->load->library('form_validation');
 
 		$this->form_validation->set_rules('customer[customer_firstname]', 'First Name', 'trim|required');
@@ -105,11 +110,64 @@ class Salesdesk extends Front_Controller {
 
 	public function supplements()
 	{
-		redirect(site_url('salesdesk/confirm'));
+		if( ! booking('customer'))
+		{
+			redirect(site_url('salesdesk/details'));
+		}
+
+		$resources = booking('resources');
+		$data['supplements'] = $this->model('supplement')->get_for_resource($resources[0]->resource_id, $this->account->val('id'));
+
+		if(empty($data['supplements']))
+		{
+			$this->booking->update_session(array('supplements' => array()));
+
+			redirect(site_url('salesdesk/confirm'));
+		} else
+		{
+			$this->load->library('form_validation');
+
+			foreach($data['supplements'] as $supplement)
+			{
+				$this->form_validation->set_rules("supplements[{$supplement->supplement_id}][qty]", '', 'trim');
+				$this->form_validation->set_rules("supplements[{$supplement->supplement_id}][price]", '', 'trim');
+				$this->form_validation->set_rules("supplements[{$supplement->supplement_id}][description]", '', 'trim');
+			}
+		}
+
+		if($this->form_validation->run() === FALSE)
+		{
+			$this->load->helper('typography');
+			$this->template->build('salesdesk/supplements', $data);
+		} else
+		{
+			$supplements = $this->input->post('supplements');
+
+			$total_price = 0;
+
+			foreach($supplements as $key => $supplement)
+			{
+				if(empty($supplement['qty']))
+				{
+					unset($supplements[$key]);
+				} else
+				{
+					$total_price += ($supplement['qty'] * $supplement['price']);
+				}
+			}
+
+			$this->booking->update_session(array('booking_price' => booking('booking_room_price') + $total_price, 'booking_supplement_price' => $total_price, 'supplements' => ((empty($supplements)) ? array() : $supplements)));
+
+			redirect(site_url('salesdesk/confirm'));
+		}
 	}
 
 	public function confirm()
 	{
+		if( ! booking('supplements') && ! is_array(booking('supplements')))
+		{
+			redirect(site_url('salesdesk/supplements'));
+		}
 		// Merge any data that might have come from a failed submission
 		$this->booking->update_session($this->input->post());
 		//$this->session->set_userdata('booking', (object) array_merge((array) session('booking'), (array) $this->input->post()));

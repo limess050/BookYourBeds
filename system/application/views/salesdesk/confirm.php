@@ -1,5 +1,4 @@
-<h1 class="page-header">Confirm Booking Details</h1>
-
+<h3>Accommodation Details <small><?php echo anchor('salesdesk/index', 'Edit'); ?></small></h3>
 <table class="table table-condensed">
 	<thead>	
 		<tr>
@@ -7,6 +6,7 @@
 			<th>Arriving</th>
 			<th>Duration</th>
 			<th>Guests</th>
+			<th class="span2">Price</th>
 		</tr>
 
 	</thead>
@@ -14,16 +14,67 @@
 	<tbody>
 		<?php foreach($resources as $resource) { ?>
 		<tr>
-			<td><strong><?php echo $resource->account_name; ?></strong><br /><em><?php echo $resource->resource_title; ?></em></td>
+			<td><strong><?php echo $resource->resource_title; ?></strong></td>
 			<td><?php echo mysql_to_format($resource->reservation_start_at); ?></td>
 			<td><?php echo duration($resource->reservation_duration); ?></td>
 			<td><?php echo $booking->booking_guests; ?> (<?php echo "{$resource->reservation_footprint} {$resource->resource_priced_per}" . (($resource->reservation_footprint > 1) ? 's' : ''); ?>)</td>
+			<td><strong>&pound;<?php echo as_currency($booking->booking_room_price); ?></strong></td>
 		</tr>
 		<?php } ?>
 	</tbody>
 
 </table>
 
+<?php if(booking('supplements')) { ?>
+<h3>Optional Supplements <small><?php echo anchor('salesdesk/supplements', 'Edit'); ?></small></h3>
+<table class="table table-condensed">
+	<thead>	
+		<tr>
+			<th></th>
+			<th>Quantity</th>
+			<th>Price</th>
+			<th class="span2">Total</th>
+		</tr>
+
+	</thead>
+
+	<tbody>
+		<?php foreach(booking('supplements') as $supplement) { ?>
+		<tr>
+			<td><?php echo $supplement['description']; ?></td>
+			<td><?php echo $supplement['qty']; ?></td>
+			<td>&pound;<?php echo as_currency($supplement['price']); ?></td>
+			<td><strong>&pound;<?php echo as_currency($supplement['price'] * $supplement['qty']); ?></strong></td>
+		</tr>
+		<?php } ?>
+	</tbody>
+
+</table>
+<?php } ?>
+
+<h3>Grand Total</h3>
+<table class="table table-condensed">
+
+	<tbody>
+		<tr>
+			<td>Total Due</td>
+			<td class="span2"><strong>&pound;<?php echo as_currency($booking->booking_price); ?></strong></td>
+		</tr>
+
+		<?php if ($booking->booking_deposit) { ?>
+		<tr class="success">
+			<td>Payable Now</td>
+			<td class="span2"><strong>&pound;<?php echo as_currency($booking->booking_deposit); ?></strong></td>
+		</tr>
+		<?php } ?>
+
+		<tr class="error">
+			<td>Balance due at <?php echo setting('balance_due'); ?></td>
+			<td class="span2"><strong>&pound;<?php echo as_currency($booking->booking_price - $booking->booking_deposit); ?></strong></td>
+		</tr>
+	</tbody>
+
+</table>
 
 <h3>Primary Guest Details <small><?php echo anchor('salesdesk/details', 'Edit'); ?></small></h3>
 
@@ -40,12 +91,6 @@
 	<dt>Accept Marketing</dt>
 	<dd><?php echo ( ! empty($customer['customer_accepts_marketing'])) ? 'Yes' : 'No'; ?></dd>
 </dl>
-
-
-
-
-<h3>Total Cost: &pound;<?php echo as_currency($booking->booking_price); ?></h3>
-<h2>Pay Now: &pound;<?php echo as_currency($booking->booking_deposit); ?></h2>
 		
 <h2 class="page-header">Billing Information</h2>
 
@@ -211,7 +256,7 @@
 	<div class="control-group">
 		<div class="controls">
  			 <button type="submit" class="btn btn-primary">Proceed<?php echo (setting('payment_gateway') != 'NoGateway') ? ' To Payment' : ''; ?></button>&nbsp;
- 			 <button type="reset" class="btn">Cancel</button>
+ 			 <a href="<?php echo site_url('salesdesk/reset'); ?>" onclick="return confirm('Are you sure you want to cancel this booking?');" class="btn">Cancel</a>
 		</div>
 	</div>
 

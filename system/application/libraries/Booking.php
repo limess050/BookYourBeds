@@ -189,7 +189,7 @@ class Booking
 		// Supplements ---------------------------------------------------------------------------------
 		foreach($booking->supplements as $key => $supplement)
 		{
-			$this->model('supplement')->add_to_booking($key, $booking->booking_id, $supplement['price']);
+			$this->model('supplement')->add_to_booking($key, $booking->booking_id, $supplement['qty'], $supplement['price']);
 		}	
 
 		unset($booking->supplements);

@@ -89,13 +89,22 @@ class Supplement_m extends MY_Model
 		}
 	}
 
-	public function add_to_booking($supplement_id, $booking_id, $price = 0)
+	public function add_to_booking($supplement_id, $booking_id, $qty, $price = 0)
 	{
 		$this->db->insert('supplement_to_booking', array(
 														'stb_supplement_id'	=> $supplement_id,
 														'stb_booking_id'	=> $booking_id,
-														'stb_price'			=> $price
+														'stb_quantity'		=> $qty,
+														'stb_price'			=> $qty * $price
 														));
+	}
+
+	public function get_for_booking($booking_id)
+	{
+		return $this->db->join('supplements', 'supplement_id = stb_supplement_id')
+						->where('stb_booking_id', $booking_id)
+						->get('supplement_to_booking')
+						->result();
 	}
 
 }

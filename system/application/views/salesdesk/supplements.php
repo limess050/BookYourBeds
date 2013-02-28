@@ -6,7 +6,7 @@
 
 	<?php echo $template['partials']['form_errors']; ?>
 
-	<?php echo form_open('admin/salesdesk/supplements', array('class' => 'form-horizontal')); ?>
+	<?php echo form_open('salesdesk/supplements', array('class' => 'form-horizontal')); ?>
 
 	<table class="table">
 	<?php 
@@ -22,7 +22,7 @@
 			<?php echo auto_typography($supplement->supplement_long_description); ?>
 		</td>
 		
-		<td class="span4">
+		<td class="span2">
 			<?php
 			// The total number of options
 			$opt_count = ($supplement->supplement_per_guest) ? booking('booking_guests') : $resources[0]->reservation_footprint;
@@ -40,7 +40,7 @@
 			echo form_dropdown("supplements[{$supplement->supplement_id}][qty]", 
 								$options, 
 								set_value("supplements[{$supplement->supplement_id}][qty]", ( ! empty($_supplements[$supplement->supplement_id])) ? $_supplements[$supplement->supplement_id]['qty'] : 0), 
-								'class="span3"');
+								'class="span2"');
 			
 			echo form_hidden(array(
 								"supplements[{$supplement->supplement_id}][price]" => ($supplement->resource_price * $multiply),
@@ -55,14 +55,6 @@
 	<?php } ?>
 	</table>
 
-
-	
-	<pre>
-		<?php //print_r(booking('resources')); ?>
-		<?php //print_r(booking('booking_guests')); ?>
-		<?php //print_r($supplements); ?>
-
-	</pre>
 	
 		
 	<div class="control-group">

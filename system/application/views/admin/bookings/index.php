@@ -28,6 +28,7 @@
 
 	<div>
 		<hr />
+		<?php echo form_open('admin/bookings/checkin'); ?>
 		<?php foreach($resources as $resource) { ?>
 
 		<div class="row">
@@ -55,6 +56,7 @@
 					<th>Duration</th>
 					<th>Deposit Paid</th>
 					<th>Bill</th>
+					<th class="checkin_col"></th>
 				</tr>
 			<thead>
 			  
@@ -82,14 +84,18 @@
 					</td>
 
 					<td><?php echo '&pound;' . as_currency($booking->booking_deposit); ?></td>
-					<?php if ($booking->stage == 0 && ! $booking->reservation_checked_in) { ?>
+					
 					<td><?php echo '&pound;' . as_currency($booking->booking_price - $booking->booking_deposit); ?></td>
-
-					<?php } else {  ?>
 					<td>
-						<?php echo ($booking->stage == 0 && $booking->reservation_checked_in) ? '<span class="label label-success">CHECKED IN</span>' : ''; ?>
+						<?php if($booking->stage == 0) { 
+						if($booking->reservation_checked_in) {
+						echo '<span class="label ">CHECKED IN</span>';
+						} else { ?>
+						<input type="submit" value="CHECK-IN" name="booking[<?php echo $booking->booking_id; ?>]" class="btn btn-mini btn-success" />
+						<?php 
+						}
+						} ?>
 					</td>
-					<?php } ?>
 				</tr>
 				<?php 
 
@@ -105,6 +111,8 @@
 		<?php } ?>
 		<hr />
 		<?php } ?>
+		<?php echo form_hidden(array('redirect' => safe_get_env())); ?>
+		</form>
 	</div>
 </div>
 

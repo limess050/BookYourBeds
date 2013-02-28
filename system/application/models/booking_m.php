@@ -65,6 +65,7 @@ class Booking_m extends MY_Model
 		{
 			$booking->customer = $this->model('customer')->get($booking->booking_customer_id);	
 			$booking->resources = $this->model('reservation')->get_many_by('reservation_booking_id', $primary_value);
+			$booking->supplements = $this->model('supplement')->get_for_booking($booking->booking_id);
 		}
 
 		return $booking;
@@ -170,6 +171,15 @@ class Booking_m extends MY_Model
 				->group_by('booking_id');
 
 		return ($count) ? count($this->db->get('bookings')->result()) : $this->db->get('bookings')->result();
+	}
+
+	public function checkin($booking_id, $account_id = null)
+	{
+		$this->_set_account_id($account_id);
+
+		
+		$this->db->where('reservation_booking_id', $booking_id)
+				->update('reservations', array('reservation_checked_in' => 1));
 	}
 
 	// Gets the bookings that START on a given date

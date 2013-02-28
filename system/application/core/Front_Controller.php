@@ -11,7 +11,7 @@ class Front_Controller extends MY_Controller
 			->enable_parser(FALSE)
 
 			->set_partial('form_errors', 'partials/form_errors')
-			->set_partial('cart', 'partials/hostel_cart')
+			->set_partial('cart', 'partials/cart')
 
 			->append_metadata( js('jquery.js') )
 			->append_metadata( js('bootstrap-dropdown.js') )

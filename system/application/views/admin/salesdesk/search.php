@@ -108,7 +108,7 @@
 		<input type="hidden" name="price_total" id="price_total_field" />
 		<input type="hidden" name="price_deposit" id="price_deposit_field" />
 		
-		<?php switch (setting('deposit')) {
+		<?php /*switch (setting('deposit')) {
 			case 'full':
 				echo "Full payment required: <strong id=\"deposit_amount\" style=\"text-decoration: underline;\"></strong>&nbsp;&nbsp;&nbsp;";
 				break;
@@ -120,7 +120,7 @@
 			case 'fraction':
 				echo setting('deposit_percentage') . "% total cost as Deposit/Downpayment: <strong id=\"deposit_amount\" style=\"text-decoration: underline;\"></strong>&nbsp;&nbsp;&nbsp;";
 				break; 
-		} ?>
+		}*/ ?>
 		
 		<button type="submit" class="btn btn-primary">Book Now</button>
 	</div>
@@ -279,7 +279,7 @@
 			table_body += '<tr><td>' + resources[room] + '</td><td>' + nights[room] + '</td><td>&pound;' + prices[room].toFixed(2) + '</td></tr>';
 		}
 		
-		table_body += '<tr class="total_row"><td colspan="2" class="align_right">Total:</td><td><strong>&pound;' + total_price.toFixed(2) + '</strong></td></tr>';
+		//table_body += '<tr class="total_row"><td colspan="2" class="align_right">Total:</td><td><strong>&pound;' + total_price.toFixed(2) + '</strong></td></tr>';
 		
 		$('#price_total_field').val(total_price);
 		$('#price_breakdown').html(table_body);

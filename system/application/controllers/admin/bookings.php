@@ -199,6 +199,21 @@ class Bookings extends Admin_Controller {
 		redirect('admin/bookings/show/' . $id);
 	}
 
+	public function checkin($id = null)
+	{
+		if($this->input->post('booking'))
+		{
+			foreach($this->input->post('booking') as $key => $val)
+			{
+				$this->model('booking')->checkin($key, account('id'));
+				
+				$this->session->set_flashdata('msg', 'Booking checked-in');
+			}
+		}
+
+		redirect(site_url(($this->input->post('redirect')) ? $this->input->post('redirect') : 'admin'));
+	}
+
 	public function search()
 	{
 		$this->load->library('form_validation');

@@ -3,16 +3,18 @@
 <?php if(empty($bookings)) { ?>
 <p><span class="label label-important">NO BOOKINGS ARRIVING TODAY</span></p>
 <?php } else { ?>
+<?php echo form_open('admin/bookings/checkin'); ?>
 <table class="table table-condensed table-striped table-hover" id="arrivals">
 	<thead>
 		<tr>
 			<th>Name</th>
 			<th>Booking Reference</th>
 			<th>Resource Booked</th>
-			<th>Guests</th>
+			<th class="span1">Guests</th>
 			<th>Beds/Rooms</th>
 			<th>Duration</th>
 			<th>Bill</th>
+			<th class="checkin_col"></th>
 		</tr>
 	<thead>
 	
@@ -26,11 +28,14 @@
 			<td><?php echo "{$booking->reservation_footprint} {$booking->resource_priced_per}" . (($booking->reservation_footprint > 1) ? 's' : ''); ?></td>
 			<td><?php echo duration($booking->reservation_duration); ?></td>
 			<td>&pound;<?php echo as_currency($booking->booking_price - $booking->booking_deposit); ?></td>
+			<td><input type="submit" value="CHECK-IN" name="booking[<?php echo $booking->booking_id; ?>]" class="btn btn-mini btn-success" /></td>
 
 		</tr>
 		<?php } ?>
 	</tbody>
 </table>
+<?php echo form_hidden(array('redirect' => safe_get_env())); ?>
+</form>
 <?php } ?>
 
 <?php if( ! empty($new)) { ?>
@@ -43,7 +48,7 @@
 			<th>Arrival</th>
 			<th>Booking Reference</th>
 			<th>Resource Booked</th>
-			<th>Guests</th>
+			<th class="span1">Guests</th>
 			<th>Duration</th>
 			<th>Deposit Paid</th>
 			<th>Outstanding Bill</th>
