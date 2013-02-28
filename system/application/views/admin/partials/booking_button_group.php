@@ -1,3 +1,4 @@
+<?php echo form_open('admin/bookings/checkin'); ?>
 
 <div class="btn-group pull-right">
 	<?php if( ! is_verified($booking)) { ?>
@@ -8,15 +9,36 @@
 		<li><a href="<?php echo site_url('admin/bookings/verify/' . $booking->booking_id); ?>" onclick="return confirm('Are you sure you want to verify this booking?');"><i class="icon-ok"></i> Verify this booking</a></li>
 	</ul>
 	<?php } else { 
-	if ( ! $booking->booking_acknowledged) { 
-		$btn_state = 'warning';
-	?>
-	<a href="<?php echo site_url('admin/bookings/acknowledge/' . $booking->booking_id); ?>" class="btn btn-<?php echo $btn_state; ?>"><i class="icon-check icon-white"></i> Acknowledge this booking</a>
-	<?php } else { 
+	if($booking->resources[0]->reservation_start_at == date('Y-m-d 00:00:00') && ! $booking->resources[0]->reservation_checked_in)
+	{ 
 		$btn_state = 'success';
-	?>
-	<button href="#" onclick="return false;" class="btn btn-<?php echo $btn_state; ?>"><i class="icon-ok icon-white"></i> Booking acknowledged</button>
-	<?php } ?>
+ 
+		echo '<button type="submit" class="btn btn-success"><i class="icon-check icon-white"></i> Check-in</button>';
+		echo form_hidden(array(
+							'redirect' => safe_get_env(),
+							"booking[{$booking->booking_id}]" => 1
+							)
+						);
+	} else { 
+		if ( ! $booking->booking_acknowledged) { 
+			$btn_state = 'warning';
+		?>
+		<a href="<?php echo site_url('admin/bookings/acknowledge/' . $booking->booking_id); ?>" class="btn btn-<?php echo $btn_state; ?>"><i class="icon-check icon-white"></i> Acknowledge this booking</a>
+		<?php } else { 
+			$btn_state = 'success';
+		?>
+		<button href="#" onclick="return false;" class="btn btn-<?php echo $btn_state; ?>"><i class="icon-ok icon-white"></i> Booking acknowledged</button>
+		<?php }
+
+
+	} ?>
+
+
+
+
+	
+
+
 	<button class="btn btn-<?php echo $btn_state; ?> dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></button>
 	<ul class="dropdown-menu">
 		<li><a href="<?php echo site_url('admin/bookings/email/' . $booking->booking_id); ?>"><i class="icon-envelope"></i> Email Booking Details</a></li>
@@ -40,3 +62,4 @@
 	</ul>
 	<?php } ?>
 </div>
+</form>

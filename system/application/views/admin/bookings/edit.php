@@ -26,8 +26,13 @@
 				<dd><?php echo $resource->resource_title; ?></dd>
 				
 				<dt>Arrival</dt>
-				<dd><?php echo anchor('admin/bookings?timestamp=' . human_to_unix($resource->reservation_start_at), mysql_to_format($resource->reservation_start_at, 'l, j F Y')); ?></dd>
-
+				<dd>
+					<?php 
+					echo anchor('admin/bookings?timestamp=' . human_to_unix($resource->reservation_start_at), mysql_to_format($resource->reservation_start_at, 'l, j F Y')); 
+					echo ($resource->reservation_start_at == date('Y-m-d 00:00:00') && $resource->reservation_checked_in) ? ' <span class="label label-success">CHECKED IN</span>' : '';
+					?>
+				</dd>
+				
 				<dt>Duration</dt>
 				<dd><?php echo duration($resource->reservation_duration); ?></dd>
 

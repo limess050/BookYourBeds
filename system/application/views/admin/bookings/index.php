@@ -56,7 +56,9 @@
 					<th>Duration</th>
 					<th>Deposit Paid</th>
 					<th>Bill</th>
+					<?php if(now() > $current_date) { ?>
 					<th class="checkin_col"></th>
+					<?php } ?>
 				</tr>
 			<thead>
 			  
@@ -86,6 +88,7 @@
 					<td><?php echo '&pound;' . as_currency($booking->booking_deposit); ?></td>
 					
 					<td><?php echo '&pound;' . as_currency($booking->booking_price - $booking->booking_deposit); ?></td>
+					<?php if(now() > $current_date) { ?>
 					<td>
 						<?php if($booking->stage == 0) { 
 						if($booking->reservation_checked_in) {
@@ -96,6 +99,7 @@
 						}
 						} ?>
 					</td>
+					<?php } ?>
 				</tr>
 				<?php 
 
