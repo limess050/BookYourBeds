@@ -55,14 +55,6 @@
 	<?php } ?>
 	</table>
 
-
-	
-	<pre>
-		<?php //print_r(booking('resources')); ?>
-		<?php //print_r(booking('booking_guests')); ?>
-		<?php //print_r($supplements); ?>
-
-	</pre>
 	
 		
 	<div class="control-group">
