@@ -215,6 +215,7 @@ class Migration_Test_account extends CI_Migration
 																'booking_guests'		=> $guests,
 																'booking_price'			=> $price,
 																'booking_deposit'		=> ($booking_footprint * $day_price->price_price),
+																'booking_room_price'	=> $price,
 																'booking_customer_id'	=> $customer_id,
 																'booking_completed'		=> 1,
 																'booking_acknowledged'	=> ((human_to_unix($arrive) > time()) && ($acknowledged < 3)) ? 0 : 1

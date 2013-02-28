@@ -89,4 +89,13 @@ class Supplement_m extends MY_Model
 		}
 	}
 
+	public function add_to_booking($supplement_id, $booking_id, $price = 0)
+	{
+		$this->db->insert('supplement_to_booking', array(
+														'stb_supplement_id'	=> $supplement_id,
+														'stb_booking_id'	=> $booking_id,
+														'stb_price'			=> $price
+														));
+	}
+
 }

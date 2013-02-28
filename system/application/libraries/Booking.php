@@ -22,6 +22,7 @@ class Booking
 							'booking_account_id'	=> $account_id,
 							'booking_guests'		=> $guests,
 							'booking_price'			=> $price,
+							'booking_room_price'	=> $price,
 							'booking_deposit'		=> $deposit,
 							'booking_session_id'	=> ci()->session->userdata('session_id'),
 							'booking_user_id'		=> $user_id,
@@ -186,7 +187,12 @@ class Booking
 		unset($booking->customer);
 
 		// Supplements ---------------------------------------------------------------------------------
-		// Later	
+		foreach($booking->supplements as $key => $supplement)
+		{
+			$this->model('supplement')->add_to_booking($key, $booking->booking_id, $supplement['price']);
+		}	
+
+		unset($booking->supplements);
 		
 		// Booking notes ---------------------------------------------------------------------------------
 		// Later
@@ -241,7 +247,7 @@ class Booking
 		$this->model('booking')->update($booking->booking_id, (array) $booking);
 
 
-		// Confirmations etc ---------------------------------------------------------------------------------
+		 // Confirmations etc ---------------------------------------------------------------------------------
 
 		// Cleanup
 		$this->clear_session();

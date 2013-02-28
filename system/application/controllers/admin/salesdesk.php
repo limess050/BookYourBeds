@@ -117,10 +117,41 @@ class Salesdesk extends Admin_Controller {
 		if(empty($data['supplements']))
 		{
 			redirect(site_url('admin/salesdesk/confirm'));
+		} else
+		{
+			$this->load->library('form_validation');
+
+			foreach($data['supplements'] as $supplement)
+			{
+				$this->form_validation->set_rules("supplements[{$supplement->supplement_id}][description]", '', 'trim');
+				$this->form_validation->set_rules("supplements[{$supplement->supplement_id}][price]", '', 'trim');
+			}
 		}
 
-		$this->template->build('admin/salesdesk/supplements', $data);
-		//redirect(site_url('admin/salesdesk/confirm'));
+		if($this->form_validation->run() === FALSE)
+		{
+			$this->template->build('admin/salesdesk/supplements', $data);
+		} else
+		{
+			$supplements = $this->input->post('supplements');
+
+			$total_price = 0;
+
+			foreach($supplements as $key => $supplement)
+			{
+				if( ! isset($supplement['price']))
+				{
+					unset($supplements[$key]);
+				} else
+				{
+					$total_price += $supplement['price'];
+				}
+			}
+
+			$this->booking->update_session(array('booking_price' => booking('booking_room_price') + $total_price, 'booking_supplement_price' => $total_price, 'supplements' => $supplements));
+
+			redirect(site_url('admin/salesdesk/confirm'));
+		}
 	}
 
 	public function confirm()

@@ -24,6 +24,12 @@
 
 </table>
 
+<pre>
+<?php print_r(booking('supplements')); ?>
+
+<?php echo as_currency(booking('booking_supplement_price')); ?>
+</pre>
+
 
 <h3>Primary Guest Details <small><?php echo anchor('admin/salesdesk/details', 'Edit'); ?></small></h3>
 

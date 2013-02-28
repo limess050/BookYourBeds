@@ -2,7 +2,7 @@
 $_r = booking('resources');
 if( ! empty($_r)) { ?>
 <div class="alert">
-	<h3>Currently Booking <small><?php echo anchor('admin/salesdesk/index', 'Change'); ?></small></h3>
+	<h3>Currently Booking <small><?php echo anchor('admin/salesdesk/index', 'Change') . ' | ' . anchor('admin/salesdesk/confirm', 'Continue'); ?></small></h3>
 
 	<table class="table table-condensed">
 		<thead>	
