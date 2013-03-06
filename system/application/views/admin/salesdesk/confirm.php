@@ -100,7 +100,7 @@
 	<div class="control-group">
 		<div class="controls">
  			 <button type="submit" class="btn btn-primary">Take Payment and Process Booking</button>&nbsp;
- 			 <a href="<?php echo site_url('salesdesk/reset'); ?>" onclick="return confirm('Are you sure you want to cancel this booking?');" class="btn">Cancel</a>
+ 			 <a href="<?php echo site_url('admin/salesdesk/reset'); ?>" onclick="return confirm('Are you sure you want to cancel this booking?');" class="btn">Cancel</a>
 		</div>
 	</div>
 

@@ -42,7 +42,7 @@ class Booking
 			$this->update_session($this->model('booking')->get($booking_id));
 		} else
 		{
-			$this->model('booking')->update(session('booking', 'booking_id'), $booking);
+			$this->model('booking')->update(booking('booking_id'), $booking);
 
 			// Update the booking we're using for this session...
 			$this->update_session($this->model('booking')->get(booking('booking_id')));
