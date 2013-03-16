@@ -33,18 +33,13 @@
 
 	} ?>
 
-
-
-
-	
-
-
 	<button class="btn btn-<?php echo $btn_state; ?> dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></button>
 	<ul class="dropdown-menu">
 		<li><a href="<?php echo site_url('admin/bookings/email/' . $booking->booking_id); ?>"><i class="icon-envelope"></i> Email Booking Details</a></li>
 		<!--<li><a href="#"><i class="icon-comment"></i> Add Note to Booking</a></li>-->
 		<li><a href="<?php echo site_url('admin/bookings/edit/' . $booking->booking_id . '#guest'); ?>"><i class="icon-pencil"></i> Edit Guest Details</a></li>
-		<!--<li><a href="#"><i class="icon-random"></i> Transfer Booking</a></li>-->
+		<li class="divider"></li>
+		<li><a href="<?php echo site_url('admin/bookings/transfer/' . $booking->booking_id); ?>"><i class="icon-random"></i> Transfer Booking</a></li>
 		<li class="divider"></li>
 		<li><?php 
 			if (is_cancelled($booking)) 

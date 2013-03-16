@@ -122,6 +122,16 @@ class Bookings extends Admin_Controller {
 		
 	}
 
+	public function transfer($id)
+	{
+		if(empty($id))
+		{
+			show_404();
+		}
+
+		
+	}
+
 	public function acknowledge($id = null)
 	{
 		if(empty($id))

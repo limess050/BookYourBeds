@@ -125,6 +125,6 @@
 
 </div>
 
-<pre>
+<!--<pre>
 <?php print_r($booking); ?>
-</pre>
+</pre>-->

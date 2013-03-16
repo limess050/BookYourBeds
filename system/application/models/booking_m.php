@@ -60,7 +60,6 @@ class Booking_m extends MY_Model
 			->get($this->_table)
 			->row();
 
-		// ->join('customers', 'customer_id = booking_customer_id')
 		if( ! empty($booking))
 		{
 			$booking->customer = $this->model('customer')->get($booking->booking_customer_id);	

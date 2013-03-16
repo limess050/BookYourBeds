@@ -76,9 +76,11 @@ class Salesdesk extends Admin_Controller {
 		// total price
 		$price = $this->input->post('price_total');
 		// deposit
-		$deposit = $this->input->post('price_deposit');
+		//$deposit = $this->input->post('price_deposit');
+		// first night
+		$first_night = $this->input->post('price_first_night');
 
-		if( $this->booking->create(account('id'), $resource_id, $start_timestamp, $duration, $guests, $footprint, $price, $deposit, session('user', 'user_id')))
+		if( $this->booking->create(account('id'), $resource_id, $start_timestamp, $duration, $guests, $footprint, $price, $first_night, session('user', 'user_id')))
 		{
 			redirect(site_url('admin/salesdesk/details'));
 		} else

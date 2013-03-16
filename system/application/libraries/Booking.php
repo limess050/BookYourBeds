@@ -14,24 +14,24 @@ class Booking
 							$guests, 
 							$footprint = null, 
 							$price = null, 
-							$deposit = null, 
+							$first_night = null, 
 							$user_id = 0)
 	{
 		// Yes? Let's go!
 		$booking = array(
-							'booking_account_id'	=> $account_id,
-							'booking_guests'		=> $guests,
-							'booking_price'			=> $price,
-							'booking_room_price'	=> $price,
-							'booking_deposit'		=> $deposit,
-							'booking_session_id'	=> ci()->session->userdata('session_id'),
-							'booking_user_id'		=> $user_id,
-							'booking_ip_address' 	=> ci()->input->ip_address(),
-							'booking_user_agent' 	=> ci()->input->user_agent(),
-							'resource_id'			=> $resource_id,
-							'footprint'				=> $footprint,
-							'duration'				=> $duration,
-							'start_at'				=> $start_timestamp
+							'booking_account_id'		=> $account_id,
+							'booking_guests'			=> $guests,
+							'booking_price'				=> $price,
+							'booking_room_price'		=> $price,
+							'booking_first_night_price'	=> $first_night,
+							'booking_session_id'		=> ci()->session->userdata('session_id'),
+							'booking_user_id'			=> $user_id,
+							'booking_ip_address' 		=> ci()->input->ip_address(),
+							'booking_user_agent' 		=> ci()->input->user_agent(),
+							'resource_id'				=> $resource_id,
+							'footprint'					=> $footprint,
+							'duration'					=> $duration,
+							'start_at'					=> $start_timestamp
 							);
 
 		if( ! booking('booking_id'))
@@ -140,7 +140,6 @@ class Booking
 		if($booking)
 		{
 			$this->update_session(unserialize($booking->booking_session_dump), TRUE);
-			//ci()->session->set_userdata('booking', unserialize($booking->booking_session_dump));
 		}
 	} 
 
@@ -163,7 +162,6 @@ class Booking
 		} else
 		{
 			$booking = $this->session();
-			//$booking = ci()->session->userdata('booking');
 		}
 		
 		if(empty($booking))
@@ -263,9 +261,9 @@ class Booking
 			$this->customer_verification($booking);
 		} else
 		{
-			$this->internal_notification($booking);
-
 			$this->customer_notification($booking);
+
+			$this->internal_notification($booking);
 		}
 
 		return $booking->booking_id;
@@ -291,7 +289,7 @@ class Booking
 		ci()->mandrill->call('messages/send', array('message' => $message));
 
 
-		// Send to webhook
+		// Send to webhook (eventually)
 	}
 
 	private function customer_notification($booking)

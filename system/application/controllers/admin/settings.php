@@ -7,8 +7,8 @@ class Settings extends Admin_Controller {
 		$this->load->library('form_validation');
 
 		$this->form_validation->set_rules('account[account_name]', 'Account Name', 'trim|required');
-		$this->form_validation->set_rules('account[account_slug]', 'Account URL', 'trim|required');
-		$this->form_validation->set_rules('account[account_email]', 'Account Email', 'trim|required|valid_email');
+		$this->form_validation->set_rules('account[account_slug]', 'Account URL', 'trim|required|callback_check_account_slug');
+		$this->form_validation->set_rules('account[account_email]', 'Account Email', 'trim|required|valid_email|callback_check_account_email');
 		$this->form_validation->set_rules('account[account_phone]', 'Contact Telephone', 'trim');
 		$this->form_validation->set_rules('account[account_description]', 'Description', 'trim');
 		$this->form_validation->set_rules('account[account_website]', 'Website', 'trim');
@@ -24,7 +24,7 @@ class Settings extends Admin_Controller {
 			}
 
 			if( ! empty($_FILES['account_bg']))
-			{
+			{ 
 				$this->account->upload_bg();
 			}
 
@@ -35,6 +35,18 @@ class Settings extends Admin_Controller {
 			$this->session->set_flashdata('msg', 'Account updated');
 			redirect(site_url('admin/settings/account'));
 		}
+	}
+
+	public function check_account_email($str)
+	{
+		$this->form_validation->set_message('check_account_email', 'That email address is already in use with another account');
+		return $this->model('account')->check_unique('email', $str, account('id'));
+	}
+
+	public function check_account_slug($str)
+	{
+		$this->form_validation->set_message('check_account_slug', 'That URL is already in use with another account');
+		return $this->model('account')->check_unique('slug', $str, account('id'));
 	}
 
 	public function bookings()
@@ -55,6 +67,11 @@ class Settings extends Admin_Controller {
 			redirect(site_url('admin/settings/bookings'));
 		}
 
+	}
+
+	public function invoice()
+	{
+		$this->template->build('admin/settings/invoice');
 	}
 
 	public function payments()

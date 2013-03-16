@@ -9,7 +9,7 @@ class Account
 
 	public function __construct()
 	{
-		if( ! in_array(ci()->uri->segment(1), array('roadblock', 'init')) && ci()->uri->rsegment(2) != 'auth')
+		if( ! in_array(ci()->uri->segment(1), array('roadblock', 'init', 'endpoint')) && ci()->uri->rsegment(2) != 'auth')
 		{
 			$this->ac = (ci()->uri->segment(1)) ? $this->model('account')->get_by('account_slug', ci()->uri->segment(1)) : null;
 
@@ -64,14 +64,13 @@ class Account
 
 	public function create($name, $email, $password, $send_notification = TRUE)
 	{
-		ci()->load->helper('text');
-
+		
 		// Create the account
 
-		// ERROR CHECKING ON SLUG AND EMAIL
+		// ERROR CHECKING ON SLUG
 		$account = array(
 						'account_name'	=> $name,
-						'account_slug'	=> url_title(convert_accented_characters($name), '-', TRUE),
+						'account_slug'	=> $this->generate_slug($name),
 						'account_email'	=> $email,
 						'account_confirmation_code'	=> SHA1($email . time())
 						);
@@ -111,27 +110,31 @@ class Account
 				);
 
 			ci()->mandrill->call('messages/send', array('message' => $message));
-
-
-			// Send confirmation mail
-			/*$message = array(
-				'html'		=> ci()->load->view('messages/confirm_account', $data, TRUE),
-				'subject'	=> 'Confirm you BookYourBeds.com account',
-				'from_email'	=> 'bookyourbeds@othertribe.com',
-				'from_name'		=> 'BookYourBeds.com',
-				'to'			=> array(
-										array(
-											'email'	=> $email
-											)
-										),
-				'auto_text'		=> TRUE,
-				'url_strip_qs'	=> TRUE
-				);
-
-			ci()->mandrill->call('messages/send', array('message' => $message));*/
 		}
 
+		// Add them to the MailChimp mailing list (they will still need to opt-in)
+		ci()->load->library('MCAPI');
+		ci()->mcapi->listSubscribe(ci()->config->item('mcapi_signup_list'), $email);
+
 		return $user_id;
+	}
+
+	public function generate_slug($name)
+	{
+		ci()->load->helper('text');
+		ci()->load->helper('string');
+
+		$slug = url_title(convert_accented_characters($name), '-', TRUE);
+		
+		$ac = $this->model('account')->get_by('account_slug', $slug);
+
+		while( ! empty($ac))
+		{
+			$slug = increment_string($slug, '-');
+			$ac = $this->model('account')->get_by('account_slug', $slug);
+		}
+
+		return $slug;
 	}
 
 	public function send_confirmation_email($email)

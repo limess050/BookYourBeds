@@ -58,14 +58,14 @@ class User_m extends MY_Model
 		return FALSE;
 	}
 
-	public function check_username($username, $user_id = null)
+	public function check_unique($element, $attempt, $user_id = null)
 	{
 		if( ! empty($user_id))
 		{
 			$this->db->where('user_id !=', $user_id);
 		}
 
-		$exists = $this->db->where('user_username', $username)
+		$exists = $this->db->where('user_' . $element, $attempt)
 						->count_all_results('users');
 
 		return ($exists > 0) ? FALSE : TRUE;

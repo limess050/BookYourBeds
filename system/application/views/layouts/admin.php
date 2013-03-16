@@ -79,7 +79,8 @@
 				        <!--<li><a href="<?php echo site_url('admin/users'); ?>"><i class="icon-user"></i> Users</a></li>-->
 				        <li><a href="<?php echo site_url('admin/settings/account'); ?>"><i class="icon-home"></i> Account Settings</a></li>
 				        <li><a href="<?php echo site_url('admin/settings/payments'); ?>"><i class="icon-shopping-cart"></i> Payment Options</a></li>
-				        <li><a href="<?php echo site_url('admin/settings/bookings'); ?>"><i class="icon-file"></i> Booking Settings</a></li>
+				        <li><a href="<?php echo site_url('admin/settings/invoice'); ?>"><i class="icon-file"></i> Invoice/Receipt Settings</a></li>
+				        <li><a href="<?php echo site_url('admin/settings/bookings'); ?>"><i class="icon-book"></i> Booking Settings</a></li>
 				        <li><a href="<?php echo site_url('admin/seasons'); ?>"><i class="icon-calendar"></i> Seasons</a></li>
 				    </ul>
 				</li>

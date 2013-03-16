@@ -107,6 +107,7 @@
 	<div class="actions" style="text-align: right;">
 		<input type="hidden" name="price_total" id="price_total_field" />
 		<input type="hidden" name="price_deposit" id="price_deposit_field" />
+		<input type="hidden" name="price_first_night" id="price_first_night_field" />
 		
 		<?php /*switch (setting('deposit')) {
 			case 'full':
@@ -304,6 +305,7 @@
 		<?php break; ?>
 		<?php } ?>
 		
+		$('input[name="price_first_night"]').val(first_night);
 
 		//$('#price_deposit_field').val(first_night);
 		//$('#deposit_amount').html(first_night.toFixed(2));

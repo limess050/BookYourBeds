@@ -62,7 +62,8 @@ class Roadblock extends MY_Controller {
 
 	public function check_account_email($str)
 	{
-		return TRUE;
+		$this->form_validation->set_message('check_account_email', 'That email address is already in use with another account');
+		return $this->model('account')->check_unique('email', $str);
 	}
 
 	public function confirm_account()

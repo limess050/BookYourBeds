@@ -1,3 +1,5 @@
+<?php echo form_open('salesdesk/confirm', array('class' => 'form-horizontal')); ?>
+
 <h3>Accommodation Details <small><?php echo anchor('salesdesk/index', 'Edit'); ?></small></h3>
 <table class="table table-condensed">
 	<thead>	
@@ -21,11 +23,43 @@
 			<td><strong>&pound;<?php echo as_currency($booking->booking_room_price); ?></strong></td>
 		</tr>
 		<?php } ?>
+
+		<?php 
+		$room_deposit = 0;
+
+		if(setting('deposit') != 'none') { 
+
+		switch(setting('deposit'))
+		{
+			case 'full':
+				$title = 'Payment Required in Full';
+				$room_deposit = booking('booking_room_price');
+				break;
+
+			case 'first':
+				$title = 'First Night as deposit';
+				$room_deposit = booking('booking_first_night_price');
+				break;
+
+			case 'fraction':
+				$title =  setting('deposit_percentage') . '% as deposit';
+				$room_deposit = (setting('deposit_percentage') / 100) * booking('booking_room_price');
+				break;
+		}
+
+		?>
+		<tr>
+			<td colspan="4"><?php echo $title; ?></td>
+			<td>&pound;<?php echo as_currency($room_deposit); ?></td>
+		</tr>
+		<?php } ?>
 	</tbody>
 
 </table>
 
-<?php if(booking('supplements')) { ?>
+<?php
+$supplement_deposit = 0;
+if(booking('supplements')) { ?>
 <h3>Optional Supplements <small><?php echo anchor('salesdesk/supplements', 'Edit'); ?></small></h3>
 <table class="table table-condensed">
 	<thead>	
@@ -46,7 +80,45 @@
 			<td>&pound;<?php echo as_currency($supplement['price']); ?></td>
 			<td><strong>&pound;<?php echo as_currency($supplement['price'] * $supplement['qty']); ?></strong></td>
 		</tr>
+		<?php } 
+
+		if(setting('deposit') != 'none' && setting('supplement_deposit') != 'none') 
+		{ 
+
+			switch(setting('deposit'))
+			{
+				case 'full':
+					$title = 'Payment Required in Full';
+					$supplement_deposit = booking('booking_supplement_price');
+					break;
+
+				case 'first':
+					switch(setting('supplement_deposit'))
+					{
+						case 'fraction':
+							$title =  setting('supplement_deposit_percentage') . '% as deposit';
+							$supplement_deposit = (setting('supplement_deposit_percentage') / 100) * booking('booking_supplement_price');
+							break;
+
+						default:
+							$title = 'Payment Required in Full';
+							$supplement_deposit = booking('booking_supplement_price');
+							break;
+					}
+					break;
+
+				case 'fraction':
+					$title =  setting('deposit_percentage') . '% as deposit';
+					$supplement_deposit = (setting('deposit_percentage') / 100) * booking('booking_supplement_price');
+					break;
+			}
+		?>
+		<tr>
+			<td colspan="3"><?php echo $title; ?></td>
+			<td>&pound;<?php echo as_currency($supplement_deposit); ?></td>
+		</tr>
 		<?php } ?>
+
 	</tbody>
 
 </table>
@@ -61,16 +133,19 @@
 			<td class="span2"><strong>&pound;<?php echo as_currency($booking->booking_price); ?></strong></td>
 		</tr>
 
-		<?php if ($booking->booking_deposit) { ?>
+		<?php if ($room_deposit + $supplement_deposit > 0) { ?>
 		<tr class="success">
 			<td>Payable Now</td>
-			<td class="span2"><strong>&pound;<?php echo as_currency($booking->booking_deposit); ?></strong></td>
+			<td class="span2">
+				<strong>&pound;<?php echo as_currency($room_deposit + $supplement_deposit); ?></strong>
+				<?php echo form_hidden('booking_deposit', $room_deposit + $supplement_deposit); ?>
+			</td>
 		</tr>
 		<?php } ?>
 
 		<tr class="error">
 			<td>Balance due at <?php echo setting('balance_due'); ?></td>
-			<td class="span2"><strong>&pound;<?php echo as_currency($booking->booking_price - $booking->booking_deposit); ?></strong></td>
+			<td class="span2"><strong>&pound;<?php echo as_currency($booking->booking_price - $room_deposit - $supplement_deposit); ?></strong></td>
 		</tr>
 	</tbody>
 
@@ -97,7 +172,6 @@
 
 <?php echo $template['partials']['form_errors']; ?>
 
-<?php echo form_open('salesdesk/confirm', array('class' => 'form-horizontal')); ?>
 	<fieldset>
 
 		<div class="control-group">

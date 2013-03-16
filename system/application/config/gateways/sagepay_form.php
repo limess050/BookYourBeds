@@ -2,6 +2,8 @@
 
 $config['sagepay_form_gateway_protocol'] = '2.23'; 
 
+$config['sagepay_verification_email'] = '.byb_sp_verify@example.com'; 
+
 $config['gateway_settings'] = array(
 	'sagepay_form_vendor_id'		=> array(
 											'label'	=> 'Vendor ID',

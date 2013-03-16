@@ -78,6 +78,8 @@ $route['(:any)/reset_password']						= 'admin/auth/reset_password';
 
 $route['init/(:any)']								= 'init/$1';
 
+$route['endpoint/(:any)']							= 'endpoint/$1';
+
 $route['roadblock']									= 'roadblock';
 
 $route['(:any)/admin']								= 'admin/dashboard';

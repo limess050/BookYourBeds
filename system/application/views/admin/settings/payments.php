@@ -13,7 +13,8 @@
 									array(
 									    'name'		=> 'setting[deposit]',
 									    'value'		=> 'none',
-									    'checked'	=> set_radio('setting[deposit]', 'none', (setting('deposit') == 'none'))
+									    'checked'	=> set_radio('setting[deposit]', 'none', (setting('deposit') == 'none')),
+									    'onclick'	=> 'depositSelected(this);'
 									    )
 									);
 				?>
@@ -25,7 +26,8 @@
 									array(
 									    'name'		=> 'setting[deposit]',
 									    'value'		=> 'full',
-									    'checked'	=> set_radio('setting[deposit]', 'full', (setting('deposit') == 'full'))
+									    'checked'	=> set_radio('setting[deposit]', 'full', (setting('deposit') == 'full')),
+									    'onclick'	=> 'depositSelected(this);'
 									    )
 									);
 				?>
@@ -37,19 +39,74 @@
 									array(
 									    'name'		=> 'setting[deposit]',
 									    'value'		=> 'first',
-									    'checked'	=> set_radio('setting[deposit]', 'first', (setting('deposit') == 'first'))
+									    'checked'	=> set_radio('setting[deposit]', 'first', (setting('deposit') == 'first')),
+									    'onclick'	=> 'depositSelected(this);'
 									    )
 									);
 				?>
 				First night
 			</label>
 
+			<!--// Dealing with supplements -->
+			<div id="supplement_deposit" style="margin: 0 0 20px 40px;<?php echo (setting('deposit') != 'first') ? ' display: none;' : ''; ?>">
+				How would you like to handle <strong>Optional Supplements</strong>:
+				<label class="radio">
+					<?php echo form_radio(
+										array(
+										    'name'		=> 'setting[supplement_deposit]',
+										    'value'		=> 'none',
+										    'checked'	=> set_radio('setting[supplement_deposit]', 'none', (setting('supplement_deposit') == 'none'))
+										    )
+										);
+					?>
+					Pay full amount at check-in
+				</label>
+
+				<label class="radio">
+					<?php echo form_radio(
+										array(
+										    'name'		=> 'setting[supplement_deposit]',
+										    'value'		=> 'full',
+										    'checked'	=> set_radio('setting[supplement_deposit]', 'full', (setting('supplement_deposit') == 'full') || ! setting('supplement_deposit'))
+										    )
+										);
+					?>
+					Pay full amount up-front
+				</label>
+
+				<label class="radio">
+					<?php echo form_radio(
+										array(
+										    'name'		=> 'setting[supplement_deposit]',
+										    'value'		=> 'fraction',
+										    'checked'	=> set_radio('setting[supplement_deposit]', 'fraction', (setting('supplement_deposit') == 'fraction'))
+										    )
+										);
+					?>
+					<div class="input-append">
+						<?php  echo form_input(array(
+									'name'	=> 'setting[supplement_deposit_percentage]',
+									'class'	=> 'span1',
+									'value'	=> set_value('setting[supplement_deposit_percentage]', setting('supplement_deposit_percentage'))
+									));
+						?>
+							<span class="add-on">%</span>			
+					</div>
+					
+					 of total supplement price
+
+				</label>
+
+			</div>
+			<!-- Dealing with supplements //-->
+
 			<label class="radio">
 				<?php echo form_radio(
 									array(
 									    'name'		=> 'setting[deposit]',
 									    'value'		=> 'fraction',
-									    'checked'	=> set_radio('setting[deposit]', 'fraction', (setting('deposit') == 'fraction'))
+									    'checked'	=> set_radio('setting[deposit]', 'fraction', (setting('deposit') == 'fraction')),
+										'onclick'	=> 'depositSelected(this);'
 									    )
 									);
 				?>
@@ -85,19 +142,6 @@
 	
 </fieldset>
 
-<script type="text/javascript">
-<!--
-	function toggleGateway(elem)
-	{
-		$('div.gateway_block').each(function() {
-			$(this).addClass('hide');
-		});
-
-		$('div#' + $(elem).val()).removeClass('hide');
-	}
--->
-</script>
-
 <fieldset id="gateway">
 	<legend>Payment Gateway</legend>
 
@@ -115,7 +159,6 @@
 
 	<?php foreach($this->config->item('supported_gateways') as $key => $val) { 
 		echo $template['partials'][$key];
-		//$this->load->view('admin/partials/gateways/' . strtolower($key));
 	} ?>
 
 </fieldset>
@@ -128,3 +171,38 @@
 </div>
 
 </form>	
+
+<script type="text/javascript">
+<!--
+	function depositSelected(elem)
+	{
+		if($(elem).val() == 'first')
+		{
+			$('#supplement_deposit').slideDown();
+		} else
+		{
+			$('#supplement_deposit').slideUp();
+		}
+
+		if($(elem).val() == 'none')
+		{
+			$('select[name="setting[payment_gateway]"]').val('NoGateway');
+			toggleGateway($('select[name="setting[payment_gateway]"]'));
+		}
+	}
+
+	function toggleGateway(elem)
+	{
+		$('div.gateway_block').each(function() {
+			$(this).addClass('hide');
+		});
+
+		$('div#' + $(elem).val()).removeClass('hide');
+
+		if($(elem).val() == 'NoGateway')
+		{
+			$('input[name="setting[deposit]"][value="none"]').attr('checked', 'checked');
+		}
+	}
+-->
+</script>

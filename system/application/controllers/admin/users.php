@@ -59,8 +59,7 @@ class Users extends Admin_Controller {
 		$this->form_validation->set_rules('user[user_firstname]', 'First Name', 'trim');
 		$this->form_validation->set_rules('user[user_lastname]', 'Last Name', 'trim');
 		$this->form_validation->set_rules('user[user_username]', 'Username', 'trim|callback_check_username');
-		$this->form_validation->set_rules('user[user_email]', 'Email Address', 'trim|valid_email');
-		//$this->form_validation->set_rules('user[user_agent_admin]', '', 'trim|callback_set_to_zero');
+		$this->form_validation->set_rules('user[user_email]', 'Email Address', 'trim|callback_check_username_or_email|valid_email|callback_check_email');
 
 		if( ! empty($_POST['password']))
 		{
@@ -94,7 +93,21 @@ class Users extends Admin_Controller {
 	public function check_username($str)
 	{
 		$this->form_validation->set_message('check_username', 'That Username has already been taken.');
-		return (empty($str)) ? TRUE : $this->model('user')->check_username($str, $this->input->post('user_id'));
+		return (empty($str)) ? TRUE : $this->model('user')->check_unique('username', $str, $this->input->post('user_id'));
+	}
+
+	public function check_email($str)
+	{
+		$this->form_validation->set_message('check_email', 'That email address is already in use.');
+		return (empty($str)) ? TRUE : $this->model('user')->check_unique('email', $str, $this->input->post('user_id'));
+	}
+
+	public function check_username_or_email($str)
+	{
+		$user = $this->input->post('user');
+		$this->form_validation->set_message('check_username_or_email', 'You must enter either a username or email address.');
+		//return FALSE;
+		return (empty($str) && empty($user['user_username'])) ? FALSE : TRUE;
 	}
 
 	public function delete($id = null)

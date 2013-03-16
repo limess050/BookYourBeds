@@ -46,7 +46,14 @@ class SagePay_Form
 		$crypt[] = "Description=Booking with " . ci()->account->val('name');
 		$crypt[] = "SuccessURL=" . site_url('salesdesk/process');
 		$crypt[] = "FailureURL=" . site_url('salesdesk/process');
-		$crypt[] = "VendorEMail=" . ci()->account->val('email');
+
+		if(ENVIRONMENT == 'production') 
+		{
+			$crypt[] = "VendorEMail=" . ci()->account->val('email') . ':' . booking('booking_id') . ci()->config->item('sagepay_verification_email');
+		} else
+		{
+			$crypt[] = "VendorEMail=" . ci()->account->val('email');
+		}
 
 		// Customer
 		$crypt[] = "CustomerName={$params->billing['firstname']} {$params->billing['lastname']}";

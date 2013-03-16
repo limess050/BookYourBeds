@@ -69,9 +69,11 @@ class Salesdesk extends Front_Controller {
 		// total price
 		$price = $this->input->post('price_total');
 		// deposit
-		$deposit = $this->input->post('price_deposit');
+		// $deposit = $this->input->post('price_deposit');
+		// first night
+		$first_night = $this->input->post('price_first_night');
 
-		if( $this->booking->create(account('id'), $resource_id, $start_timestamp, $duration, $guests, $footprint, $price, $deposit))
+		if( $this->booking->create(account('id'), $resource_id, $start_timestamp, $duration, $guests, $footprint, $price, $first_night))
 		{
 			redirect(site_url('salesdesk/details'));
 		} else
@@ -241,69 +243,6 @@ class Salesdesk extends Front_Controller {
 
 
 
-
-
-
-
-
-
-
-
-/*
-	public function sagepay()
-	{
-		// Heading off to SagePay - time to dump all of the session data into the booking...
-		$this->booking->dump();
-
-		// Now create the SagePay Crypt...
-
-		$billing = booking('billing');
-
-		$crypt[] = "VendorTxCode=" . booking('booking_id') . "_" . time();
-		$crypt[] = "Amount=" . booking('booking_deposit');
-		$crypt[] = "Currency=GBP";
-		$crypt[] = "Description=Booking with " . account('name');
-		$crypt[] = "SuccessURL=" . site_url('salesdesk/process');
-		$crypt[] = "FailureURL=" . site_url('salesdesk/process');
-		$crypt[] = "VendorEMail=" . SAGEPAY_VENDOR_EMAIL;
-
-		// Customer
-		$crypt[] = "CustomerName={$billing['firstname']} {$billing['lastname']}";
-		$crypt[] = "CustomerEMail={$billing['email']}";
-
-		// Billing
-		$crypt[] = "BillingFirstnames={$billing['firstname']}";
-		$crypt[] = "BillingSurname={$billing['lastname']}";
-		//$crypt[] = "BillingPhone=";
-		$crypt[] = "BillingAddress1={$billing['address1']}";
-		$crypt[] = "BillingAddress2={$billing['address2']}";
-		$crypt[] = "BillingCity={$billing['city']}"; 
-		$crypt[] = "BillingPostCode={$billing['postcode']}";
-		$crypt[] = "BillingCountry={$billing['country']}";
-
-		// Delivery
-		$crypt[] = "DeliveryFirstnames={$billing['firstname']}";
-		$crypt[] = "DeliverySurname={$billing['lastname']}";
-		//$crypt[] = "DeliveryPhone=";
-		$crypt[] = "DeliveryAddress1={$billing['address1']}";
-		$crypt[] = "DeliveryAddress2={$billing['address2']}";
-		$crypt[] = "DeliveryCity={$billing['city']}";
-		$crypt[] = "DeliveryPostCode={$billing['postcode']}";
-		$crypt[] = "DeliveryCountry={$billing['country']}";
-
-		if($billing['country'] == 'US')
-		{
-			$crypt[] = "BillingState={$billing['state']}";
-			$crypt[] = "DeliveryState={$billing['state']}";
-		}
-
-		
-
-		$data['crypt'] = $this->_encrypt_and_encode(implode('&', $crypt));
-
-		$this->template->build('salesdesk/sagepay', $data);
-	}*/
-
 	public function process($submission_type = null)
 	{
 		// $submission_type can also be 'ipn' - won't redirect after completion
@@ -349,64 +288,7 @@ class Salesdesk extends Front_Controller {
 				break;
 		}
 	}
-/*
-	public function old_process()
-	{
-		if ($this->input->get('crypt'))
-		{
-			$temp = $this->_decode_and_decrypt($this->input->get('crypt'));
-		
-			$results = $this->_get_tokens($temp);
 
-			$tx = explode('_', $results['VendorTxCode']);
-
-			switch($results['Status'])
-			{
-				case 'ABORT':
-					// Aborted - die!
-					$this->booking->aborted($tx[0]);
-
-					$this->session->unset_userdata('booking');
-
-					//$this->session->set_flashdata('reason', 'You aborted the payment process. You have not been charged.');
-					//redirect(site_url('salesdesk/aborted'));
-					break;
-
-				case 'OK':
-					$this->session->set_flashdata('booking_id', $this->booking->process($tx[0], $results));
-
-					redirect(site_url('salesdesk/complete'));
-					break;
-
-				case 'NOTAUTHED':
-				case 'REJECTED':
-					// Try again?
-					$this->booking->failed($tx[0]);
-
-					$this->session->set_flashdata('reason', 'The payment was not authorised or rejected by your credit card provider');
-					$this->session->set_flashdata('booking_id', $tx[0]);
-
-					redirect(site_url('salesdesk/try_again'));
-					break;
-
-				case 'MALFORMED':
-				case 'INVALID':
-				case 'ERROR':
-					// Try again?
-					$this->booking->failed($tx[0]);
-
-					$this->session->set_flashdata('reason', 'There was a temporary problem with SagePay. You have not been charged.');
-					$this->session->set_flashdata('booking_id', $tx[0]);
-
-					redirect(site_url('salesdesk/try_again'));
-					break;
-			}
-		} else
-		{
-			redirect(site_url());
-		}
-	}
-*/
 	public function complete()
 	{
 		if( ! $this->session->flashdata('booking_id'))

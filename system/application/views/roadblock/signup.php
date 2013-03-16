@@ -9,21 +9,39 @@
 				<div class="control-group">
 		        	<label class="control-label">Email address</label>
 		        	<div class="controls">
-		            	<input type="text" class="span4" name="email" />
+		        		<?php
+		        		echo form_input(array(
+		        						'name'	=> 'email',
+		        						'class'	=> 'span4',
+		        						'value'	=> set_value('email')
+		        						));
+		        		?>
 		            </div>
 		        </div>
 
 		        <div class="control-group">
 		        	<label class="control-label">New Password</label>
 		        	<div class="controls">
-		            	<input type="password" class="span4" name="password" />
+		            	<?php
+		        		echo form_password(array(
+		        						'name'	=> 'password',
+		        						'class'	=> 'span4',
+		        						'value'	=> set_value('password')
+		        						));
+		        		?>
 		            </div>
 		        </div>
 
 		        <div class="control-group">
 		        	<label class="control-label">Account Name</label>
 		        	<div class="controls">
-		            	<input type="text" class="span3" name="name" />
+		            	<?php
+		        		echo form_input(array(
+		        						'name'	=> 'name',
+		        						'class'	=> 'span3',
+		        						'value'	=> set_value('name')
+		        						));
+		        		?>
 		            </div>
 		        </div>
 

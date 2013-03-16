@@ -43,7 +43,7 @@
 
 	<footer>
 		<!--&copy; Copyright <?php echo date('Y'); ?> | <?php echo account('name'); ?> | <?php echo anchor('admin', 'Sign In...'); ?>-->
-		Powered by BookYourBeds.com
+		<a href="http://bookyourbeds.com" target="_blank">Powered by BookYourBeds.com</a>
 	</footer>
 </section>
 
