@@ -4,6 +4,8 @@ class Migration_Test_account extends CI_Migration
 {
 	public $account_id;
 
+	public $sup;
+
 	public $firstname = array('Philip', 'Douglas', 'David', 'Jon', 'John', 'Alex', 'Colin', 'Christopher', 'Michael', 'Peter', 'Jack', 'Anthony', 'Ben', 'Daniel', 'Alan', 'Jeff', 'Aaron', 'Billy', 'Evan', 'Ewan', 'Gavin', 'Graeme', 'Ian', 'Jamie', 'James', 'Luke', 'Robert', 'Tom', 'Justin', 'Neil', 'Christian', 'Russell', 'Cameron', 'Curtis', 'Adrian', 'Sean', 'Leo', 'Oliver', 'Cole', 'Dennis', 'Derek', 'George', 'Clive', 'Graham', 'Shaun', 'Eric', 'Brian', 'Gary', 'William', 'Patrick', 'Martin', 'Jeremy', 'Ray', 'Tyler', 'Jake', 'Scott', 'Dustin', 'Greg', 'Andrew', 'Kevin', 'Lee', 'Kate', 'Ashley', 'Melissa', 'Lorna', 'Sarah', 'Louise', 'Karen', 'Rebecca', 'Amelia', 'Heidi', 'Sophie', 'Jennifer', 'Amanda', 'Anna', 'Chloe', 'Caroline', 'Donna', 'Fiona', 'Hayley', 'Hannah', 'Imogen', 'Lindsay', 'Kristen', 'Krista', 'Christina', 'Stacey', 'Emily', 'Maria', 'Marie', 'Fiona', 'Shauna', 'Phoebe', 'Paige', 'Piper', 'Cheryl', 'Natasha', 'Natalie', 'Tina', 'Anita', 'Melanie', 'Mary', 'Erin', 'Sheila', 'Nicole', 'Michelle', 'Annabel', 'Kate', 'Patricia', 'Holly', 'Keira', 'Danielle', 'Prue', 'Vicky', 'Elizabeth', 'Rhiannon', 'Claire', 'Gemma', 'Nina', 'Kim');
 	public $lastname = array('Anderson', 'Atkins', 'Atkinson', 'Aitken', 'Black', 'White', 'Baldwin', 'Clarke', 'MacMillan', 'MacGregor', 'Stephens', 'Smith', 'Jones', 'Carson', 'Baxter', 'Robinson', 'Roberts', 'Woods', 'Thomas', 'Parker', 'Bauer', 'King', 'Simpson', 'Womack', 'Saunders', 'Sowden', 'Butler', 'Stewart', 'Burke', 'Patterson', 'Pattinson', 'Sheen', 'Bell', 'Greene', 'Welsh', 'Reed', 'Mitchell', 'Webb', 'Lloyd', 'Webber', 'Lambert', 'Halliwell', 'Wyatt', 'Cole', 'Crowley', 'Richardson', 'Palmer', 'Porter', 'Turner', 'Shepherd', 'Owen', 'Murray', 'Rigby', 'Rose', 'Wilkins', 'Brown', 'Dane', 'McCormack', 'Thomas', 'Millington', 'Gordon', 'Cusack', 'Livingston', 'Watson', 'Holmes', 'Doyle', 'Brady');
 	public $email = array('gmail', 'hotmail', 'live', 'yahoo', 'me', 'ymail', 'rocketmail', 'mac');
@@ -105,7 +107,10 @@ class Migration_Test_account extends CI_Migration
 								)
 							);
 
-		$this->model('supplement')->insert_many($supplements);
+		foreach($supplements as $supplement)
+		{
+			$this->sup[] = $this->model('supplement')->insert($supplement);
+		}
 	}
 
 	private function rooms()
@@ -133,7 +138,7 @@ class Migration_Test_account extends CI_Migration
 													));
 			}
 
-			for($s = 1; $s <= 2; $s++)
+			foreach($this->sup as $s)
 			{
 				$this->db->insert('supplement_to_resource', array(
 																'str_supplement_id'	=> $s,
