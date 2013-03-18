@@ -24,6 +24,7 @@ class Dashboard extends Admin_Controller {
 		$data['bookings'] = $this->model('booking')->checking_in();
 		$data['new'] = $this->model('booking')->unacknowledged();
 		$data['unverified'] = (setting('payment_gateway') == 'NoGateway') ? $this->model('booking')->unverified() : null;
+		$data['cancelled'] = $this->model('booking')->cancelled();
 		
 		$this->template->build('admin/dashboard/index', $data);
 	}

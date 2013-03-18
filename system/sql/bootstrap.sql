@@ -235,7 +235,10 @@ CREATE TABLE `bookings` (
 `booking_updated_at` TIMESTAMP NOT NULL,
 `booking_created_at` DATETIME NOT NULL,
 `booking_deleted_at` DATETIME NOT NULL,
+`booking_cancellation_acknowledged` TINYINT(1) NOT NULL DEFAULT '0',
+`booking_transferred_to_id` INT(11) NOT NULL DEFAULT '0',
 INDEX (`booking_account_id`),
+INDEX (`booking_original_id`),
 INDEX (`booking_customer_id`),
 INDEX `account_reference` (`booking_account_id`, `booking_reference`),
 INDEX `account_acknowledged` (`booking_account_id`, `booking_acknowledged`)

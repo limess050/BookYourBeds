@@ -105,3 +105,37 @@
 	</tbody>
 </table>
 <?php } ?>
+
+<?php if( ! empty($cancelled)) { ?>
+<h1 class="page-header">New Cancellations</h1>
+
+<table class="table table-condensed table-striped table-hover">
+	<thead>
+		<tr>
+			<th>Customer Name</th>
+			<th>Arrival</th>
+			<th>Booking Reference</th>
+			<th>Resource Booked</th>
+			<th class="span1">Guests</th>
+			<th>Duration</th>
+			<th>Deposit Paid</th>
+			<th>Date Cancelled</th>
+		</tr>
+	<thead>
+	
+	<tbody>
+		<?php foreach($cancelled as $booking) { ?>
+		<tr>
+			<td><?php echo $booking->customer_firstname . ' ' . $booking->customer_lastname; ?></td>
+			<td><?php echo mysql_to_format($booking->reservation_start_at); ?></td>
+			<td><?php echo anchor("admin/bookings/show/{$booking->booking_id}", $booking->booking_reference); ?></td>
+			<td><?php echo $booking->resource_title; ?></td>
+			<td><?php echo $booking->booking_guests; ?></td>
+			<td><?php echo duration($booking->reservation_duration); ?></td>
+			<td>&pound;<?php echo as_currency($booking->booking_deposit); ?></td>
+			<td><?php echo mysql_to_format($booking->booking_deleted_at); ?></td>
+		</tr>
+		<?php } ?>
+	</tbody>
+</table>
+<?php } ?>

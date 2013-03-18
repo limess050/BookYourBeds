@@ -258,10 +258,10 @@ class Booking
 
 		if($verification_only)
 		{
-			$this->customer_verification($booking);
+			$this->customer_verification($booking, 'Please confirm your booking with ' . account('name'));
 		} else
 		{
-			$this->customer_notification($booking);
+			$this->customer_notification($booking, 'Your Booking with ' . account('name'));
 
 			$this->internal_notification($booking);
 		}
@@ -269,12 +269,85 @@ class Booking
 		return $booking->booking_id;
 	}
 
-	private function internal_notification($booking)
+	public function transfer($data)
+	{
+		$original = $this->model('booking')->get($data['booking_original_id']);
+
+		// Create the booking...
+		$booking = array(
+						'booking_original_id'		=> $original->booking_id,
+						'booking_account_id'		=> $original->booking_account_id,
+						'booking_user_id'			=> $data['booking_user_id'],
+						'booking_reference'			=> $original->booking_reference,
+						'booking_guests'			=> $data['booking_guests'],
+						'booking_price'				=> $data['booking_price'],
+						'booking_deposit'			=> ($data['booking_deposit'] + $data['original_deposit'] - $data['booking_refund']),
+						'booking_room_price'		=> $data['booking_room_price'],
+						'booking_supplement_price'	=> $data['booking_supplement_price'],
+						'booking_first_night_price'	=> $data['booking_first_night_price'],
+						'booking_billing_data'		=> $original->booking_billing_data,
+						'booking_gateway_data'		=> $original->booking_gateway_data,
+						'booking_ip_address'		=> $data['booking_ip_address'],
+						'booking_user_agent'		=> $data['booking_user_agent'],
+						'resource_id'				=> $data['resource_id'],
+						'footprint'					=> $data['footprint'],
+						'duration'					=> $data['duration'],
+						'start_at'					=> $data['start_at']
+						);
+		
+		$new = $this->model('booking')->insert($booking);
+
+		// Customer
+		$data['customer']['customer_account_id'] = $original->booking_account_id;
+		$customer_id = $this->model('customer')->insert($data['customer']);
+
+		// Supplements
+		foreach($data['supplements'] as $key => $supplement)
+		{
+			$this->model('supplement')->add_to_booking($key, $new, $supplement['qty'], $supplement['price']);
+		}
+
+		// Update the booking (customer ID)
+		$booking = array(
+						'booking_customer_id' 	=> $customer_id,
+						'booking_completed'		=> 1
+						);
+
+		$this->model('booking')->update($new, $booking);
+
+		// Update the original booking
+		$update = array(
+						'booking_transferred_to_id'	=> $new
+						);
+
+		$this->model('booking')->update($original->booking_id, $update);
+		$this->cancel($original->booking_id);
+
+		// Clear any session data
+		ci()->session->unset_userdata('transfer_booking');
+
+		// Send new notifications...
+		if(ENVIRONMENT == 'production')
+		{
+			ci()->load->library('mandrill');
+
+			$booking = $this->model('booking')->get($new);
+
+			$this->customer_notification($booking, 'Your rearranged booking with ' . $booking->account_name);
+
+			$this->internal_notification($booking, 'You have a rearranged booking');
+		}
+		
+
+		return $new;
+	}
+
+	private function internal_notification($booking, $subject = 'You have a new booking')
 	{
 		// Send email
 		$message = array(
 				'html'		=> ci()->load->view('messages/internal_booking_confirmation', array('booking' => $booking), TRUE),
-				'subject'	=> 'You have a new booking',
+				'subject'	=> $subject,
 				'from_email'	=> 'robot@bookyourbeds.com',
 				'from_name'		=> 'BookYourBeds.com',
 				'to'			=> array(
@@ -292,7 +365,7 @@ class Booking
 		// Send to webhook (eventually)
 	}
 
-	private function customer_notification($booking)
+	private function customer_notification($booking, $subject = 'Your booking')
 	{
 		ci()->load->helper('typography');
 
@@ -302,7 +375,7 @@ class Booking
 		// Send email
 		$message = array(
 				'html'		=> ci()->load->view('messages/customer_booking_confirmation', $data, TRUE),
-				'subject'	=> 'Your Booking with ' . account('name'),
+				'subject'	=> $subject,
 				'from_email'	=> 'robot@bookyourbeds.com',
 				'from_name'		=> $booking->account_name,
 				'to'			=> array(
@@ -318,12 +391,12 @@ class Booking
 		
 	}
 
-	private function customer_verification($booking)
+	private function customer_verification($booking, $subject = 'Confirm your booking')
 	{
 		// Send email
 		$message = array(
 				'html'		=> ci()->load->view('messages/customer_booking_verification', array('booking' => $booking), TRUE),
-				'subject'	=> 'Please confirm your booking with ' . account('name'),
+				'subject'	=> $subject,
 				'from_email'	=> 'robot@bookyourbeds.com',
 				'from_name'		=> $booking->account_name,
 				'to'			=> array(
@@ -377,6 +450,21 @@ class Booking
 	public function failed($booking_id)
 	{
 		$this->model('booking')->update($booking_id, array('booking_failed' => 1));
+	}
+
+	public function cancel($booking_id)
+	{
+		$this->model('booking')->delete($booking_id);
+	}
+
+	public function uncancel($booking_id)
+	{
+		return $this->model('booking')->undelete($booking_id);
+	}
+
+	public function acknowledge_cancellation($booking_id)
+	{
+		$this->model('booking')->acknowledge_cancellation($booking_id);
 	}
 
 	protected function model($name)

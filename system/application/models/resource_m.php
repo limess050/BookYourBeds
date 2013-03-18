@@ -76,7 +76,7 @@ class Resource_m extends MY_Model
 		return $resource;
 	}
 	
-	public function availability($id, $start, $end, $account_id = null, $include_sessions = FALSE)
+	public function availability($id, $start, $end, $account_id = null, $include_sessions = FALSE, $ignore_booking_id = null)
 	{
 		$this->_set_account_id($account_id);
 

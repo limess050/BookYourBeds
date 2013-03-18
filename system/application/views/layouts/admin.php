@@ -39,7 +39,7 @@
 			
 			<ul class="nav">
 				<li>
-					<?php echo anchor('admin', account('name') . " <span class=\"badge badge-success\">{$this->account->bookings}</span> <span class=\"badge badge-warning\">{$this->account->unverified}</span>"); ?>
+					<?php echo anchor('admin', account('name') . " <span class=\"badge badge-success\">{$this->account->bookings}</span> <span class=\"badge badge-warning\">{$this->account->unverified}</span> <span class=\"badge badge-important\">{$this->account->cancelled}</span>"); ?>
 				</li>
 
 				<?php if(session('user', 'user_id')) { ?>
@@ -79,7 +79,7 @@
 				        <!--<li><a href="<?php echo site_url('admin/users'); ?>"><i class="icon-user"></i> Users</a></li>-->
 				        <li><a href="<?php echo site_url('admin/settings/account'); ?>"><i class="icon-home"></i> Account Settings</a></li>
 				        <li><a href="<?php echo site_url('admin/settings/payments'); ?>"><i class="icon-shopping-cart"></i> Payment Options</a></li>
-				        <li><a href="<?php echo site_url('admin/settings/invoice'); ?>"><i class="icon-file"></i> Invoice/Receipt Settings</a></li>
+				        <!--<li><a href="<?php echo site_url('admin/settings/invoice'); ?>"><i class="icon-file"></i> Invoice/Receipt Settings</a></li>-->
 				        <li><a href="<?php echo site_url('admin/settings/bookings'); ?>"><i class="icon-book"></i> Booking Settings</a></li>
 				        <li><a href="<?php echo site_url('admin/seasons'); ?>"><i class="icon-calendar"></i> Seasons</a></li>
 				    </ul>

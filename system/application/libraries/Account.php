@@ -5,6 +5,7 @@ class Account
 	public $ac;
 	public $bookings = null;
 	public $unverified = null;
+	public $cancelled = null;
 	private $settings;
 
 	public function __construct()
@@ -52,6 +53,21 @@ class Account
 		if($this->unverified == '0')
 		{
 			$this->unverified = null;
+		}
+	}
+
+	public function new_cancellations($account_id = null)
+	{
+		$account_id = ( ! empty($account_id)) ? $account_id : $this->ac->account_id;
+
+		if( ! empty($account_id))
+		{
+			$this->cancelled = $this->model('booking')->cancelled($account_id, TRUE);
+		}
+
+		if($this->cancelled == '0')
+		{
+			$this->cancelled = null;
 		}
 	}
 

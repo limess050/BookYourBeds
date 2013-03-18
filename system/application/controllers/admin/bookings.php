@@ -52,6 +52,10 @@ class Bookings extends Admin_Controller {
 		}
 		
 		$data['booking'] = $this->model('booking')->get($id, $this->account->val('id')); 
+
+		$data['previous'] = ( ! empty($data['booking']->booking_original_id)) ? $this->model('booking')->get_previous($data['booking']->booking_original_id) : array();
+
+		$data['new'] = ( ! empty($data['booking']->booking_transferred_to_id)) ? $this->model('booking')->get($data['booking']->booking_transferred_to_id) : null;
 		
 		$this->template
 			->set_partial('booking_button_group', 'admin/partials/booking_button_group')
@@ -122,16 +126,6 @@ class Bookings extends Admin_Controller {
 		
 	}
 
-	public function transfer($id)
-	{
-		if(empty($id))
-		{
-			show_404();
-		}
-
-		
-	}
-
 	public function acknowledge($id = null)
 	{
 		if(empty($id))
@@ -146,6 +140,20 @@ class Bookings extends Admin_Controller {
 		redirect(site_url('admin/bookings/show/' . $id));
 	}
 
+	public function acknowledge_cancellation($id = null)
+	{
+		if(empty($id))
+		{
+			show_404();
+		}
+
+		$this->booking->acknowledge_cancellation($id);
+
+		$this->session->set_flashdata('msg', 'Cancellation acknowledged');
+			
+		redirect(site_url('admin/bookings/show/' . $id));
+	}
+
 	public function cancel($id)
 	{
 		if(empty($id))
@@ -153,7 +161,7 @@ class Bookings extends Admin_Controller {
 			show_404();
 		}
 
-		$this->model('booking')->delete($id);
+		$this->booking->cancel($id);
 
 		$this->session->set_flashdata('msg', 'Booking cancelled');
 
@@ -167,7 +175,7 @@ class Bookings extends Admin_Controller {
 			show_404();
 		}
 
-		if ($this->model('booking')->undelete($id))
+		if ($this->booking->uncancel($id))
 		{
 			$this->session->set_flashdata('msg', 'Booking uncancelled');
 

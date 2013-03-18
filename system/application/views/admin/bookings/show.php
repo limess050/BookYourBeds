@@ -15,7 +15,14 @@
 		<div class="heavy-border">
 			<h3>Booking Overview</h3>
 
-			<?php echo (is_cancelled($booking)) ? '<span class="label label-important">BOOKING CANCELLED ON ' . strtoupper(mysql_to_format($booking->booking_deleted_at, 'l, j F Y')) . '</span>' : ''; ?>
+			<?php if ( ! empty($new)) 
+			{ 
+				echo '<a href="' . site_url('admin/bookings/show/' . $new->booking_id) . '" class="label label-info">BOOKING TRANSFERRED TO ' . strtoupper(mysql_to_format($new->resources[0]->reservation_start_at, 'l, j F Y')) . '</a>';
+			} else
+			{
+				echo (is_cancelled($booking)) ? '<span class="label label-important">BOOKING CANCELLED ON ' . strtoupper(mysql_to_format($booking->booking_deleted_at, 'l, j F Y')) . '</span>' : '';
+			} ?>
+
 
 			<dl class="dl-horizontal">
 				<dt>Booking Reference</dt>
@@ -119,6 +126,36 @@
     		
     	</dl>
 	</div>
+
+	<?php if( ! empty($previous)) { ?>
+	<div class="span6">
+		<h3>Previous Versions</h3>
+
+		<table class="table table-condensed table-striped">
+			<thead>
+				<tr>
+					<th>Room</th>
+					<th>Arrival</th>
+					<th>Guests</th>
+					<th>Duration</th>
+				</tr>
+
+			</thead>
+
+			<tbody>
+			<?php foreach($previous as $b) { ?>
+				<tr>
+					<td><?php echo anchor('admin/bookings/show/' . $b->booking_id, $b->resources[0]->resource_title); ?></td>
+					<td><?php echo mysql_to_format($b->resources[0]->reservation_start_at); ?></td>
+					<td><?php echo $b->booking_guests; ?></td>
+					<td><?php echo duration($b->resources[0]->reservation_duration); ?></td>
+				</tr>
+			<?php } ?>
+			<tbody>
+		</table>
+		
+	</div>
+	<?php } ?>
 
 	
 

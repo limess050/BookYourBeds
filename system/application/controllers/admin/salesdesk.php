@@ -122,7 +122,7 @@ class Salesdesk extends Admin_Controller {
 		{
 			redirect(site_url('admin/salesdesk/details'));
 		}
-
+ 
 		$resources = booking('resources');
 		$data['supplements'] = $this->model('supplement')->get_for_resource($resources[0]->resource_id, $this->account->val('id'));
 

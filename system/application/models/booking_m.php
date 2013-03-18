@@ -70,6 +70,23 @@ class Booking_m extends MY_Model
 		return $booking;
 	}
 
+	public function get_previous($previous_id)
+	{
+		$bookings = array();
+
+		$b = $this->get($previous_id);
+
+		while( ! empty($b))
+		{
+			
+			$bookings[] = $b;
+
+			$b = $this->get($b->booking_original_id);
+		}
+
+		return $bookings;
+	}
+
 	public function remove($id, $account_id = null)
 	{
 		$this->_set_account_id($account_id);
@@ -167,6 +184,27 @@ class Booking_m extends MY_Model
 				->where($this->account_id_field, $this->account_id)
 				->where('booking_completed', '0')
 				->where('booking_confirmation_sent_at !=', 0)
+				->group_by('booking_id');
+
+		return ($count) ? count($this->db->get('bookings')->result()) : $this->db->get('bookings')->result();
+	}
+
+	public function cancelled($account_id = null, $count = FALSE)
+	{
+		$this->_set_account_id($account_id);
+
+		$this->db
+				->select('bookings.*, customers.*, resources.*')
+
+				->select('(SELECT SUM(reservation_duration) FROM reservations WHERE reservation_booking_id = booking_id) AS reservation_duration')
+				->select('(SELECT MIN(reservation_start_at) FROM reservations WHERE reservation_booking_id = booking_id) AS reservation_start_at')
+				->join('reservations', 'reservation_booking_id = booking_id')
+				->join('resources', 'resource_id = reservation_resource_id')
+				->join('customers', 'customer_id = booking_customer_id')
+				->where('reservation_start_at >=', date("Y-m-d", mktime(0, 0, 0, date('m'), date('d'), date('Y'))))
+				->where($this->account_id_field, $this->account_id)
+				->where('booking_deleted_at !=', '0000-00-00 00:00:00')
+				->where('booking_cancellation_acknowledged', 0)
 				->group_by('booking_id');
 
 		return ($count) ? count($this->db->get('bookings')->result()) : $this->db->get('bookings')->result();
@@ -298,5 +336,26 @@ class Booking_m extends MY_Model
 				->order_by('reservation_start_at', 'desc')
 				->get('bookings')
 				->result();
+	}
+
+	public function acknowledge_cancellation($id)
+	{
+		return $this->db->where('booking_id', $id)
+						->where('booking_deleted_at != ', '0000-00-00 00:00:00')
+						->set('booking_cancellation_acknowledged', 1)
+						->update('bookings');
+
+		return $this->update($id, array(
+										'booking_deleted_at'	=> '0000-00-00 00:00:00',
+										'booking_cancellation_acknowledged'	=> 1
+												));
+	}
+
+	public function undelete($id)
+	{
+		return $this->update($id, array(
+										'booking_deleted_at'	=> '0000-00-00 00:00:00',
+										'booking_cancellation_acknowledged'	=> 0
+												));
 	}
 }
