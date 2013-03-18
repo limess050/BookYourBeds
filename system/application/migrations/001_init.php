@@ -32,6 +32,9 @@ class Migration_Init extends CI_Migration
 						'resources',
 						'seasons',
 						'settings',
+						'supplements',
+						'supplement_to_resource',
+						'supplement_to_booking',
 						'users');
 		
 		foreach($tables as $table)

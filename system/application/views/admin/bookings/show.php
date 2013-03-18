@@ -69,7 +69,7 @@
 				<tr>
 					<td><?php echo $supplement->supplement_short_description; ?></td>
 					<td><?php echo $supplement->stb_quantity; ?></td>
-					<td>&pound;<?php echo as_currency($supplement->stb_quantity * $supplement->stb_price); ?></td>
+					<td>&pound;<?php echo as_currency($supplement->stb_price); ?></td>
 				</tr>
 				<?php } ?>
 			</tbody>
