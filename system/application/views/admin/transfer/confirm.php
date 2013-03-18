@@ -140,7 +140,7 @@
 					<tr>
 						<td><?php echo $supplement['description']; ?></td>
 						<td><?php echo $supplement['qty']; ?></td>
-						<td>&pound;<?php echo as_currency($supplement['price']); ?></td>
+						<td>&pound;<?php echo as_currency($supplement['qty'] * $supplement['price']); ?></td>
 					</tr>
 					<?php } ?>
 				</tbody>
