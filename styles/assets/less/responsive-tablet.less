@@ -2,29 +2,36 @@
 {  
 	.nav-bar
 	{
-		a#logo
+		
+		.branding
 		{
-			width: 49px;
-			margin-right: 10px;
-			background: url('../img/byb-logo-bed.png') no-repeat left top;
+			#logo > a
+			{
+				width: 49px;
+				margin-right: 0px;
+				background: url('../img/byb-logo-bed.png') no-repeat left;
+			}
+
+
 		}
 
-		/*ul.regular-nav
-		{
-			li
-			{
-				margin: 0 2px;
+	}
 
-				a
-				{
-					padding-left: 5px;
-					padding-right: 5px;
-				}
+	.container
+	{
+		padding: 0 5px;
+	}
 
+	.block
+	{
+		float: none;
+		width: 98%;
+		height: 200px;
+	}
 
-			}
-		}*/
-
+	.block.empty
+	{
+		height: auto;
 	}
 }  
 

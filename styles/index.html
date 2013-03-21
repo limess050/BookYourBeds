@@ -6,7 +6,8 @@
 	<title>Book Your Beds Admin</title>
 	<meta name="description" content="Book Your Beds Admin">
 	<meta name="author" content="Book Your Beds">
-	<meta name="viewport" content="width=device-width; initial-scale=1; maximum-scale=1">
+	<meta name="viewport" content="width=device-width; initial-scale=1; maximum-scale=1; user-scalable=0;">
+	<meta name="apple-mobile-web-app-capable" content="yes" />
 	<link rel="stylesheet" href="assets/css/admin.css">
 	<link href="//get.pictos.cc/fonts/4020/1" rel="stylesheet" type="text/css">
 	<script type="text/javascript" src="assets/js/jquery.js"></script>
@@ -19,10 +20,24 @@
 <header>
 	<nav class="nav-bar">
 
-		<a href="#" id="logo"></a>
+		<ul class="branding">
+			<li id="logo"><a href="#" id="logo"></a></li>
 
-		<a href="#" id="menu-logo" onclick="$('.mobile-nav').toggle();"></a>
+			<li id="menu-logo" class="dropdown">
+				<a href="#" class="dropdown-toggle" data-toggle="dropdown"></a>
 
+				<ul class="dropdown-menu">
+					<li><a href="#">Dashboard</a></li>
+					<li><a href="#">Diary</a></li>
+					<li><a href="#">Rooms</a></li>
+					<li><a href="#">Availability</a></li>
+					<li><a href="#">Supplements</a></li>
+					<li><a href="#">Sales Desk</a></li>
+					<li><a href="#">Settings</a></li>
+				</ul>
+			</li>
+		</ul>
+		
 		<ul class="regular-nav">
 			<li><a href="#">Diary</a></li>
 			<li class="dropdown">
@@ -38,8 +53,17 @@
 		</ul>
 
 		<ul class="pull-right">
-			<li>
-				<a href="#" onclick="$('#search').toggleClass('open'); $(this).toggleClass('selected');">s</a>
+			<li class="dropdown dropdown-search-btn">
+				<a href="#" class="dropdown-toggle" data-toggle="dropdown">s</a>
+
+				<ul class="dropdown-menu dropdown-search">
+					<li>
+						<form>
+							<input type="text" placeholder="Search for a booking..." />
+							<button type="submit">Go</button>
+						</form>
+					</li>
+				</ul>
 			</li>
 			<li class="dropdown hide-mobile">
 				<a href="#" class="dropdown-toggle" data-toggle="dropdown">g</a>
@@ -64,10 +88,6 @@
 
 	</nav>
 
-	<form id="search" class="dropdown-search">
-		<input type="text" placeholder="Search for a booking..." />
-	</form>
-
 	<ul class="mobile-nav">
 		<li><a href="#">Dashboard</a></li>
 		<li><a href="#">Diary</a></li>
@@ -79,12 +99,53 @@
 	</ul>
 </header>
 
-<section>
+<section class="container">
+	
+	<div class="block">
+		<h2><i>h</i> 5<small> arrivals</small></h2>
 
+
+	</div>
+
+	<div class="block green empty">
+		<h2><i>*</i> 0<small> new bookings</small></h2>
+
+
+	</div>
+
+	<div class="block orange">
+		<h2><i>o</i> 3<small> unverified bookings</small></h2>
+
+
+	</div>
+
+	<div class="block red empty">
+		<h2><i>x</i> 0<small> cancellations</small></h2>
+
+
+	</div>
 
 
 </section>
 
+<script type="text/javascript">
+<!--
+	
+	if( !window.location.hash && window.addEventListener ){
+    window.addEventListener( "load",function() {
+        setTimeout(function(){
+            window.scrollTo(0, 0);
+        }, 0);
+    });
+    window.addEventListener( "orientationchange",function() {
+        setTimeout(function(){
+            window.scrollTo(0, 0);
+        }, 0);
+    });
+    
+}
+-->
+</script>
 </body>
 
 </html>

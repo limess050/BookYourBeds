@@ -3,6 +3,7 @@ header
 	position: fixed;
   	right: 0;
   	left: 0;
+  	top: 0;
   	z-index: @zindexFixedNavbar;
   	margin-bottom: 0;
 	overflow: visible;
@@ -10,34 +11,67 @@ header
   	*position: relative;
   	*z-index: 2;
 }
-
+ 
 .nav-bar
 {
 	height: 40px;
 	background: #3b0065;
 	.clearfix();
 
-	a#logo
+	.branding
 	{
 		display: block;
 		float: left;
-		width: 181px;
-		height: 31px;
-		margin-top: 4px;
-		margin-left: 10px;
-		margin-right: 30px;
-		background: url('../img/byb-logo-full.png') no-repeat left top;
-	}
 
-	a#menu-logo
-	{
-		display: none;
-		float: left;
-		margin-top: 4px;
-		margin-left: 10px;
-		width: 49px;
-		height: 31px;
-		background: url('../img/byb-logo-bed.png') no-repeat left top;
+		#logo > a
+		{
+			display: block;
+			width: 181px;
+			height: 40px;
+			margin-left: 10px;
+			margin-right: 30px;
+			background: url('../img/byb-logo-full.png') no-repeat left;
+		}
+
+		#menu-logo
+		{
+			display: none;
+
+			> a
+			{
+				display: block;
+				margin-left: 10px;
+				//width: 49px;
+				width: 181px;
+				height: 40px;
+				//background: url('../img/byb-logo-bed.png') no-repeat left;
+				background: url('../img/byb-logo-full.png') no-repeat left;
+			}
+
+			ul.dropdown-menu
+			{
+				border: none;
+				background: lighten(#3b0065, 10%);
+				width: 100%;
+				position: fixed;
+				top: 40px;
+				left: 0px;
+
+				a
+				{
+					font-family: 'Melbourne', Arial, sans-serif;
+					color: #fff;
+					text-decoration: none;
+					padding: 4px 10px;
+					font-size: 24px;
+				}
+
+				a:hover
+				{
+					background: lighten(#3b0065, 20%);
+				}
+			}
+		}
 	}
 
 	.regular-nav
@@ -48,7 +82,7 @@ header
 		> li
 		{
 			float: left;
-			margin: 0 5px;
+			margin: 0 4px;
 
 			a
 			{
@@ -81,7 +115,7 @@ header
 			a
 			{
 				display: block;
-				padding: 9px 9px 0px;
+				padding: 9px 7px 0px;
 				height: 31px;
 				_height:40px;
 				font-family: 'Pictos Custom';
@@ -89,12 +123,10 @@ header
 				color: #fff;
 				font-size: 28px;
 			}
-
-			a.selected
-			{
-				background: #ccc;
-			}
 		}
+
+		
+
 
 	}
 
@@ -116,7 +148,7 @@ header
 
 			a:hover
 			{
-				color: #fff;
+				color: @navbarLinkColorActive;
 				background: @dropdownBorder;
 			}
 
@@ -147,28 +179,53 @@ ul.mobile-nav
 	}
 }
 
-form
-{
-	display: none;
-	margin: 0;
-	padding: 5px;
-	background: #ccc;
 
-	input
+.nav-bar .dropdown-menu.dropdown-search
+{
+	position: fixed;
+	top: 40px;
+	left: 0px;
+	background: @dropdownBorder;
+	width: 100%;
+	padding: 0;
+	margin: 0px;
+	.clearfix();
+
+	form
 	{
+		padding: 0;
+		margin: 0;
+	}
+
+	input[type="text"]
+	{
+		float: left;
 		background: #fff;
 		border: none;
-		width: 100%;
+		width: 89%;
+		margin: 5px 0;
 		font-family: 'Melbourne', Arial, sans-serif;
 		font-size: 24px;
-		padding: 4px 0 0px;
+		padding: 4px 0 0px 1%;
 		.placeholder(@grayLighter);
 	}
-}
 
-form.open
-{
-	display: block;
+	button
+	{
+		float: left;
+		width: 10%;
+		font-family: 'Melbourne', Arial, sans-serif;
+		font-size: 20px;
+		margin-top: 10px;
+		background: @dropdownBorder;
+		border: none;
+	}
+
+	button:hover
+	{
+		color: #fff;
+		cursor: pointer;
+	}
 }
 
 b.caret:before
@@ -216,7 +273,8 @@ b.caret:before
 .nav-bar li.dropdown.open > .dropdown-toggle,
 .nav-bar li.dropdown.active > .dropdown-toggle,
 .nav-bar li.dropdown.open.active > .dropdown-toggle {
-  background-color: @navbarLinkBackgroundActive;
+  //background-color: @navbarLinkBackgroundActive;
+  background-color: @dropdownBorder;
   color: @navbarLinkColorActive;
 }
 .nav-bar li.dropdown > .dropdown-toggle .caret {

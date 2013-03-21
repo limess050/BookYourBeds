@@ -21,7 +21,7 @@
 !function ($) {
 
   "use strict"; // jshint ;_;
-
+ 
 
  /* DROPDOWN CLASS DEFINITION
   * ========================= */
@@ -101,10 +101,12 @@
   }
 
   function clearMenus() {
+
     $(toggle).each(function () {
-      getParent($(this)).removeClass('open')
+      getParent($(this)).removeClass('open');
+      
     });
-    //$('.dropdown-search').removeClass('open');
+    
   }
 
   function getParent($this) {
