@@ -1,0 +1,117 @@
+//
+// Dropdown menus
+// --------------------------------------------------
+
+
+
+// Use the .menu class on any <li> element within the topbar or ul.tabs and you'll get some superfancy dropdowns
+.dropup,
+.dropdown {
+  position: relative;
+}
+.dropdown-toggle {
+  // The caret makes the toggle a bit too tall in IE7
+  *margin-bottom: -3px;
+}
+.dropdown-toggle:active,
+.open .dropdown-toggle {
+  outline: 0;
+}
+ 
+
+
+// The dropdown menu (ul)
+// ----------------------
+.dropdown-menu,
+.nav-bar .dropdown-menu
+{
+  position: absolute;
+  top: 100%;
+  left: 0;
+  z-index: @zindexDropdown;
+  display: none; // none by default, but block on "open" of the menu
+  float: left;
+  min-width: 160px;
+  margin: 0px 0 0; // override default ul
+  list-style: none;
+  background-color: @dropdownBackground;
+  border: 2px solid #ccc; // Fallback for IE7-8
+  border: 2px solid @dropdownBorder;
+  *border-right-width: 2px;
+  *border-bottom-width: 2px;
+  //.border-radius(6px);
+  //.box-shadow(0 5px 10px rgba(0,0,0,.2));
+  /*-webkit-background-clip: padding-box;
+     -moz-background-clip: padding;
+          background-clip: padding-box;*/
+
+  // Aligns the dropdown menu to right
+  &.pull-right {
+    right: 0;
+    left: auto;
+  }
+
+  // Dividers (basically an hr) within the dropdown
+  .divider {
+    .nav-divider(@dropdownDividerTop, @dropdownDividerBottom);
+  }
+
+  // Links within the dropdown menu
+  li > a {
+    display: block;
+    padding: 5px 10px;
+    height: auto;
+    clear: both;
+    font-weight: normal;
+    //line-height: @baseLineHeight;
+    white-space: nowrap;
+  }
+}
+
+// Hover state
+// -----------
+.dropdown-menu li > a:hover,
+.dropdown-menu li > a:focus,
+.dropdown-submenu:hover > a {
+  text-decoration: none;
+  //color: @dropdownLinkColorHover;
+  //#gradient > .vertical(@dropdownLinkBackgroundHover, darken(@dropdownLinkBackgroundHover, 5%));
+}
+
+// Active state
+// ------------
+.dropdown-menu .active > a,
+.dropdown-menu .active > a:hover {
+  //color: @dropdownLinkColorActive;
+  text-decoration: none;
+  outline: 0;
+  //#gradient > .vertical(@dropdownLinkBackgroundActive, darken(@dropdownLinkBackgroundActive, 5%));
+}
+
+// Disabled state
+// --------------
+// Gray out text and ensure the hover state remains gray
+.dropdown-menu .disabled > a,
+.dropdown-menu .disabled > a:hover {
+  color: @grayLight;
+}
+// Nuke hover effects
+.dropdown-menu .disabled > a:hover {
+  text-decoration: none;
+  background-color: transparent;
+  background-image: none; // Remove CSS gradient
+  .reset-filter();
+  cursor: default;
+}
+
+// Open state for the dropdown
+// ---------------------------
+.open {
+  // IE7's z-index only goes to the nearest positioned ancestor, which would
+  // make the menu appear below buttons that appeared later on the page
+  *z-index: @zindexDropdown;
+
+  & > .dropdown-menu {
+    display: block;
+  }
+}
