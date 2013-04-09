@@ -1,7 +1,7 @@
 .masthead
 {
 	position: fixed;
-	z-index: 9999;
+	z-index: @zindexFixedNavbar;
 	top: 0;
 	left: 0;
 	right: 0;
@@ -51,7 +51,25 @@
 				margin: 0;
 				width: 182px;
 				height: 40px;
-				background: url('../img/sprite.png') no-repeat left -500px;
+				background: url('../img/sprite.png') no-repeat left -550px;
+				.hide-text();
+			}
+		}
+
+		li.mobile-branding
+		{
+			display: none;
+			float: none;
+			width: 182px;
+			margin: 0 auto;
+
+			a
+			{
+				display: block;
+				margin: 0;
+				width: 182px;
+				height: 40px;
+				background: url('../img/sprite.png') no-repeat left -550px;
 				.hide-text();
 			}
 		}
@@ -65,7 +83,7 @@
 				display: block;
 				height: 40px;
 				width: 40px;
-				background: url('../img/sprite.png') no-repeat 5px -443px;
+				background: url('../img/sprite.png') no-repeat 5px -493px;
 				.hide-text();
 			}
 		}
@@ -79,7 +97,7 @@
 				display: block;
 				height: 40px;
 				width: 40px;
-				background: url('../img/sprite.png') no-repeat 5px -393px;
+				background: url('../img/sprite.png') no-repeat 5px -443px;
 				.hide-text();
 			}
 
@@ -90,22 +108,4 @@
 		}
 	}
 
-	ul.pull-right
-	{
-		float: right;
-
-		> li
-		{
-			float: left;
-			
-			a
-			{
-				display: block;
-				height: 40px;
-				width: 40px;
-				background: url('../img/sprite.png') no-repeat 5px -193px;
-				.hide-text();
-			}
-		}
-	}
 }

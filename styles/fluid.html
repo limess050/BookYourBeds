@@ -12,6 +12,7 @@
 	<!--[if IE]> <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
 
 	<script type="text/javascript" src="/styles/assets/js/jquery.js"></script>
+	<script type="text/javascript" src="/styles/assets/js/bootstrap-modal.js"></script>
 </head>
 
 <body>
@@ -20,6 +21,7 @@
 	<ul>
 		<li class="mobile-menu"><a href="#" onclick="$('.sidebar').toggleClass('show'); return false;">Menu</a></li>
 		<li class="branding"><h3>Book Your Beds</h3></li>
+		<li class="mobile-branding"><a href="#"></a></li>
 		<li class="pull-right"><a href="#" onclick="$('#search-form').toggle(); $(this).toggleClass('active'); return false;">Search</a></li>
 	</ul>
 
@@ -30,7 +32,7 @@
 
 <nav class="sidebar">
 	<ul class="side-nav">
-		<li class="nav-dashboard"><a href="#">Dashboard</a></li>
+		<li class="nav-dashboard hidden-phone"><a href="#">Dashboard</a></li>
 		<li class="nav-diary"><a href="#">Diary</a></li>
 		<li class="nav-rooms  selected"><a href="#">Rooms</a></li>
 		<li class="nav-availability"><a href="#">Availability</a></li>
@@ -41,11 +43,12 @@
 	<ul class="side-nav bottom">
 		<li class="nav-settings"><a href="#">Settings</a></li>
 		<li class="nav-user"><a href="#">Personal</a></li>
+		<li class="nav-help"><a href="#" data-target="#help_modal" data-toggle="modal">Help</a></li>
 	</ul>
 </nav>
 
 <div class="body">
-	<div id="lipsum">
+	<div class="container-fluid">
 <p>
 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec diam urna, hendrerit id pellentesque ut, rhoncus sed lacus. Aliquam luctus, quam et sagittis tempor, ligula ipsum elementum massa, et luctus enim sapien nec tortor. Curabitur sem tellus, venenatis convallis mollis at, pretium ut dui. Phasellus sagittis nulla et turpis vestibulum sed aliquam diam faucibus. Integer feugiat ante at eros sagittis ut porttitor turpis commodo. Nullam arcu turpis, ornare ut mattis vel, lacinia scelerisque lacus. Proin et tellus lorem, ac sagittis libero. Aenean id justo sit amet magna vehicula tempus. Integer blandit gravida eros. Praesent tincidunt aliquam turpis volutpat luctus. Nulla velit nisl, ornare faucibus sodales in, accumsan in orci. Nullam ultricies interdum dui eget congue. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Suspendisse magna augue, accumsan id sodales a, tempus non magna. Praesent at nulla quis mi pellentesque sagittis.
 </p>
@@ -72,6 +75,19 @@ Praesent vel lacus eu erat commodo blandit. Nulla facilisi. Class aptent taciti 
 </p></div>
 </div>
 
+<div id="help_modal" class="modal hide fade">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h3>Help</h3>
+    </div>
+    
+    <div class="modal-body">
+    	
+	</div>
+	<!--<div class="modal-footer">
+	    <a href="#" class="btn" data-dismiss="modal">Close</a>
+	</div>-->
+</div>
 
 </body>
 
