@@ -1,0 +1,60 @@
+.masthead
+{
+	position: fixed;
+	z-index: 9999;
+	top: 0;
+	left: 0;
+	right: 0;
+	padding: 0 10px;
+	height: 40px;
+	background: @green;
+	.clearfix();
+
+	ul
+	{
+		margin: 0;
+		padding: 0;
+		list-style-type: none;
+		float: left;
+
+		li
+		{
+
+		}
+
+		li.branding
+		{
+
+			h3
+			{
+				margin: 0;
+				width: 181px;
+				height: 40px;
+				background: url('../img/byb-logo-full.png') no-repeat left;
+				.hide-text();
+			}
+		}
+	}
+
+	ul.pull-right
+	{
+		float: right;
+
+		> li
+		{
+			float: left;
+			
+			a
+			{
+				display: block;
+				padding: 9px 7px 0px;
+				height: 31px;
+				_height:40px;
+				font-family: 'Pictos Custom';
+				text-decoration: none;
+				color: #fff;
+				font-size: 28px;
+			}
+		}
+	}
+}

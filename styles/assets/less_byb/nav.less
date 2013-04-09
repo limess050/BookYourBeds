@@ -1,19 +1,48 @@
 ul.side-nav
 {
-	margin: 0;
+	margin: 10px 0 0 0;
 	padding: 0;
 	list-style-type: none;
 	width: 200px;
 
 	li
 	{
-		padding: 10px;
+		margin: 0 10px 10px 10px;
 
 		a
 		{
 			display: block;
-			background: @grayLight;
+			padding: 10px 10px 10px 10px;
+			text-decoration: none;
+			.clearfix();
 		}
+
+		a:before
+		{
+			float: left;
+			content: "";
+			width: 22px;
+			height: 22px;
+			margin-right: 10px;
+			margin-top: -4px;	
+			background-image: url('../img/sprite.png');
+			background-repeat: no-repeat;
+		}
+	}
+
+	li.nav-dashboard a:before
+	{
+		background-position: left top;
+	}
+
+	li.nav-diary a:before
+	{
+		background-position: left -50px;
+	}
+
+	li.selected
+	{
+		background: @grayLight;
 	}
 }
 
