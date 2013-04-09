@@ -25,9 +25,10 @@ class Admin_Controller extends MY_Controller
 			->set_partial('form_errors', 'partials/form_errors')
 			
 			->append_metadata( js('jquery.js') )
+			->append_metadata( js('bootstrap-modal.js') )
 			->append_metadata( js('bootstrap-dropdown.js') )
 
-			->append_metadata( css('admin.css') )
+			->append_metadata( css('style.css') )
 			->append_metadata( js('application.js') )
 			->append_metadata( js('spin.js') )
 			->append_metadata( js('holder.js') )

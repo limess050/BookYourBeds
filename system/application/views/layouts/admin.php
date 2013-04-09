@@ -1,156 +1,77 @@
-<!DOCTYPE html>
-<html>
+<!doctype html>
+
+<html lang="en">
 <head>
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<!-- Always force latest IE rendering engine & Chrome Frame -->
-	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta charset="utf-8">
 
 	<title><?php echo account('name'); ?></title>
 	
 	<base href="<?php echo base_url(); ?>" />
+
+	<meta name="description" content="Book Your Beds Admin">
+	<meta name="author" content="Book Your Beds">
+	<meta name="viewport" content="width=device-width; initial-scale=1; maximum-scale=1; user-scalable=0;">
+	<meta name="apple-mobile-web-app-capable" content="yes" />
 	
-	<!-- Mobile Viewport Fix -->
-	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-	
-			
-	<!--[if lt IE 9]><script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]--> 
-	
-	<script type="text/javascript">
-	    var APPPATH_URI = "<?php //echo APPPATH_URI;?>";
-	    var BASE_URL = "<?php //echo rtrim(site_url(), '/').'/';?>";
-	    var BASE_URI = "<?php //echo BASE_URI;?>";
-	    var MODAL = 0;
-	</script>
+	<!--[if IE]> <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
 
 	<?php echo $template['metadata']; ?>
+
 </head>
 
 <body>
 
-<div id="well" style="display: none;">
-	<div id="modal">
-		
+<header class="masthead">
+	<ul>
+		<li class="mobile-menu"><a href="#" onclick="$('.sidebar').toggleClass('show'); return false;">Menu</a></li>
+		<li class="branding"><h3>Book Your Beds</h3></li>
+		<li class="mobile-branding"><?php echo anchor('admin', 'Dashboard'); ?></li>
+		<li class="pull-right"><a href="#" onclick="$('#search-form').toggle(); $(this).toggleClass('active'); return false;">Search</a></li>
+	</ul>
+
+	<?php echo form_open('admin/bookings/search', 'id="search-form"'); ?>
+    	<input type="text" name="search_terms" placeholder="Search for something..." />
+  	</form>
+</header>
+
+<nav class="sidebar">
+	<ul class="side-nav">
+		<li class="nav-dashboard hidden-phone <?php echo select_if_current('dashboard'); ?>"><?php echo anchor('admin', 'Dashboard'); ?></li>
+		<li class="nav-diary <?php echo select_if_current('bookings'); ?>"><?php echo anchor('admin/bookings', 'Diary'); ?></li>
+		<li class="nav-rooms <?php echo select_if_current('resources'); ?>"><?php echo anchor('admin/resources', 'Rooms'); ?></li>
+		<li class="nav-availability <?php echo select_if_current('availability'); ?>"><?php echo anchor('admin/availability', 'Availability'); ?></li>
+		<li class="nav-supplements <?php echo select_if_current('supplements'); ?>"><?php echo anchor('admin/supplements', 'Supplements'); ?></li>
+		<li class="nav-salesdesk <?php echo select_if_current('salesdesk'); ?>"><?php echo anchor('admin/salesdesk', 'Sales Desk'); ?></li>
+	</ul>
+
+	<ul class="side-nav bottom">
+		<li class="nav-settings"><a href="#">Settings</a></li>
+		<li class="nav-user"><a href="#">Personal</a></li>
+		<li class="nav-help"><a href="<?php echo site_url('admin/remote/help?curi=' . $this->uri->rsegment(1) . '/' .  $this->uri->rsegment(2)); ?>" data-target="#help_modal" data-toggle="modal">Help</a></li>
+	</ul>
+</nav>
+
+<div class="body">
+	<div class="container-fluid">
+		<?php echo $template['body']; ?>
+
 	</div>
 </div>
 
-<div class="navbar navbar-inverse navbar-fixed-top">
-	<div class="navbar-inner">
-		<div class="container">
-			
-			<ul class="nav">
-				<li>
-					<?php echo anchor('admin', account('name') . " <span class=\"badge badge-success\">{$this->account->bookings}</span> <span class=\"badge badge-warning\">{$this->account->unverified}</span> <span class=\"badge badge-important\">{$this->account->cancelled}</span>"); ?>
-				</li>
-
-				<?php if(session('user', 'user_id')) { ?>
-				
-				<?php if(account('active')) { ?>
-				<li><?php echo anchor('admin/bookings', 'Diary'); ?></li>
-				<?php } ?>
-
-				<li class="dropdown">
-					<a href="#" class="dropdown-toggle" data-toggle="dropdown">Rooms <b class="caret"></b></a>
-					
-					<ul class="dropdown-menu" role="menu">
-						<li><?php echo anchor('admin/resources', 'Your Rooms'); ?></li>
-						<li><?php echo anchor('admin/availability', 'Availability'); ?></li>
-						<li><?php echo anchor('admin/supplements', 'Supplements'); ?></li>
-					</ul>
-                </li>
-			</ul>
-
-			<?php if(account('active')) { ?>
-            <?php echo form_open('admin/bookings/search', 'class="navbar-search pull-left"'); ?>
-            	<input type="text" class="search-query span2" name="search_terms" placeholder="Search..." />
-          	</form>
-          	<?php } ?>
-
-			<ul class="nav pull-right">
-				<?php if(account('active')) { ?>
-				<li><?php echo anchor('admin/salesdesk', 'Sales Desk'); ?></li>
-				<?php } ?>
-				
-				<?php if(session('user', 'user_is_admin') && account('active')) { ?>
-				<li class="divider-vertical"></li>
-
-				<li class="dropdown">
-				    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="icon-cog icon-white"></i> <b class="caret"></b></a>
-				    <ul class="dropdown-menu">
-				        <!--<li><a href="<?php echo site_url('admin/users'); ?>"><i class="icon-user"></i> Users</a></li>-->
-				        <li><a href="<?php echo site_url('admin/settings/account'); ?>"><i class="icon-home"></i> Account Settings</a></li>
-				        <li><a href="<?php echo site_url('admin/settings/payments'); ?>"><i class="icon-shopping-cart"></i> Payment Options</a></li>
-				        <!--<li><a href="<?php echo site_url('admin/settings/invoice'); ?>"><i class="icon-file"></i> Invoice/Receipt Settings</a></li>-->
-				        <li><a href="<?php echo site_url('admin/settings/bookings'); ?>"><i class="icon-book"></i> Booking Settings</a></li>
-				        <li><a href="<?php echo site_url('admin/seasons'); ?>"><i class="icon-calendar"></i> Seasons</a></li>
-				    </ul>
-				</li>
-				<?php } ?>
-				
-				<li class="divider-vertical"></li>
-
-				<li class="dropdown">
-					<a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="icon-user icon-white"></i> <b class="caret"></b></a>
-					
-					<ul class="dropdown-menu">
-						<li><?php echo anchor('signout', 'Sign Out', null, FALSE); ?></li>
-						<li><?php echo anchor('admin/users/me', 'Edit Your Details'); ?></li>
-					</ul>
-				</li>
-            </ul>
-            <?php } ?>
-		</div>
-	</div>
+<div id="help_modal" class="modal hide fade">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h3>Help</h3>
+    </div>
+    
+    <div class="modal-body">
+    	<div style="text-align: center;"><?php echo image('ajax-loader.gif'); ?></div>
+    </div>
+	<!--<div class="modal-footer">
+	    <a href="#" class="btn" data-dismiss="modal">Close</a>
+	</div>-->
 </div>
-
-
-<div class="container">
-	<div id="alert_bar" style="display: none;"></div>
-
-	<?php echo $template['body']; ?>
-
-	<footer>
-		&copy; Copyright <?php echo date('Y'); ?> <?php if(account('id')) { ?>| <?php echo account('name'); ?><?php echo (account('active')) ? ' | ' . anchor('', 'Go to site...') : ''; } ?>
-	</footer>
-
-</div>
-
-<script type="text/javascript">
-<!--
-	$(document).ready(function() {
-		var isCtrl = false;
-
-		$(document).keyup(function (e) {
-			if(e.which == 17) isCtrl=false;
-		});
-		
-		$(document).keydown(function (e) {
-			if(e.which == 17) isCtrl=true;
-			if(e.which == 78 && isCtrl == true) {
-				if(MODAL === 0)
-				{
-					e.preventDefault();
-					openModal('admin/bookings/create_modal');
-				}
-			}
-		});
-
-
-
-
-		
-
-		<?php if($this->session->flashdata('msg')) { ?>
-		growl('<?php echo $this->session->flashdata('msg'); ?>', '');
-		<?php } ?>
-		<?php if( ! empty($_flash_msg)) { ?>
-		growl('<?php echo $_flash_msg; ?>', '');
-		<?php } ?>
-	});
--->
-</script>
-
-<!-- Growl-style alerts. Grrrr! -->
-<div id="growl"></div>
 
 </body>
+
 </html>

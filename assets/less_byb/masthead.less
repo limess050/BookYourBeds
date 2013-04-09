@@ -1,0 +1,111 @@
+.masthead
+{
+	position: fixed;
+	z-index: @zindexFixedNavbar;
+	top: 0;
+	left: 0;
+	right: 0;
+	padding: 0;
+	height: 40px;
+	background: @mainColour;
+	.clearfix();
+
+	form
+	{
+		display: none;
+		padding: 5px;
+		background: #ccc;
+		position: relative;
+
+		input
+		{
+			margin: 0;
+			padding: 1%;
+			border: none;
+			display: block;
+			width: 98%;
+			font-size: 20px;
+			font-weight: normal;
+			
+		}
+	}
+
+	ul
+	{
+		margin: 0 10px;
+		padding: 0;
+		list-style-type: none;
+		//float: left;
+		.clearfix();
+
+		li
+		{
+			float: left;
+		}
+
+		li.branding
+		{
+
+			h3
+			{
+				margin: 0;
+				width: 182px;
+				height: 40px;
+				background: url('../img/sprite.png') no-repeat left -550px;
+				.hide-text();
+			}
+		}
+
+		li.mobile-branding
+		{
+			display: none;
+			float: none;
+			width: 182px;
+			margin: 0 auto;
+
+			a
+			{
+				display: block;
+				margin: 0;
+				width: 182px;
+				height: 40px;
+				background: url('../img/sprite.png') no-repeat left -550px;
+				.hide-text();
+			}
+		}
+
+		li.mobile-menu
+		{
+			display: none;
+
+			a
+			{
+				display: block;
+				height: 40px;
+				width: 40px;
+				background: url('../img/sprite.png') no-repeat 5px -493px;
+				.hide-text();
+			}
+		}
+
+		li.pull-right
+		{
+			float: right;
+
+			a
+			{
+				display: block;
+				height: 40px;
+				width: 40px;
+				background: url('../img/sprite.png') no-repeat 5px -443px;
+				.hide-text();
+			}
+
+			a.active
+			{
+				background-color: #ccc;
+			}
+		}
+	}
+
+}

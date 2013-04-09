@@ -23,3 +23,10 @@ function session($key, $subkey = null)
 		}
 	}
 }
+
+function select_if_current($controller)
+{
+	$CI =& get_instance();
+	
+	return ($CI->uri->rsegment(1) == $controller) ? 'selected' : ''; 
+}
