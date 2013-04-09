@@ -22,6 +22,7 @@ ul.side-nav
 			background-image: url('../img/sprite.png');
 			background-repeat: no-repeat;
 			background-color: transparent;
+			.apple-text();
 			.border-radius(5px);
 		}
 
@@ -79,7 +80,9 @@ ul.side-nav
 		a
 		{
 			color: #fff;
-			background-color: @grayLight;
+			.shadowed-text();
+			background-color: @mainColour; //darken(@blueDark, 10);
+			.box-shadow(inset 0 1px 1px rgba(0,0,0,0.5));
 		}
 	}
 
