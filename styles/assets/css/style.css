@@ -451,6 +451,7 @@ ul.side-nav.bottom {
 @media only screen and (max-width: 400px) {
   .masthead ul {
     text-align: center;
+    margin: 0 5px;
   }
   .masthead ul li.branding {
     float: none;
@@ -475,8 +476,10 @@ ul.side-nav.bottom {
   .sidebar ul.side-nav {
     top: auto;
     width: auto;
+    margin-top: 5px;
   }
   .sidebar ul.side-nav li {
+    margin: 0 5px 2px 5px;
     width: auto;
   }
   .sidebar ul.side-nav li a {
