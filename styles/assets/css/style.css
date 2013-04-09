@@ -203,12 +203,14 @@ body {
 }
 .sidebar {
   position: fixed;
+  z-index: 9998;
   top: 0;
   left: 0;
   bottom: 0;
+  display: block;
   width: 200px;
   padding-top: 40px;
-  background: #eeeeee;
+  background: #eeeeee url('../img/lines-45.png');
 }
 .container {
   position: absolute;
@@ -225,9 +227,9 @@ body {
   top: 0;
   left: 0;
   right: 0;
-  padding: 0 10px;
+  padding: 0;
   height: 40px;
-  background: #46a546;
+  background: #7a43b6;
   *zoom: 1;
 }
 .masthead:before,
@@ -239,22 +241,86 @@ body {
 .masthead:after {
   clear: both;
 }
-.masthead ul {
+.masthead form {
+  display: none;
+  padding: 5px;
+  background: #ccc;
+  position: relative;
+}
+.masthead form input {
   margin: 0;
+  padding: 1%;
+  border: none;
+  display: block;
+  width: 98%;
+  font-size: 20px;
+  font-weight: normal;
+}
+.masthead form input ::-webkit-input-placeholder,
+.masthead form input :-moz-placeholder,
+.masthead form input ::-moz-placeholder,
+.masthead form input :-ms-input-placeholder {
+  color: #999;
+}
+.masthead ul {
+  margin: 0 10px;
   padding: 0;
   list-style-type: none;
+  *zoom: 1;
+}
+.masthead ul:before,
+.masthead ul:after {
+  display: table;
+  content: "";
+  line-height: 0;
+}
+.masthead ul:after {
+  clear: both;
+}
+.masthead ul li {
   float: left;
 }
 .masthead ul li.branding h3 {
   margin: 0;
-  width: 181px;
+  width: 182px;
   height: 40px;
-  background: url('../img/byb-logo-full.png') no-repeat left;
+  background: url('../img/sprite.png') no-repeat left -500px;
   font: 0/0 a;
   color: transparent;
   text-shadow: none;
   background-color: transparent;
   border: 0;
+}
+.masthead ul li.mobile-menu {
+  display: none;
+}
+.masthead ul li.mobile-menu a {
+  display: block;
+  height: 40px;
+  width: 40px;
+  background: url('../img/sprite.png') no-repeat 5px -443px;
+  font: 0/0 a;
+  color: transparent;
+  text-shadow: none;
+  background-color: transparent;
+  border: 0;
+}
+.masthead ul li.pull-right {
+  float: right;
+}
+.masthead ul li.pull-right a {
+  display: block;
+  height: 40px;
+  width: 40px;
+  background: url('../img/sprite.png') no-repeat 5px -393px;
+  font: 0/0 a;
+  color: transparent;
+  text-shadow: none;
+  background-color: transparent;
+  border: 0;
+}
+.masthead ul li.pull-right a.active {
+  background-color: #ccc;
 }
 .masthead ul.pull-right {
   float: right;
@@ -264,13 +330,14 @@ body {
 }
 .masthead ul.pull-right > li a {
   display: block;
-  padding: 9px 7px 0px;
-  height: 31px;
-  _height: 40px;
-  font-family: 'Pictos Custom';
-  text-decoration: none;
-  color: #fff;
-  font-size: 28px;
+  height: 40px;
+  width: 40px;
+  background: url('../img/sprite.png') no-repeat 5px -193px;
+  font: 0/0 a;
+  color: transparent;
+  text-shadow: none;
+  background-color: transparent;
+  border: 0;
 }
 body {
   font-family: "Helvetica", Arial, sans-serif;
@@ -287,37 +354,76 @@ ul.side-nav li {
 }
 ul.side-nav li a {
   display: block;
-  padding: 10px 10px 10px 10px;
+  padding: 12px 10px 0 42px;
+  height: 28px;
+  _height: 40px;
+  font-size: 14px;
   text-decoration: none;
-  *zoom: 1;
-}
-ul.side-nav li a:before,
-ul.side-nav li a:after {
-  display: table;
-  content: "";
-  line-height: 0;
-}
-ul.side-nav li a:after {
-  clear: both;
-}
-ul.side-nav li a:before {
-  float: left;
-  content: "";
-  width: 22px;
-  height: 22px;
-  margin-right: 10px;
-  margin-top: -4px;
+  color: #999999;
   background-image: url('../img/sprite.png');
   background-repeat: no-repeat;
+  background-color: transparent;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
 }
-ul.side-nav li.nav-dashboard a:before {
-  background-position: left top;
+ul.side-nav li a:hover {
+  background-color: rgba(130, 130, 130, 0.1);
+  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+  -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
 }
-ul.side-nav li.nav-diary a:before {
-  background-position: left -50px;
+ul.side-nav li.nav-dashboard a {
+  background-position: 7px 10px;
 }
-ul.side-nav li.selected {
-  background: #999999;
+ul.side-nav li.nav-diary a {
+  background-position: 7px -40px;
+}
+ul.side-nav li.nav-settings a {
+  background-position: 7px -90px;
+}
+ul.side-nav li.nav-user a {
+  background-position: 7px -140px;
+}
+ul.side-nav li.nav-rooms a {
+  background-position: 7px -190px;
+}
+ul.side-nav li.nav-availability a {
+  background-position: 7px -240px;
+}
+ul.side-nav li.nav-supplements a {
+  background-position: 7px -290px;
+}
+ul.side-nav li.nav-salesdesk a {
+  background-position: 7px -340px;
+}
+ul.side-nav li.selected a {
+  color: #fff;
+  background-color: #999999;
+}
+ul.side-nav li.nav-dashboard.selected a {
+  background-position: -465px 10px;
+}
+ul.side-nav li.nav-diary.selected a {
+  background-position: -465px -40px;
+}
+ul.side-nav li.nav-settings.selected a {
+  background-position: -465px -90px;
+}
+ul.side-nav li.nav-user.selected a {
+  background-position: -465px -140px;
+}
+ul.side-nav li.nav-rooms.selected a {
+  background-position: -465px -190px;
+}
+ul.side-nav li.nav-availability.selected a {
+  background-position: -465px -240px;
+}
+ul.side-nav li.nav-supplements.selected a {
+  background-position: -465px -290px;
+}
+ul.side-nav li.nav-salesdesk.selected a {
+  background-position: -465px -340px;
 }
 ul.side-nav.bottom {
   position: fixed;
@@ -326,6 +432,7 @@ ul.side-nav.bottom {
 @media only screen and (max-width: 768px) {
   .sidebar {
     width: 62px;
+    display: block;
   }
   .container {
     left: 62px;
@@ -335,16 +442,50 @@ ul.side-nav.bottom {
     width: 62px;
   }
   ul.side-nav li a {
-    font: 0/0 a;
-    color: transparent;
-    text-shadow: none;
-    background-color: transparent;
-    border: 0;
+    width: 0px;
+    padding-left: 42px;
+    padding-right: 0;
+    overflow: hidden;
   }
 }
 @media only screen and (max-width: 400px) {
+  .masthead ul {
+    text-align: center;
+  }
+  .masthead ul li.branding {
+    float: none;
+    width: 182px;
+    margin: 0 auto;
+  }
+  .masthead ul li.mobile-menu {
+    display: block;
+  }
+  .masthead ul li.pull-right {
+    float: none;
+    position: absolute;
+    right: 10px;
+    top: 0;
+  }
   .sidebar {
     display: none;
+    bottom: auto;
+    right: 0;
+    width: auto;
+  }
+  .sidebar ul.side-nav {
+    top: auto;
+    width: auto;
+  }
+  .sidebar ul.side-nav li {
+    width: auto;
+  }
+  .sidebar ul.side-nav li a {
+    width: auto;
+    padding: 12px 10px 0 42px;
+  }
+  ul.side-nav.bottom {
+    position: relative;
+    bottom: auto;
   }
   .container {
     left: 0;

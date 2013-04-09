@@ -1,8 +1,62 @@
 @media only screen and (max-width : 400px) 
 { 
+	.masthead
+	{
+		ul
+		{
+			text-align: center;
+
+			li.branding
+			{
+				float: none;
+				width: 182px;
+				margin: 0 auto;
+			}
+		
+			li.mobile-menu
+			{
+				display: block;
+			}
+
+			li.pull-right
+			{
+				float: none;
+				position: absolute;
+				right: 10px;
+				top: 0;
+			}
+		}
+	}
+
 	.sidebar
 	{
 		display: none;
+		bottom: auto;
+		right: 0;
+		width: auto;
+
+		ul.side-nav
+		{
+			top: auto;
+			width: auto;
+
+			li
+			{
+				width: auto;
+
+				a
+				{
+					width: auto;
+					padding: 12px 10px 0 42px;
+				}
+			}
+		}
+	}
+
+	ul.side-nav.bottom
+	{
+		position: relative;
+		bottom: auto;
 	}
 
 	.container

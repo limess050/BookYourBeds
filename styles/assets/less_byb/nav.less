@@ -8,42 +8,121 @@ ul.side-nav
 	li
 	{
 		margin: 0 10px 10px 10px;
+		//background: lighten(@grayLight, 25);
 
 		a
 		{
 			display: block;
-			padding: 10px 10px 10px 10px;
+			padding: 12px 10px 0 42px;
+			height: 28px;
+			_height: 40px;
+			font-size: 14px;
 			text-decoration: none;
-			.clearfix();
-		}
-
-		a:before
-		{
-			float: left;
-			content: "";
-			width: 22px;
-			height: 22px;
-			margin-right: 10px;
-			margin-top: -4px;	
+			color: #999999;
 			background-image: url('../img/sprite.png');
 			background-repeat: no-repeat;
+			background-color: transparent;
+			.border-radius(5px);
+		}
+
+		a:hover
+		{
+			background-color: rgba(130,130,130, 0.1);
+			.box-shadow(inset 0 1px 1px rgba(0,0,0,.075));
 		}
 	}
 
-	li.nav-dashboard a:before
+	li.nav-dashboard a
 	{
-		background-position: left top;
+		background-position: 7px 10px;
 	}
 
-	li.nav-diary a:before
+	li.nav-diary a
 	{
-		background-position: left -50px;
+		background-position: 7px -40px;
+	}
+
+	li.nav-settings a
+	{
+		background-position: 7px -90px;
+	}
+
+	li.nav-user a
+	{
+		background-position: 7px -140px;
+	}
+
+	li.nav-rooms a
+	{
+		background-position: 7px -190px;
+	}
+
+	li.nav-availability a
+	{
+		background-position: 7px -240px;
+	}
+
+	li.nav-supplements a
+	{
+		background-position: 7px -290px;
+	}
+
+	li.nav-salesdesk a
+	{
+		background-position: 7px -340px;
 	}
 
 	li.selected
 	{
-		background: @grayLight;
+		//background: @grayLight;
+
+		a
+		{
+			color: #fff;
+			background-color: @grayLight;
+		}
 	}
+
+	li.nav-dashboard.selected a
+	{
+		background-position: -465px 10px;
+	}
+
+	li.nav-diary.selected a
+	{
+		background-position: -465px -40px;
+	}
+
+	li.nav-settings.selected a
+	{
+		background-position: -465px -90px;
+	}
+
+	li.nav-user.selected a
+	{
+		background-position: -465px -140px;
+	}
+
+	li.nav-rooms.selected a
+	{
+		background-position: -465px -190px;
+	}
+
+	li.nav-availability.selected a
+	{
+		background-position: -465px -240px;
+	}
+
+	li.nav-supplements.selected a
+	{
+		background-position: -465px -290px;
+	}
+
+	li.nav-salesdesk.selected a
+	{
+		background-position: -465px -340px;
+	}
+
 }
 
 ul.side-nav.bottom
