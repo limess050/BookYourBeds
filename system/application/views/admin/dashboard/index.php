@@ -28,11 +28,13 @@
 
 <div class="row-fluid tab-content">
 	<div class="tab-pane" id="today">
+		<?php if(empty($tabs['today'])) { ?>
+		<div class="well">
+			<h3 class="marker today">No Bookings Arriving Today</h3>
+		</div>
+		<?php } else { ?>
 		<h1 class="page-header">Arriving Today</h1>
 
-		<?php if(empty($tabs['today'])) { ?>
-		<p><span class="label label-important">NO BOOKINGS ARRIVING TODAY</span></p>
-		<?php } else { ?>
 		<?php echo form_open('admin/bookings/checkin'); ?>
 		<table class="table table-condensed table-striped table-hover" id="arrivals">
 			<thead>
@@ -71,8 +73,13 @@
 	</div>
 
 	<div class="tab-pane" id="new">
+		<?php if(empty($tabs['new'])) { ?>
+		<div class="well">
+			<h3 class="marker new">No New Bookings</h3>
+		</div>
+
+		<?php } else { ?>
 		<h1 class="page-header">New Bookings</h1>
-		<?php if( ! empty($tabs['new'])) { ?>
 
 		<table class="table table-condensed table-striped table-hover">
 			<thead>
@@ -108,8 +115,14 @@
 	</div>
 
 	<div class="tab-pane" id="unverified">
+		
+		<?php if(empty($tabs['unverified'])) { ?>
+		<div class="well">
+			<h3 class="marker unverified">No Bookings Awaiting Verification</h3>
+		</div>
+		<?php } else { ?>
 		<h1 class="page-header">Bookings Awaiting Verification</h1>
-		<?php if( ! empty($tabs['unverified'])) { ?>
+
 		<table class="table table-condensed table-striped table-hover">
 			<thead>
 				<tr>
@@ -144,9 +157,13 @@
 	</div>
 
 	<div class="tab-pane" id="cancelled">
+		<?php if(empty($tabs['cancelled'])) { ?>
+		<div class="well">
+			<h3 class="marker cancelled">No New Cancellations</h3>
+		</div>
+		<?php } else { ?>
 		<h1 class="page-header">New Cancellations</h1>
 
-		<?php if( ! empty($tabs['cancelled'])) { ?>
 		<table class="table table-condensed table-striped table-hover">
 			<thead>
 				<tr>
