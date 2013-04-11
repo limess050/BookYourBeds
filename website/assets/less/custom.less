@@ -1,3 +1,14 @@
+@import url(http://fonts.googleapis.com/css?family=Economica);
+@import url(http://fonts.googleapis.com/css?family=Maven+Pro);
+
+h3
+{
+	//font-family: 'Economica', sans-serif;
+	font-family: 'Maven Pro', sans-serif;
+	font-weight: normal;
+	font-size: 26px;
+}
+
 header
 {
 	position: absolute;
@@ -28,8 +39,8 @@ header
 		text-align:center;
 		color: #fff;
 		.shadowed-text();
-		height:490px;
-		_height:550px;
+		height:440px;
+		_height:500px;
 		left: 0;
 		right: 0;
 		background-image: url('../img/hero.jpg');
@@ -47,19 +58,26 @@ header
 			margin: 0 auto 20px auto;
 		}
 
-		.row
-		{
-			margin-top: 40px;
-			text-align: left;
-		}
+		
 	}
 }
 
-section
+.more
 {
-	position: relative;
-	top: 540px;
+	display: none;
+	padding: 10px;
+	background: lighten(@orange, 30);
+}
+
+.intro
+{
+	padding-top: 490px;
 	padding-bottom: 20px;
+
+	.row
+	{
+		margin-bottom: 20px;
+	}
 }
 
 .carousel
@@ -75,8 +93,128 @@ section
 
 .pullout
 {
-	margin: 20px 0;
+	position: relative;
+	margin: 0;
 	padding: 20px 0;
-	background: @gray;
 	color: #fff;
+}
+
+.pullout.features
+{
+	margin-top: 20px;
+	background: black;
+
+	.row
+	{
+		margin-bottom: 20px;
+	}
+}
+
+.pullout.about
+{
+	background: @gray;
+}
+
+.pullout.free-trial
+{
+	background: lighten(@orange, 15);
+}
+
+.pullout.pricing
+{
+	background: @orange;
+	color: #000;
+
+	.span-price
+	{
+		width: 135px;
+
+		.well
+		{
+			padding: 5px;
+			text-align: center;
+		   .buttonBackground(@btnWarningBackground, @btnWarningBackgroundHighlight);
+		  border: 1px solid darken(@orange, 5%);
+		  *border: 0; // Remove the border to prevent IE7's black border on input:focus
+		  border-bottom-color: darken(@orange, 20%);
+		  .border-radius(@baseBorderRadius);
+		  .ie7-restore-left-whitespace(); // Give IE7 some love
+		  .box-shadow(~"inset 0 1px 0 rgba(255,255,255,.2), 0 1px 2px rgba(0,0,0,.05)");
+
+			h3
+			{
+				margin-top: 0;
+				font-size: 20px;
+			}
+		}
+	}
+}
+
+.pullout.terms
+{	
+	color: #000;
+}
+
+footer
+{
+	background: black;
+	padding: 20px 0;
+	margin-top: 20px;
+	color: #fff;
+}
+
+.centre-block
+{
+	text-align: center;
+}
+
+@media (min-width: 1200px) 
+{
+	
+	.pullout.pricing
+	{
+
+		.span-price
+		{
+			width: 220px;
+
+		}
+	}
+
+}
+
+@media (min-width: 980px) and (max-width: 1199px) {
+	.pullout.pricing
+	{
+
+		.span-price
+		{
+			width: 180px;
+		}
+	}
+}
+
+@media (max-width: 767px) {
+
+  // Padding to set content in a bit
+  .pullout,
+  section
+  {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  h3
+  {
+  	text-align: center;
+  }
+
+  .pullout.pricing
+	{
+		.span-price
+		{
+			width: 100%;
+
+		}
+	}
 }
