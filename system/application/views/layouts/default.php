@@ -1,63 +1,68 @@
-<!DOCTYPE html>
-<html>
+<!doctype html>
+
+<html lang="en">
 <head>
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<!-- Always force latest IE rendering engine & Chrome Frame -->
-	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta charset="utf-8">
+	<title>BookYourBeds.com :: Bookings made simple!</title>
+	<meta name="description" content="Book Your Beds Admin">
+	<meta name="author" content="Book Your Beds">
+	<meta name="viewport" content="width=device-width; initial-scale=1; maximum-scale=1; user-scalable=0;">
+	<meta name="apple-mobile-web-app-capable" content="yes" />
+	<link rel="stylesheet" href="/assets/css/default.css">
+	<!--[if IE]> <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
 
-	<title>BookYourBeds</title>
-	
-	<base href="<?php echo base_url(); ?>" />
-	
-	<!-- Mobile Viewport Fix -->
-	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-	
-			
-	<!--[if lt IE 9]><script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]--> 
-	
-	<script type="text/javascript">
-	    var APPPATH_URI = "<?php //echo APPPATH_URI;?>";
-	    var BASE_URL = "<?php //echo rtrim(site_url(), '/').'/';?>";
-	    var BASE_URI = "<?php //echo BASE_URI;?>";
-	    var MODAL = 0;
-	</script>
+	<script type="text/javascript" src="assets/js/jquery.js"></script>
+	<script type="text/javascript" src="assets/js/bootstrap-transition.js"></script>
+	<script type="text/javascript" src="assets/js/bootstrap-modal.js"></script>
 
-	<?php echo $template['metadata']; ?>
+	
 </head>
 
 <body>
 
-<div id="well" style="display: none;">
-	<div id="modal">
-		
+<header>
+	<div class="masthead">
+		<ul>
+			<li class="pull-left"><a href="<?php echo site_url('signup'); ?>" class="btn btn-warning">SIGNUP</a></li>
+			<li class="pull-right"><a href="<?php echo site_url('signin'); ?>" class="btn btn-warning">LOGIN</a></li>
+			<li class="logo"><a href="<?php echo site_url(); ?>">Home</a></li>
+		</ul>
+
 	</div>
-</div>
 
-<div class="navbar navbar-inverse navbar-fixed-top">
-	<div class="navbar-inner">
-		<div class="container">
-			<a class="brand">BookYourBeds</a>
+	
 
-			<ul class="nav pull-right">
-				<li><?php echo anchor('signup', 'Create a New Account'); ?></li>
-				<li class="divider-vertical"></li>
-				<li><?php echo anchor('signin', 'Sign In'); ?></li>
-            </ul>
+</header>
+
+<section>
+	<div class="container">
+		<?php echo $template['body']; ?>
+	</div>
+
+</section>
+
+
+<footer>
+	<div class="container">
+		<div class="row">
+			<div class="span3 offset1">
+				&copy; 2013 The Bed Booker Ltd.
+			</div>
+
+			<div class="span4 centre-block">
+				<a href="faq.html">Frequently Asked Questions</a>
+			</div>
+
+			<div class="span3">
+				Want updates? Follow <a href="https://twitter.com/thebedbooker">@thebedbooker</a>
+			</div>
+
 		</div>
+
 	</div>
-</div>
 
-
-<div class="container">
-
-	<?php echo $template['body']; ?>
-
-	<footer>
-		&copy; Copyright <?php echo date('Y'); ?> | BookYourBeds.com
-	</footer>
-
-</div>
-
+</footer>
 
 </body>
+
 </html>

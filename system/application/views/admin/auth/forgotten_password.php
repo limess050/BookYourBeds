@@ -1,6 +1,6 @@
 <?php if(empty($sent)) { ?>
 <div class="row">
-	<div class="span8">
+	<div class="span8 offset2">
 		<?php echo form_open('forgotten_password', array('class' => 'form-horizontal')); ?>
 			<fieldset>
 				<legend>Forgotten Password</legend>
@@ -16,7 +16,7 @@
 			</fieldset>
 
 			<div class="form-actions">
-		        <button type="submit" class="btn btn-primary">Send reset code</button>
+		        <button type="submit" class="btn  btn-warning btn-large">Send reset code</button>
 		    </div>
 		</form>
 	</div>

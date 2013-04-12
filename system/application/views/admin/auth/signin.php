@@ -1,5 +1,5 @@
 <div class="row">
-	<div class="span8">
+	<div class="span8 offset2">
 		<?php echo form_open('signin?redirect=' . $this->input->get('redirect'), array('class' => 'form-horizontal')); ?>
 			<fieldset>
 				<legend>Please Signin</legend>
@@ -22,7 +22,7 @@
 			</fieldset>
 
 			<div class="form-actions">
-		        <button type="submit" class="btn btn-primary">Signin</button>&nbsp;&nbsp;<?php echo anchor('forgotten_password', 'Forgotten Password?'); ?>
+		        <button type="submit" class="btn  btn-warning btn-large">Signin</button>&nbsp;&nbsp;<?php echo anchor('forgotten_password', 'Forgotten Password?'); ?>
 		    </div>
 		</form>
 	</div>

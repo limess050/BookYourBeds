@@ -1,6 +1,6 @@
 <?php if( ! empty($user)) { ?>
 <div class="row">
-	<div class="span8">
+	<div class="span8 offset2">
 		<?php echo form_open('reset_password?auth=' . $this->input->get('auth'), array('class' => 'form-horizontal'), array('user_id' => $user->user_id)); ?>
 			<fieldset>
 				<legend>Reset Password</legend>
@@ -23,7 +23,7 @@
 			</fieldset>
 
 			<div class="form-actions">
-		        <button type="submit" class="btn btn-primary">Reset Password</button>
+		        <button type="submit" class="btn  btn-warning btn-large">Reset Password</button>
 		    </div>
 		</form>
 	</div>

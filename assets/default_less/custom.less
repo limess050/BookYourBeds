@@ -1,7 +1,21 @@
 //@import url(http://fonts.googleapis.com/css?family=Economica);
 @import url(http://fonts.googleapis.com/css?family=Maven+Pro);
 
-h3
+body
+{
+	background: black;
+}
+
+section
+{
+	background: #fff url('../img/lines-45.png');
+	padding-top: 70px;
+	padding-bottom: 70px;
+	font-size: 12px;
+}
+
+h3,
+legend
 {
 	//font-family: 'Economica', sans-serif;
 	font-family: 'Maven Pro', sans-serif;
@@ -10,11 +24,50 @@ h3
 	margin-top: 0px;
 }
 
+legend
+{
+	text-align: center;
+	padding: 10px 0;
+}
+
+form
+{
+	background: #fff;
+	border: solid 1px @grayLighter;
+	margin-bottom: 0px;
+	padding-bottom: 0px;
+	.border-radius(10px);
+	.box-shadow(0px 1px 1px rgba(0,0,0,0.5));
+
+	.control-group
+	{
+		padding-left: 10px;
+		padding-right: 10px
+	}
+
+	.form-actions
+	{
+		margin-bottom: 0px;
+		//padding-bottom: 0px;
+	}
+
+	label
+	{
+		font-size: 12px;
+	}
+
+	.alert-error
+	{
+		margin: 10px 10px 10px 10px;
+	}
+}
+
 header
 {
-	position: absolute;
+	position: fixed;
 	left: 0;
 	right: 0;
+	top: 0;
 
 	.masthead
 	{
@@ -257,10 +310,25 @@ header
 footer
 {
 	background: black;
-	padding: 20px 0;
-	margin-top: 20px;
+	padding: 20px 0 20px;
+	margin-top: 0;
 	color: #fff;
 	font-size: 12px;
+}
+
+.roadblock
+{
+	text-align: center;
+	color: #999;
+	.apple-text();
+
+	h1
+	{
+		font-family: 'Maven Pro', sans-serif;
+		font-weight: normal;
+		padding-top: 110px;
+		background: url('../img/well-sprite.png') no-repeat center -800px;
+	}
 }
 
 .centre-block
