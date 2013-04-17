@@ -98,7 +98,7 @@
 <?php foreach($seasons as $season) { ?>
 <h3><?php echo $season->season_title . ' (' . mysql_to_format($season->season_start_at) . ' - ' . mysql_to_format($season->season_end_at) . ')'; ?></h3>
 
-<table class="table">
+<table class="table table-responsive">
 	<thead class="hidden-tablet hidden-phone">
 		<tr>
 			<th>Monday</th>

@@ -1,3 +1,14 @@
+@import url(http://fonts.googleapis.com/css?family=Maven+Pro);
+
+h1,
+h2,
+h3
+{
+	//font-family: 'Economica', sans-serif;
+	font-family: 'Maven Pro', sans-serif;
+	font-weight: normal;
+}
+
 .container-fluid
 {
 	padding-left: 0;
@@ -78,18 +89,10 @@ td.today
 	margin-bottom: 10px;
 }
 
-.diary
+.diary-nav
 {
-	background-image: url('../img/large-calendar.png');
-	background-repeat: no-repeat;
-	background-position: 10px 5px;
-	padding-left: 90px;
-	font-size: 18px;
-
-	h1
-	{
-		font-size: 40px;
-	}
+	text-align: center;
+	margin: 0;
 }
 
 .validation-errors
@@ -101,10 +104,6 @@ td.today
 	}
 }
 
-.diary-bar
-{
-	min-height: 75px;
-}
 
 tr.checked_in
 {
@@ -160,9 +159,16 @@ ul.wizard-list
 	display: none;
 }
 
+.row
+{
+	padding-left: 20px;
+}
+
 
 @media only screen and (max-width: 767px)  
 { 
+	
+
 	.responsive-label
 	{
 		display: table-cell;
@@ -170,7 +176,8 @@ ul.wizard-list
 		width: 40%;
 		//background: #ff0000;
 		text-align: center;
-		font-size: 20px;
+		//font-size: 20px;
+		font-weight: bold;
 		padding: 5px 0;
 		float: left;
 	}
@@ -228,9 +235,25 @@ ul.wizard-list
 		border: none;
 	}
 
+	.row
+	{
+		padding-left: 0px;
+	}
+
+	.page-header
+	{
+		.pull-left
+		{
+			float: none;
+		}
+
+		.btn-group
+		{
+			float: none;
+		}
+	}
+
 }
-
-
 
 /* Growl */
 #growl

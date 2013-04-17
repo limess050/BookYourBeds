@@ -52,7 +52,7 @@
 	</ul>
 
 	<ul class="side-nav bottom">
-		<li class="nav-settings"><?php echo anchor('admin/settings/account', 'Settings'); ?></li>
+		<li class="nav-settings <?php echo select_if_current('settings'); ?>"><?php echo anchor('admin/settings/account', 'Settings'); ?></li>
 		<li class="nav-user"><a href="<?php echo site_url('signout', FALSE); ?>">Signout</a></li>
 		<li class="nav-help"><a href="<?php echo site_url('admin/remote/help?curi=' . $this->uri->rsegment(1) . '/' .  $this->uri->rsegment(2)); ?>" data-target="#help_modal" data-toggle="modal">Help</a></li>
 	</ul>

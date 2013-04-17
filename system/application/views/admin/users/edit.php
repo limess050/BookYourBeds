@@ -1,6 +1,8 @@
-<h1 class="page-header">Edit User</h1>
+<h1 class="page-header">Settings</h1>
 
 <?php echo $template['partials']['settings_menu']; ?>
+
+<h2>Edit User</h2>
 
 <?php echo $template['partials']['form_errors']; ?>
 

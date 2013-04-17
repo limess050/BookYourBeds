@@ -1,17 +1,9 @@
-<div class="page-header row">
-	<h1>Seasons</h1>
-</div>
+<h1 class="page-header">Settings</h1>
 
 <?php echo $template['partials']['settings_menu']; ?>
 
-<div class="row">
-	<div class="span4">
-		<h2>Edit Season</h2>
+	<h2>Edit Season</h2>
 		<!--<p>All forms are given default styles to present them in a readable and scalable way.</p>-->
-
-	</div>
-	
-	<div class="span8">
 
 		<?php echo validation_errors(); ?>
 
@@ -67,8 +59,6 @@
 			</fieldset>
 
 		</form>
-	</div>
-</div>
 
 <!-- start: page-specific javascript -->
 <script type="text/javascript">

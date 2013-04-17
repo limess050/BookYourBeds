@@ -1,30 +1,18 @@
-<div class="sheet">
-	<div class="row">
 
-		<div class="span7">
-			<div class="alert diary diary-bar">
-				<strong><?php echo date('l', $current_date); ?></strong>
-				<h1><?php echo date('j F Y', $current_date); ?></h1>
-			</div>
-		</div>
+<h1 class="page-header hidden-phone"><?php echo date('l j F Y', $current_date); ?></h1>
+<h1 class="page-header hidden-desktop hidden-tablet"><?php echo date('D j F Y', $current_date); ?></h1>
 
-		<div class="span5">
-			<div class="alert diary-bar">
-				<p style="text-align: center;">
-				<?php echo anchor('admin/bookings?timestamp=' . strtotime('-1 day', $current_date), '&laquo; ' . date('j M Y', strtotime('-1 day', $current_date)), 'id="prev_link" class="btn"'); ?>
-				<?php echo anchor('admin/bookings', 'TODAY', 'id="today_link" class="btn btn-primary"'); ?>
-				<input type="hidden" value="<?php echo date("Y-m-d", $current_date); ?>" id="datepicker" />
-				<?php echo anchor('admin/bookings?timestamp=' . strtotime('+1 day', $current_date), date('j M Y', strtotime('+1 day', $current_date)) . ' &raquo;', 'id="next_link" class="btn"'); ?></p>
+<p class="diary-nav">
+	<?php echo anchor('admin/bookings?timestamp=' . strtotime('-1 day', $current_date), '&laquo; ' . date('j M Y', strtotime('-1 day', $current_date)), 'id="prev_link" class="btn"'); ?>
+	<?php echo anchor('admin/bookings', 'TODAY', 'id="today_link" class="btn btn-primary"'); ?>
+	<input type="hidden" value="<?php echo date("Y-m-d", $current_date); ?>" id="datepicker" />
+	<?php echo anchor('admin/bookings?timestamp=' . strtotime('+1 day', $current_date), date('j M Y', strtotime('+1 day', $current_date)) . ' &raquo;', 'id="next_link" class="btn"'); ?>
 
-				<p style="text-align: center;">
-					<a href="<?php echo site_url('admin/bookings?timestamp=' . $current_date . '&' . (( ! get_cookie('hideOther')) ? 'checkingin=1' : 'all=1')); ?>" class="btn">
-						<span<?php echo ( ! get_cookie('hideOther')) ? ' style="display: none;"' : ''; ?>>Show</span><span<?php echo (get_cookie('hideOther')) ? ' style="display: none;"' : ''; ?>>Hide</span> guests NOT arriving on this date
-					</a>
-				</p>
-			</div>
-		</div>
-
-	</div>
+	<a href="<?php echo site_url('admin/bookings?timestamp=' . $current_date . '&' . (( ! get_cookie('hideOther')) ? 'checkingin=1' : 'all=1')); ?>" class="btn">
+		<span<?php echo ( ! get_cookie('hideOther')) ? ' style="display: none;"' : ''; ?>>Show</span><span<?php echo (get_cookie('hideOther')) ? ' style="display: none;"' : ''; ?>>Hide</span> guests NOT arriving on this date
+	</a>
+</p>
+	
 
 	<div>
 		<hr />
@@ -45,8 +33,9 @@
 		<?php if(empty($resource->bookings)) { ?>
 		<p><span class="label label-important">NO BOOKINGS</span></p>
 		<?php } else { ?>
-		<table class="resource table table-striped table-condensed">
-			<thead>
+		
+		<table class="resource table table-striped table-condensed table-responsive">
+			<thead class="hidden-tablet hidden-phone">
 				<tr>
 					<th></th>
 					<th>Customer Name</th>
@@ -70,34 +59,66 @@
 				<tr<?php if ($booking->stage > 0) {
 					echo ' class="checked_in"';
 					} ?>>
-					<td><?php echo $n; ?></td>
-					<td><?php echo $booking->customer_firstname . ' ' . $booking->customer_lastname; ?></td>
-					<td><?php echo anchor("admin/bookings/show/{$booking->booking_id}", $booking->booking_reference); ?></td>
-					<td><?php echo $booking->booking_guests; 
-					$g += $booking->booking_guests;
-					?></td>
-					<td><?php echo $booking->reservation_footprint; ?></td>
+					<td class="hidden-tablet hidden-phone"><?php echo $n; ?></td>
+					
 					<td>
-						<?php
-						echo ($booking->stage > 0) ? anchor('admin/bookings?timestamp=' . human_to_unix($booking->reservation_start_at), duration($booking->reservation_duration), 'title="Arrived ' . mysql_to_format($booking->reservation_start_at) . '"') : duration($booking->reservation_duration);
-
-						?>
-
+						<div class="responsive-label">Customer Name</div>
+						<div class="responsive-content"><?php echo $booking->customer_firstname . ' ' . $booking->customer_lastname; ?></div>
+					</td>
+					
+					<td>
+						<div class="responsive-label">Booking Reference</div>
+						<div class="responsive-content"><?php echo anchor("admin/bookings/show/{$booking->booking_id}", $booking->booking_reference); ?></div>
+					</td>
+					
+					<td>
+						<div class="responsive-label">Guests</div>
+						<div class="responsive-content">
+							<?php echo $booking->booking_guests; 
+							$g += $booking->booking_guests;
+							?>
+						</div>
 					</td>
 
-					<td><?php echo '&pound;' . as_currency($booking->booking_deposit); ?></td>
+					<td>
+						<div class="responsive-label">Rooms</div>
+						<div class="responsive-content"><?php echo $booking->reservation_footprint; ?></div>
+					</td>
 					
-					<td><?php echo '&pound;' . as_currency($booking->booking_price - $booking->booking_deposit); ?></td>
+
+					<td>
+						<div class="responsive-label">Duration</div>
+						<div class="responsive-content">
+							<?php
+							echo ($booking->stage > 0) ? anchor('admin/bookings?timestamp=' . human_to_unix($booking->reservation_start_at), duration($booking->reservation_duration), 'title="Arrived ' . mysql_to_format($booking->reservation_start_at) . '"') : duration($booking->reservation_duration);
+
+							?>
+						</div>
+					</td>
+
+					<td>
+						<div class="responsive-label">Deposit Paid</div>
+						<div class="responsive-content"><?php echo '&pound;' . as_currency($booking->booking_deposit); ?></div>
+					</td>
+					
+					<td>
+						<div class="responsive-label">Bill</div>
+						<div class="responsive-content"><?php echo '&pound;' . as_currency($booking->booking_price - $booking->booking_deposit); ?></div>
+					</td>
+					
+
 					<?php if(now() > $current_date) { ?>
 					<td>
-						<?php if($booking->stage == 0) { 
-						if($booking->reservation_checked_in) {
-						echo '<span class="label ">CHECKED IN</span>';
-						} else { ?>
-						<input type="submit" value="CHECK-IN" name="booking[<?php echo $booking->booking_id; ?>]" class="btn btn-mini btn-success" />
-						<?php 
-						}
-						} ?>
+						<div class="responsive-content no-label">
+							<?php if($booking->stage == 0) { 
+							if($booking->reservation_checked_in) {
+							echo '<span class="label ">CHECKED IN</span>';
+							} else { ?>
+							<input type="submit" value="CHECK-IN" name="booking[<?php echo $booking->booking_id; ?>]" class="btn btn-mini btn-success" />
+							<?php 
+							}
+							} ?>
+						</div>
 					</td>
 					<?php } ?>
 				</tr>
@@ -118,7 +139,6 @@
 		<?php echo form_hidden(array('redirect' => safe_get_env())); ?>
 		</form>
 	</div>
-</div>
 
 <!-- start: page-specific javascript -->
 <script type="text/javascript">

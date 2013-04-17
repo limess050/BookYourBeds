@@ -1,18 +1,8 @@
-<div class="page-header row">
-	<h1>Rooms</h1>
-</div>
-
-<div class="row">
-	<div class="span4">
-		<h2>Your Rooms</h2>
-		<!--<p>All forms are given default styles to present them in a readable and scalable way.</p>-->
-
+<h1 class="page-header">Rooms</h1>
 
 
 		<p><?php echo anchor('admin/resources/create', 'Create New Room', 'class="btn btn-primary plus"'); ?></p>
-	</div>
-	
-	<div class="span8">
+
 
 		<table class="table zebra-striped">
 			<thead>
@@ -31,6 +21,3 @@
 			<?php } ?>
 			</tbody>
 		</table>
-
-	</div>
-</div>

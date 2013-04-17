@@ -1,24 +1,11 @@
-<h1 class="page-header">Seasons</h1>
+<h1 class="page-header">Settings</h1>
 
 <?php echo $template['partials']['settings_menu']; ?>
 
-<div class="row">
-	<div class="span4">
-		<h2>Your Seasons</h2>
-		<!--<p>All forms are given default styles to present them in a readable and scalable way.</p>-->
+<h2>Seasons</h2>
+
 
 		<p><?php echo anchor('admin/seasons/create', 'Create New Season', 'class="btn primary plus"'); ?></p>
-
-		<?php if(count($seasons) > 1) { ?>
-		<p>
-			<a href="#" onclick="startSort(); return false;" id="start_sort" class="btn sort">Sort Season Order</a>
-			<a href="#" onclick="finishSort(); return false;" class="btn btn-success finish_sort tick" style="display: none;">Finish Sorting</a>
-			<a href="<?php echo site_url('admin/seasons'); ?>"class="btn finish_sort cross" style="display: none;">Cancel</a>
-		</p>
-		<?php } ?>
-	</div>
-	
-	<div class="span8">
 
 <?php echo form_open('admin/seasons', array('id' => 'season_form')); ?>
 <table id="season_list" class="table table-condensed table-striped table-hover">
@@ -47,8 +34,14 @@
 	</tbody>
 </table>
 </form>
-</div>
-</div>
+
+<?php if(count($seasons) > 1) { ?>
+<p>
+	<a href="#" onclick="startSort(); return false;" id="start_sort" class="btn sort">Sort Season Order</a>
+	<a href="#" onclick="finishSort(); return false;" class="btn btn-success finish_sort tick" style="display: none;">Finish Sorting</a>
+	<a href="<?php echo site_url('admin/seasons'); ?>"class="btn finish_sort cross" style="display: none;">Cancel</a>
+</p>
+<?php } ?>
 
 <script type="text/javascript">
 <!--

@@ -36,12 +36,12 @@
 		<h1 class="page-header">Arriving Today</h1>
 
 		<?php echo form_open('admin/bookings/checkin'); ?>
-		<table class="table table-condensed table-striped table-hover" id="arrivals">
-			<thead>
+		<table class="table table-condensed table-striped table-hover table-responsive" id="arrivals">
+			<thead class="hidden-tablet hidden-phone">
 				<tr>
-					<th>Name</th>
+					<th>Customer Name</th>
 					<th>Booking Reference</th>
-					<th>Resource Booked</th>
+					<th>Room Booked</th>
 					<th class="span1">Guests</th>
 					<th>Beds/Rooms</th>
 					<th>Duration</th>
@@ -53,14 +53,53 @@
 			<tbody>
 				<?php foreach($tabs['today'] as $booking) { ?>
 				<tr id="booking_<?php echo $booking->booking_id; ?>">
-					<td><?php echo $booking->customer_firstname; ?> <?php echo $booking->customer_lastname; ?></td>
-					<td><?php echo anchor("admin/bookings/show/{$booking->booking_id}", $booking->booking_reference); ?></td>
-					<td><?php echo $booking->resource_title; ?></td>
-					<td><?php echo $booking->booking_guests; ?></td>
-					<td><?php echo "{$booking->reservation_footprint} {$booking->resource_priced_per}" . (($booking->reservation_footprint > 1) ? 's' : ''); ?></td>
-					<td><?php echo duration($booking->reservation_duration); ?></td>
-					<td>&pound;<?php echo as_currency($booking->booking_price - $booking->booking_deposit); ?></td>
-					<td><input type="submit" value="CHECK-IN" name="booking[<?php echo $booking->booking_id; ?>]" class="btn btn-mini btn-success" /></td>
+					<td>
+						<div class="responsive-label">Customer Name</div>
+
+						<div class="responsive-content"><?php echo $booking->customer_firstname; ?> <?php echo $booking->customer_lastname; ?></div>
+
+					</td>
+					
+					<td>
+						<div class="responsive-label">Booking Reference</div>
+						<div class="responsive-content"><?php echo anchor("admin/bookings/show/{$booking->booking_id}", $booking->booking_reference); ?></div>
+
+					</td>
+					
+					<td>
+						<div class="responsive-label">Room Booked</div>
+						<div class="responsive-content"><?php echo $booking->resource_title; ?></div>
+
+					</td>
+					
+					<td>
+						<div class="responsive-label">Guests</div>
+						<div class="responsive-content"><?php echo $booking->booking_guests; ?></div>
+
+					</td>
+					
+					<td>
+						<div class="responsive-label">Beds/Rooms</div>
+						<div class="responsive-content"><?php echo "{$booking->reservation_footprint} {$booking->resource_priced_per}" . (($booking->reservation_footprint > 1) ? 's' : ''); ?></div>
+
+					</td>
+					
+					<td>
+						<div class="responsive-label">Duration</div>
+						<div class="responsive-content"><?php echo duration($booking->reservation_duration); ?></div>
+
+					</td>
+					
+					<td>
+						<div class="responsive-label">Bill</div>
+						<div class="responsive-content">&pound;<?php echo as_currency($booking->booking_price - $booking->booking_deposit); ?></div>
+
+					</td>
+					
+					<td>
+						<div class="responsive-content no-label"><input type="submit" value="CHECK-IN" name="booking[<?php echo $booking->booking_id; ?>]" class="btn btn-mini btn-success" /></div>
+
+					</td>
 
 				</tr>
 				<?php } ?>
@@ -81,13 +120,13 @@
 		<?php } else { ?>
 		<h1 class="page-header">New Bookings</h1>
 
-		<table class="table table-condensed table-striped table-hover">
-			<thead>
+		<table class="table table-condensed table-striped table-hover table-responsive">
+			<thead class="hidden-tablet hidden-phone">
 				<tr>
 					<th>Customer Name</th>
 					<th>Arrival</th>
 					<th>Booking Reference</th>
-					<th>Resource Booked</th>
+					<th>Room Booked</th>
 					<th class="span1">Guests</th>
 					<th>Duration</th>
 					<th>Deposit Paid</th>
@@ -98,14 +137,45 @@
 			<tbody>
 				<?php foreach($tabs['new'] as $booking) { ?>
 				<tr>
-					<td><?php echo $booking->customer_firstname . ' ' . $booking->customer_lastname; ?></td>
-					<td><?php echo mysql_to_format($booking->reservation_start_at); ?></td>
-					<td><?php echo anchor("admin/bookings/show/{$booking->booking_id}", $booking->booking_reference); ?></td>
-					<td><?php echo $booking->resource_title; ?></td>
-					<td><?php echo $booking->booking_guests; ?></td>
-					<td><?php echo duration($booking->reservation_duration); ?></td>
-					<td>&pound;<?php echo as_currency($booking->booking_deposit); ?></td>
-					<td>&pound;<?php echo as_currency($booking->booking_price - $booking->booking_deposit); ?></td>
+					<td>
+						<div class="responsive-label">Customer Name</div>
+						<div class="responsive-content"><?php echo $booking->customer_firstname . ' ' . $booking->customer_lastname; ?></div>
+					</td>
+					
+					<td>
+						<div class="responsive-label">Arrival</div>
+						<div class="responsive-content"><?php echo mysql_to_format($booking->reservation_start_at); ?></div>
+					</td>
+
+					<td>
+						<div class="responsive-label">Booking Reference</div>
+						<div class="responsive-content"><?php echo anchor("admin/bookings/show/{$booking->booking_id}", $booking->booking_reference); ?></div>
+					</td>
+					
+					<td>
+						<div class="responsive-label">Room Booked</div>
+						<div class="responsive-content"><?php echo $booking->resource_title; ?></div>
+					</td>
+					
+					<td>
+						<div class="responsive-label">Guests</div>
+						<div class="responsive-content"><?php echo $booking->booking_guests; ?></div>
+					</td>
+					
+					<td>
+						<div class="responsive-label">Duration</div>
+						<div class="responsive-content"><?php echo duration($booking->reservation_duration); ?></div>
+					</td>
+					
+					<td>
+						<div class="responsive-label">Deposit Paid</div>
+						<div class="responsive-content">&pound;<?php echo as_currency($booking->booking_deposit); ?></div>
+					</td>
+					
+					<td>
+						<div class="responsive-label">Outstanding Bill</div>
+						<div class="responsive-content">&pound;<?php echo as_currency($booking->booking_price - $booking->booking_deposit); ?></div>
+					</td>
 				</tr>
 				<?php } ?>
 			</tbody>
@@ -123,13 +193,13 @@
 		<?php } else { ?>
 		<h1 class="page-header">Bookings Awaiting Verification</h1>
 
-		<table class="table table-condensed table-striped table-hover">
-			<thead>
+		<table class="table table-condensed table-striped table-hover table-responsive">
+			<thead class="hidden-tablet hidden-phone">
 				<tr>
 					<th>Customer Name</th>
 					<th>Arrival</th>
 					<th>Booking Reference</th>
-					<th>Resource Booked</th>
+					<th>Room Booked</th>
 					<th>Guests</th>
 					<th>Duration</th>
 					<th>Bill</th>
@@ -140,13 +210,41 @@
 			<tbody>
 				<?php foreach($tabs['unverified'] as $booking) { ?>
 				<tr>
-					<td><?php echo $booking->customer_firstname . ' ' . $booking->customer_lastname; ?></td>
-					<td><?php echo mysql_to_format($booking->reservation_start_at); ?></td>
-					<td><?php echo anchor("admin/bookings/show/{$booking->booking_id}", $booking->booking_reference); ?></td>
-					<td><?php echo $booking->resource_title; ?></td>
-					<td><?php echo $booking->booking_guests; ?></td>
-					<td><?php echo duration($booking->reservation_duration); ?></td>
-					<td>&pound;<?php echo as_currency($booking->booking_price); ?></td>
+					<td>
+						<div class="responsive-label">Customer Name</div>
+						<div class="responsive-content"><?php echo $booking->customer_firstname . ' ' . $booking->customer_lastname; ?></div>
+					</td>
+					
+					<td>
+						<div class="responsive-label">Arrival</div>
+						<div class="responsive-content"><?php echo mysql_to_format($booking->reservation_start_at); ?></div>
+					</td>
+
+					<td>
+						<div class="responsive-label">Booking Reference</div>
+						<div class="responsive-content"><?php echo anchor("admin/bookings/show/{$booking->booking_id}", $booking->booking_reference); ?></div>
+					</td>
+					
+					<td>
+						<div class="responsive-label">Room Booked</div>
+						<div class="responsive-content"><?php echo $booking->resource_title; ?></div>
+					</td>
+					
+					<td>
+						<div class="responsive-label">Guests</div>
+						<div class="responsive-content"><?php echo $booking->booking_guests; ?></div>
+					</td>
+					
+					<td>
+						<div class="responsive-label">Duration</div>
+						<div class="responsive-content"><?php echo duration($booking->reservation_duration); ?></div>
+					</td>
+					
+					<td>
+						<div class="responsive-label">Bill</div>
+						<div class="responsive-content">&pound;<?php echo as_currency($booking->booking_price); ?></div>
+
+					</td>
 					<td></td>
 				</tr>
 				<?php } ?>
@@ -164,13 +262,13 @@
 		<?php } else { ?>
 		<h1 class="page-header">New Cancellations</h1>
 
-		<table class="table table-condensed table-striped table-hover">
-			<thead>
+		<table class="table table-condensed table-striped table-hover table-responsive">
+			<thead class="hidden-tablet hidden-phone">
 				<tr>
 					<th>Customer Name</th>
 					<th>Arrival</th>
 					<th>Booking Reference</th>
-					<th>Resource Booked</th>
+					<th>Room Booked</th>
 					<th class="span1">Guests</th>
 					<th>Duration</th>
 					<th>Deposit Paid</th>
@@ -181,14 +279,45 @@
 			<tbody>
 				<?php foreach($tabs['cancelled'] as $booking) { ?>
 				<tr>
-					<td><?php echo $booking->customer_firstname . ' ' . $booking->customer_lastname; ?></td>
-					<td><?php echo mysql_to_format($booking->reservation_start_at); ?></td>
-					<td><?php echo anchor("admin/bookings/show/{$booking->booking_id}", $booking->booking_reference); ?></td>
-					<td><?php echo $booking->resource_title; ?></td>
-					<td><?php echo $booking->booking_guests; ?></td>
-					<td><?php echo duration($booking->reservation_duration); ?></td>
-					<td>&pound;<?php echo as_currency($booking->booking_deposit); ?></td>
-					<td><?php echo mysql_to_format($booking->booking_deleted_at); ?></td>
+					<td>
+						<div class="responsive-label">Customer Name</div>
+						<div class="responsive-content"><?php echo $booking->customer_firstname . ' ' . $booking->customer_lastname; ?></div>
+					</td>
+					
+					<td>
+						<div class="responsive-label">Arrival</div>
+						<div class="responsive-content"><?php echo mysql_to_format($booking->reservation_start_at); ?></div>
+					</td>
+
+					<td>
+						<div class="responsive-label">Booking Reference</div>
+						<div class="responsive-content"><?php echo anchor("admin/bookings/show/{$booking->booking_id}", $booking->booking_reference); ?></div>
+					</td>
+					
+					<td>
+						<div class="responsive-label">Room Booked</div>
+						<div class="responsive-content"><?php echo $booking->resource_title; ?></div>
+					</td>
+					
+					<td>
+						<div class="responsive-label">Guests</div>
+						<div class="responsive-content"><?php echo $booking->booking_guests; ?></div>
+					</td>
+					
+					<td>
+						<div class="responsive-label">Duration</div>
+						<div class="responsive-content"><?php echo duration($booking->reservation_duration); ?></div>
+					</td>
+
+					<td>
+						<div class="responsive-label">Deposit Paid</div>
+						<div class="responsive-content">&pound;<?php echo as_currency($booking->booking_deposit); ?></div>
+					</td>
+					
+					<td>
+						<div class="responsive-label">Date Cancelled</div>
+						<div class="responsive-content"><?php echo mysql_to_format($booking->booking_deleted_at); ?></div>
+					</td>
 				</tr>
 				<?php } ?>
 			</tbody>

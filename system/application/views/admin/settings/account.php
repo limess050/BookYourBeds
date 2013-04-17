@@ -1,6 +1,8 @@
-<h1 class="page-header">Account Settings</h1>
+<h1 class="page-header">Settings</h1>
 
 <?php echo $template['partials']['settings_menu']; ?>
+
+<h2>Account Settings</h2>
 
 <?php echo form_open_multipart('admin/settings/account', 'class="form-horizontal"'); ?>
 	<?php echo $template['partials']['form_errors']; ?>
@@ -23,13 +25,15 @@
 		<div class="control-group">
 			<label class="control-label">Account URL</label>
 			<div class="controls">
-				<?php echo site_url('', FALSE); ?>
+				<div class="input-prepend">
+  					<span class="add-on"><?php echo site_url('', FALSE); ?></span>
 					<?php echo form_input(array(
 									'name'	=> 'account[account_slug]',
-									'class'	=> 'span2',
+									'class'	=> 'span3',
 									'value'	=> set_value('account[account_slug]', account('slug'))
 									));
 					?>
+				</div>
 			</div>
 		</div>
 	</fieldset>
