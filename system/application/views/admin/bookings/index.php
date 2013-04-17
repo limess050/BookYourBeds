@@ -5,9 +5,9 @@
 <p class="diary-nav">
 	<?php echo anchor('admin/bookings?timestamp=' . strtotime('-1 day', $current_date), '&laquo; ' . date('j M Y', strtotime('-1 day', $current_date)), 'id="prev_link" class="btn"'); ?>
 	<?php echo anchor('admin/bookings', 'TODAY', 'id="today_link" class="btn btn-primary"'); ?>
-	<input type="hidden" value="<?php echo date("Y-m-d", $current_date); ?>" id="datepicker" />
 	<?php echo anchor('admin/bookings?timestamp=' . strtotime('+1 day', $current_date), date('j M Y', strtotime('+1 day', $current_date)) . ' &raquo;', 'id="next_link" class="btn"'); ?>
-
+	<input type="hidden" value="<?php echo date("Y-m-d", $current_date); ?>" id="datepicker" />
+	
 	<a href="<?php echo site_url('admin/bookings?timestamp=' . $current_date . '&' . (( ! get_cookie('hideOther')) ? 'checkingin=1' : 'all=1')); ?>" class="btn">
 		<span<?php echo ( ! get_cookie('hideOther')) ? ' style="display: none;"' : ''; ?>>Show</span><span<?php echo (get_cookie('hideOther')) ? ' style="display: none;"' : ''; ?>>Hide</span> guests NOT arriving on this date
 	</a>
