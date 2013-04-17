@@ -1,5 +1,7 @@
 <h1 class="page-header">Edit User</h1>
 
+<?php echo $template['partials']['settings_menu']; ?>
+
 <?php echo $template['partials']['form_errors']; ?>
 
 <?php echo form_open("admin/users/edit/{$user->user_id}", 'class="form-horizontal"', array('user_id' => $user->user_id)); ?>

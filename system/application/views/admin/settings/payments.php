@@ -1,5 +1,7 @@
 <h1 class="page-header">Payment Options</h1>
 
+<?php echo $template['partials']['settings_menu']; ?>
+
 <?php echo form_open('admin/settings/payments', 'class="form-horizontal"'); ?>
 <?php echo $template['partials']['form_errors']; ?>
 <fieldset>

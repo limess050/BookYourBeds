@@ -2,9 +2,7 @@
 	<h1>Create Supplement</h1>
 </div>
 
-<div class="row">
-	
-	<div class="span8">
+
 		<?php echo validation_errors(); ?>
 
 		<?php echo form_open('admin/supplements/create', 'class="form-horizontal"', array('supplement[supplement_account_id]' => account('id'))); ?>
@@ -78,5 +76,4 @@
 				</div>
 			</fieldset>
 		</form>
-	</div>
-</div>
+

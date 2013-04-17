@@ -2,6 +2,8 @@
 	<h1>Seasons</h1>
 </div>
 
+<?php echo $template['partials']['settings_menu']; ?>
+
 <div class="row">
 	<div class="span4">
 		<h2>Edit Season</h2>

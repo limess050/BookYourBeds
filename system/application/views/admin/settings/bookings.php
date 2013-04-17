@@ -1,5 +1,7 @@
 <h1 class="page-header">Booking Settings</h1>
 
+<?php echo $template['partials']['settings_menu']; ?>
+
 <?php echo form_open('admin/settings/bookings', 'class="form-horizontal"'); ?>
 	<?php echo $template['partials']['form_errors']; ?>
 

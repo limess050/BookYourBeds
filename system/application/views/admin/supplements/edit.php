@@ -2,24 +2,7 @@
 	<h1>Edit Supplement <small><?php echo $supplement->supplement_short_description; ?></small></h1>
 </div>
 
-<div class="row">
-	<div class="span4">
 
-		<?php if($supplement->supplement_active) { ?>
-		<div class="alert alert-danger">
-			<strong>Disable this supplement</strong>
-
-			<p>It is possible to disable this room - this will stop it appearing on diary and availability pages, and prevent it from being booked.</p>
-			
-			<?php echo anchor('admin/resources/disable/' . $supplement->supplement_id,
-							'<i class="icon-remove icon-white"></i> Disable this room now</a>',
-							'class="btn btn-danger" onclick="return confirm(\'Are you sure you want to disable this room?\')"'
-							); ?>
-		</div>
-		<?php } ?>
-	</div>
-	
-	<div class="span8">
 		<?php echo validation_errors(); ?>
 
 		<?php echo form_open("admin/supplements/edit/{$supplement->supplement_id}", 'class="form-horizontal"', array('supplement_id' => $supplement->supplement_id)); ?>
@@ -91,5 +74,16 @@
 				</div>
 			</fieldset>
 		</form>
-	</div>
-</div>
+
+<?php if($supplement->supplement_active) { ?>
+		<div class="alert alert-danger">
+			<strong>Disable this supplement</strong>
+
+			<p>It is possible to disable this room - this will stop it appearing on diary and availability pages, and prevent it from being booked.</p>
+			
+			<?php echo anchor('admin/resources/disable/' . $supplement->supplement_id,
+							'<i class="icon-remove icon-white"></i> Disable this room now</a>',
+							'class="btn btn-danger" onclick="return confirm(\'Are you sure you want to disable this room?\')"'
+							); ?>
+		</div>
+		<?php } ?>

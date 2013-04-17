@@ -4,26 +4,8 @@
 
 <?php echo $template['partials']['resource_menu']; ?>
 
-<div class="row">
-	<div class="span4">
 		<h2>General Settings</h2>
-		<!--<p>All forms are given default styles to present them in a readable and scalable way.</p>-->
 
-		<?php if($resource->resource_active) { ?>
-		<div class="alert alert-danger">
-			<strong>Disable this room</strong>
-
-			<p>It is possible to disable this room - this will stop it appearing on diary and availability pages, and prevent it from being booked.</p>
-			
-			<?php echo anchor('admin/resources/disable/' . $resource->resource_id,
-							'<i class="icon-remove icon-white"></i> Disable this room now</a>',
-							'class="btn btn-danger" onclick="return confirm(\'Are you sure you want to disable this room?\')"'
-							); ?>
-		</div>
-		<?php } ?>
-	</div>
-	
-	<div class="span8">
 		<?php echo validation_errors(); ?>
 
 		<?php echo form_open("admin/resources/edit/{$resource->resource_id}", 'class="form-horizontal"', array('resource_id' => $resource->resource_id)); ?>
@@ -35,7 +17,7 @@
 						echo form_input(array(
 							'name'	=> 'resource[resource_title]',
 							'id'	=> 'resource_title',
-							'class'	=> 'xlarge',
+							'class'	=> 'span4',
 							'value'	=> set_value('resource[resource_title]', $resource->resource_title)));
 						?>
 					</div>
@@ -48,7 +30,7 @@
 						echo form_input(array(
 							'name'	=> 'resource[resource_reference]',
 							'id'	=> 'resource_reference',
-							'class'	=> 'xlarge',
+							'class'	=> 'span2',
 							'value'	=> set_value('resource[resource_reference]', $resource->resource_reference)));
 						?>
 					</div>
@@ -101,5 +83,16 @@
 				</div>
 			</fieldset>
 		</form>
-	</div>
-</div>
+
+	<?php if($resource->resource_active) { ?>
+		<div class="alert alert-danger">
+			<strong>Disable this room</strong>
+
+			<p>It is possible to disable this room - this will stop it appearing on diary and availability pages, and prevent it from being booked.</p>
+			
+			<?php echo anchor('admin/resources/disable/' . $resource->resource_id,
+							'<i class="icon-remove icon-white"></i> Disable this room now</a>',
+							'class="btn btn-danger" onclick="return confirm(\'Are you sure you want to disable this room?\')"'
+							); ?>
+		</div>
+		<?php } ?>

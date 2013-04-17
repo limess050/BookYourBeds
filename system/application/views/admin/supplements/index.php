@@ -1,16 +1,12 @@
 <h1 class="page-header">Supplements</h1>
 
-<div class="row">
-	<div class="span4">
-		<h2>Your Supplements</h2>
+
 		<!--<p>All forms are given default styles to present them in a readable and scalable way.</p>-->
 
 
 
 		<p><?php echo anchor('admin/supplements/create', 'Create New Supplement', 'class="btn btn-primary plus"'); ?></p>
-	</div>
-	
-	<div class="span8">
+
 
 		<table class="table zebra-striped">
 			<thead>
@@ -31,6 +27,3 @@
 			<?php } ?>
 			</tbody>
 		</table>
-
-	</div>
-</div>

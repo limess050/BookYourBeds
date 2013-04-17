@@ -13,8 +13,8 @@
 <?php echo form_open(safe_get_env()); ?>
 	
 	
-	<table class="table table-condensed table-hover table-striped table-bordered">
-		<thead>
+	<table class="table table-condensed table-hover table-striped table-bordered table-responsive">
+		<thead class="hidden-tablet hidden-phone">
 			<tr>
 				<th class="resource_title">Resource</th>
 				<?php for($i = 0; $i < AVAILABILITY_DAYS; $i++) { ?>
@@ -34,6 +34,14 @@
 	
 		<tbody id="availability"></tbody>
 	</table>
+
+	<p class="align_center">
+		<button type="submit" class="btn btn-large btn-warning">Save Changes</button>
+
+
+	</p>
+
+
 </form>
 
 <!-- start: page-specific javascript -->

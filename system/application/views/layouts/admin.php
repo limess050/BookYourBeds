@@ -43,7 +43,7 @@
 		<li class="nav-diary <?php echo select_if_current('bookings'); ?>"><?php echo anchor('admin/bookings', 'Diary'); ?></li>
 		<?php } ?>
 		<li class="nav-rooms <?php echo select_if_current('resources'); ?>"><?php echo anchor('admin/resources', 'Rooms'); ?></li>
-		<li class="nav-availability <?php echo select_if_current('availability'); ?>"><?php echo anchor('admin/availability', 'Availability'); ?></li>
+		<li class="nav-availability hidden-phone <?php echo select_if_current('availability'); ?>"><?php echo anchor('admin/availability', 'Availability'); ?></li>
 		<li class="nav-supplements <?php echo select_if_current('supplements'); ?>"><?php echo anchor('admin/supplements', 'Supplements'); ?></li>
 		
 		<?php if(account('active')) { ?>
@@ -52,8 +52,8 @@
 	</ul>
 
 	<ul class="side-nav bottom">
-		<li class="nav-settings"><a href="#">Settings</a></li>
-		<li class="nav-user"><a href="#">Personal</a></li>
+		<li class="nav-settings"><?php echo anchor('admin/settings/account', 'Settings'); ?></li>
+		<li class="nav-user"><a href="<?php echo site_url('signout', FALSE); ?>">Signout</a></li>
 		<li class="nav-help"><a href="<?php echo site_url('admin/remote/help?curi=' . $this->uri->rsegment(1) . '/' .  $this->uri->rsegment(2)); ?>" data-target="#help_modal" data-toggle="modal">Help</a></li>
 	</ul>
 </nav>

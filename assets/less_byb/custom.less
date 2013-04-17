@@ -33,6 +33,12 @@ td.align_center
 	background: lighten(@blue, 50%);
 }
 
+th.weekend,
+td.weekend
+{
+	background: lighten(@blue, 50%);
+}
+
 th.today,
 td.today
 {
@@ -54,6 +60,12 @@ td.today
 		td.today
 		{
 			background: lighten(@green, 30%);
+		}
+
+		th.weekend,
+		td.weekend
+		{
+			background: lighten(@blue, 45%);
 		}
     }
   }
@@ -138,6 +150,84 @@ ul.wizard-list
 		font-weight: normal;
 		font-size: 24px;
 	}
+}
+
+
+
+
+.responsive-label
+{
+	display: none;
+}
+
+
+@media only screen and (max-width: 767px)  
+{ 
+	.responsive-label
+	{
+		display: table-cell;
+		vertical-align: middle;
+		width: 40%;
+		//background: #ff0000;
+		text-align: center;
+		font-size: 20px;
+		padding: 5px 0;
+		float: left;
+	}
+
+	.responsive-content
+	{
+		display: block;
+		width: 60%;
+		float: left;
+		padding: 5px 0;
+
+		.control-group
+		{
+			width: 100%;
+		}
+	}
+
+	.responsive-content.no-label
+	{
+		width: 100%;
+		float: none;
+		text-align: center;
+		font-size: 20px;
+		padding: 10px 0;
+	}
+
+	.table-responsive
+	{
+		tr
+		{	
+			display: block;
+			border: solid 1px @grayLight;
+			margin-bottom: 20px;
+			.clearfix();
+		}
+
+		td
+		{
+			padding: 0;
+			display: block;
+			width: 100%;
+			border-left: none;
+			border-right: none;
+			.clearfix();
+		}
+
+		td.align_center
+		{
+			//text-align: left;
+		}
+	}
+
+	.table-responsive.table-bordered
+	{
+		border: none;
+	}
+
 }
 
 

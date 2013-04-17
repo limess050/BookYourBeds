@@ -1,5 +1,7 @@
 <h1 class="page-header">Account Settings</h1>
 
+<?php echo $template['partials']['settings_menu']; ?>
+
 <?php echo form_open_multipart('admin/settings/account', 'class="form-horizontal"'); ?>
 	<?php echo $template['partials']['form_errors']; ?>
 

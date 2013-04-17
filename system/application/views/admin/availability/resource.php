@@ -17,8 +17,8 @@
 
 <?php echo form_open(safe_get_env()); ?>
 	
-	<table class="table table-condensed table-hover table-striped table-bordered">
-		<thead>
+	<table class="table table-condensed table-hover table-striped table-bordered table-responsive">
+		<thead class="hidden-tablet hidden-phone">
 			<tr>
 				<?php for($i = 0; $i < AVAILABILITY_DAYS; $i++) { ?>
 				<th class="align_center<?php echo (date("w", strtotime('+' . $i . ' day', $start_timestamp)) > 4 ) ? ' weekend' : ''; echo ((strtotime('+' . ($i) . ' day', $start_timestamp)) == $today) ? ' today' : ''; ?>">

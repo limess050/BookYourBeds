@@ -1,5 +1,7 @@
 <h1 class="page-header">Seasons</h1>
 
+<?php echo $template['partials']['settings_menu']; ?>
+
 <div class="row">
 	<div class="span4">
 		<h2>Your Seasons</h2>

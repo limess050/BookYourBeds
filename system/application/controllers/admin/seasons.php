@@ -2,6 +2,13 @@
 
 class Seasons extends Admin_Controller {
 
+	public function __construct()
+	{
+		parent::__construct();
+
+		$this->template->set_partial('settings_menu', 'admin/partials/settings_menu');
+	}
+
 	public function index()
 	{
 		$this->load->library('form_validation');
