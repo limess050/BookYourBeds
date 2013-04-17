@@ -110,8 +110,7 @@ header
 
 .intro
 {
-	padding-top: 450px;
-	padding-bottom: 20px;
+	padding-top: 20px;
 
 	.row
 	{
@@ -119,10 +118,38 @@ header
 	}
 }
 
-.carousel
+.homepage-carousel
 {
+	padding-top: 450px;
+	margin-bottom: 20px;
 	text-align: center;
-	border-bottom: solid 1px @grayLight;
+
+	.carousel
+	{
+		text-align: center;
+		marign: 0;
+	}
+
+	.carousel-inner
+	{
+		text-align: center;
+		margin: 0 auto;
+
+		img
+		{
+			margin: 0 auto;
+		}
+
+		h3
+		{
+			border-top: solid 1px @grayLight;
+			border-bottom: solid 1px @grayLight;
+			padding: 10px 0;
+			color: @grayLight;
+			margin: 0;
+			font-size: 20px;
+		}
+	}
 }
 
 .image
@@ -363,7 +390,7 @@ footer
 
 	}
 
-	.intro
+	.homepage-carousel
 	{
 		padding-top: 400px;
 
