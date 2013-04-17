@@ -67,7 +67,7 @@
 					</td>
 					
 					<td>
-						<div class="responsive-label">Booking Reference</div>
+						<div class="responsive-label">Reference</div>
 						<div class="responsive-content"><?php echo anchor("admin/bookings/show/{$booking->booking_id}", $booking->booking_reference); ?></div>
 					</td>
 					
@@ -114,7 +114,8 @@
 							if($booking->reservation_checked_in) {
 							echo '<span class="label ">CHECKED IN</span>';
 							} else { ?>
-							<input type="submit" value="CHECK-IN" name="booking[<?php echo $booking->booking_id; ?>]" class="btn btn-mini btn-success" />
+							<button type="submit" name="booking[<?php echo $booking->booking_id; ?>]" class="btn btn-block btn-large btn-success hidden-desktop">CHECK-IN</button>
+							<input type="submit" value="CHECK-IN" name="booking[<?php echo $booking->booking_id; ?>]" class="btn btn-mini btn-success hidden-tablet hidden-phone" />
 							<?php 
 							}
 							} ?>

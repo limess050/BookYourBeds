@@ -30,7 +30,7 @@
 			</td>
 
 			<td>
-				<div class="responsive-label">Booking Reference</div>
+				<div class="responsive-label">Reference</div>
 				<div class="responsive-content"><?php echo anchor("admin/bookings/show/{$booking->booking_id}", highlight_phrase($booking->booking_reference, $search, '<code>', '</code>')); ?></div>
 			</td>
 			
