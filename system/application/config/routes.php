@@ -67,6 +67,12 @@
 $route['default_controller'] 						= 'roadblock';
 $route['404_override']			 					= 'errors/error_404';
 
+$route['internal']									= 'internal/dashboard';
+$route['internal/([a-zA-Z_-]+)/(:any)']				= 'internal/$1/$2';
+$route['internal/([a-zA-Z_-]+)/(:any)/(:any)']		= 'internal/$1/$2/$3';
+$route['internal/(signin|signout)']					= 'internal/auth/$1';
+$route['internal/([a-zA-Z_-]+)']					= 'internal/$1/index';
+
 $route['signup']									= "roadblock/signup";
 $route['confirm_account']							= "roadblock/confirm_account";
 $route['(signin|signout)']							= "admin/auth/$1";

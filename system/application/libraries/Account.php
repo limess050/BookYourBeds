@@ -10,7 +10,7 @@ class Account
 
 	public function __construct()
 	{
-		if( ! in_array(ci()->uri->segment(1), array('roadblock', 'init', 'endpoint')) && ci()->uri->rsegment(2) != 'auth')
+		if( ! in_array(ci()->uri->segment(1), array('roadblock', 'init', 'endpoint', 'internal')) && ci()->uri->rsegment(2) != 'auth')
 		{
 			$this->ac = (ci()->uri->segment(1)) ? $this->model('account')->get_by('account_slug', ci()->uri->segment(1)) : null;
 
@@ -78,7 +78,7 @@ class Account
 		return (isset($this->ac->$key)) ? $this->ac->$key : FALSE;
 	}
 
-	public function create($name, $email, $password, $send_notification = TRUE)
+	public function create($name, $email, $password, $send_notification = TRUE, $internal = FALSE)
 	{
 		
 		// Create the account
@@ -103,7 +103,7 @@ class Account
 
 		$user_id = $this->model('user')->insert($user);
 
-		if($send_notification)
+		if( ! $internal && $send_notification)
 		{
 			ci()->load->library('mandrill');
 
@@ -126,13 +126,24 @@ class Account
 				);
 
 			ci()->mandrill->call('messages/send', array('message' => $message));
+		} else
+		{
+			// Automatically authorise
+			$this->model('account')->update($account_id, array('account_confirmed' => 1));
+
+			// Send the welcome email (non-authorisation)
+
+
 		}
 
-		// Add them to the MailChimp mailing list (they will still need to opt-in)
-		ci()->load->library('MCAPI');
-		ci()->mcapi->listSubscribe(ci()->config->item('mcapi_signup_list'), $email);
+		if($send_notification)
+		{
+			// Add them to the MailChimp mailing list (they will still need to opt-in)
+			ci()->load->library('MCAPI');
+			ci()->mcapi->listSubscribe(ci()->config->item('mcapi_signup_list'), $email);
+		}
 
-		return $user_id;
+		return ($internal) ? $account_id : $user_id;
 	}
 
 	public function generate_slug($name)
@@ -297,7 +308,7 @@ class Account
 		return FALSE;
 	}
 
-	public function upload_logo()
+	public function upload_logo($id = null)
 	{
 		ci()->load->library('upload');
 		
@@ -339,7 +350,7 @@ class Account
 						);
 
 
-			$this->model('setting')->create_or_update('account_logo', implode('/', $url), $this->val('id'));
+			$this->model('setting')->create_or_update('account_logo', implode('/', $url), ( ! empty($id)) ? $id : $this->val('id'));
 			
 			unlink('temp_uploads/' . $img_data['file_name']);
 
@@ -352,7 +363,7 @@ class Account
 		return FALSE;
 	}
 
-	public function upload_bg()
+	public function upload_bg($id = null)
 	{
 		ci()->load->library('upload');
 		
@@ -392,7 +403,7 @@ class Account
 						);
 
 
-			$this->model('setting')->create_or_update('account_bg', implode('/', $url), $this->val('id'));
+			$this->model('setting')->create_or_update('account_bg', implode('/', $url),  ( ! empty($id)) ? $id : $this->val('id'));
 
 			unlink('temp_uploads/' . $img_data['file_name']);
 			

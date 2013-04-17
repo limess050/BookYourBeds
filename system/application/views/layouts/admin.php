@@ -26,7 +26,9 @@
 		<li class="mobile-menu"><a href="#" onclick="$('.sidebar').toggleClass('show'); return false;">Menu</a></li>
 		<li class="branding"><h3>Book Your Beds</h3></li>
 		<li class="mobile-branding"><?php echo anchor('admin', 'Dashboard'); ?></li>
+		<?php if(account('active')) { ?>
 		<li class="pull-right"><a href="#" onclick="$('#search-form').toggle(); $(this).toggleClass('active'); return false;">Search</a></li>
+		<?php } ?>
 	</ul>
 
 	<?php echo form_open('admin/bookings/search', 'id="search-form"'); ?>
@@ -37,11 +39,16 @@
 <nav class="sidebar">
 	<ul class="side-nav">
 		<li class="nav-dashboard hidden-phone <?php echo select_if_current('dashboard'); ?>"><?php echo anchor('admin', 'Dashboard'); ?></li>
+		<?php if(account('active')) { ?>
 		<li class="nav-diary <?php echo select_if_current('bookings'); ?>"><?php echo anchor('admin/bookings', 'Diary'); ?></li>
+		<?php } ?>
 		<li class="nav-rooms <?php echo select_if_current('resources'); ?>"><?php echo anchor('admin/resources', 'Rooms'); ?></li>
 		<li class="nav-availability <?php echo select_if_current('availability'); ?>"><?php echo anchor('admin/availability', 'Availability'); ?></li>
 		<li class="nav-supplements <?php echo select_if_current('supplements'); ?>"><?php echo anchor('admin/supplements', 'Supplements'); ?></li>
+		
+		<?php if(account('active')) { ?>
 		<li class="nav-salesdesk <?php echo select_if_current('salesdesk'); ?>"><?php echo anchor('admin/salesdesk', 'Sales Desk'); ?></li>
+		<?php } ?>
 	</ul>
 
 	<ul class="side-nav bottom">

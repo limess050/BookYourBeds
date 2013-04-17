@@ -1,6 +1,6 @@
 <li class="well well-small media">
 	<a class="pull-left" href="#">
-		<img class="media-object" data-src="holder.js/64x64">
+		<img src="/assets/img/wizard/email-icon.png" />
 	</a>
 	
 	<div class="media-body">

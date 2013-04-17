@@ -20,7 +20,7 @@
 		        </div>
 
 		        <div class="control-group">
-		        	<label class="control-label">New Password</label>
+		        	<label class="control-label">Password</label>
 		        	<div class="controls">
 		            	<?php
 		        		echo form_password(array(

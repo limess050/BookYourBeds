@@ -1,7 +1,7 @@
-<h1>Getting Started</h1>
+<h1 class="page-header">Setup Wizard</h1>
 
 
-<ul>
+<ul class="wizard-list">
 	<?php foreach($steps as $step)
 	{
 		echo $template['partials'][$step];

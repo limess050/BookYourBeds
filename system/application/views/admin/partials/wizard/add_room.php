@@ -1,6 +1,6 @@
 <li class="well well-small media" id="add_room">
 	<a class="pull-left" href="#">
-		<img class="media-object" data-src="holder.js/64x64">
+		<img src="/assets/img/wizard/room-icon.png" />
 	</a>
 	
 	<div class="media-body">

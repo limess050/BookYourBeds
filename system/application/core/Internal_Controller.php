@@ -8,7 +8,7 @@ class Internal_Controller extends MY_Controller
 		
 		$this->check_access();
 
-		$this->template->set_layout('default');
+		$this->template->set_layout('internal');
 
 		$this->template
 			->enable_parser(FALSE)
@@ -31,7 +31,7 @@ class Internal_Controller extends MY_Controller
 	{
 		if(session('internal_user', 'internal_user_id'))
 		{
-			redirect(site_url('basecamp'));
+			redirect(site_url('internal'));
 		}
 
 		$this->load->library('form_validation');
@@ -44,14 +44,14 @@ class Internal_Controller extends MY_Controller
 
 			$this->template
 				->title('Signin')
-				->build('basecamp/auth/signin'); 
+				->build('internal/auth/signin'); 
 		} else
 		{
 			
 			redirect(
-				($this->input->get('redirect') && $this->input->get('redirect') != 'basecamp/signin') ? 
+				($this->input->get('redirect') && $this->input->get('redirect') != 'internal/signin') ? 
 				$this->input->get('redirect') : 
-				'basecamp');
+				'internal');
 		}
 	}
 
@@ -64,12 +64,12 @@ class Internal_Controller extends MY_Controller
 	public function signout()
 	{
 		$this->session->sess_destroy();
-		redirect('signin');
+		redirect('internal/signin');
 	}
 
 	private function check_access()
 	{
-		
+		//return TRUE;
 		// These pages get past permission checks
 	    $ignored_methods = array('signin', 'signout', 'forgotten_password', 'reset_password');
 
@@ -85,28 +85,14 @@ class Internal_Controller extends MY_Controller
 		if(in_array($current_method, $ignored_methods))
 		{
 			return TRUE;
-		} else if( ! session('user', 'user_id'))
+		} else if( ! session('internal_user', 'internal_user_id'))
 		{
 			redirect(
-				site_url('signin?redirect=' . 
-							str_replace(ci()->account->val('slug') . '/', '', uri_string()))
-						);
-		} else if( session('user', 'user_id') && session('user', 'user_account_id') != ci()->account->val('id') )
-		{
-			ci()->account->ac = $this->model('account')->get( session('user', 'user_account_id') );
-
-			redirect(site_url('admin'));
+				site_url('internal/signin?redirect=' .  uri_string())
+				);
 		}
 
 		return TRUE;
-	}
- 
-	protected function admin_access()
-	{
-		if( ! session('user', 'user_is_admin'))
-		{
-			show_404();
-		}
 	}
 	
 

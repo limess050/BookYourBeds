@@ -281,3 +281,23 @@ CREATE TABLE `customers` (
 `customer_deleted_at` DATETIME NOT NULL,
 INDEX (`customer_account_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='Customers';
+
+-- COMMAND BREAK --
+
+DROP TABLE IF EXISTS `internal_users`;
+
+-- COMMAND BREAK --
+
+CREATE TABLE `internal_users` (
+`internal_user_id` INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+`internal_user_username` VARCHAR(64) NULL,
+`internal_user_email` VARCHAR(100) NULL,
+`internal_user_password` VARCHAR(100) NOT NULL DEFAULT '',
+`internal_user_firstname` VARCHAR(64) NULL,
+`internal_user_lastname` VARCHAR(64) NULL,
+`internal_user_updated_at` TIMESTAMP NOT NULL,
+`internal_user_created_at` DATETIME NOT NULL,
+`internal_user_deleted_at` DATETIME NOT NULL,
+UNIQUE KEY (`internal_user_username`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='Internal Users';
+

@@ -7,6 +7,30 @@ class Account_m extends MY_Model
 		parent::__construct();
 	}
 
+	public function get_all_internal()
+	{	
+		$this->is_paranoid();
+
+		return $this->db->select('accounts.*')
+						->select('(SELECT SUM(resource_default_release * resource_booking_footprint) FROM resources WHERE resource_account_id = account_id AND resource_active = 1) as account_capacity')
+						->select('(SELECT login_at FROM logins JOIN users ON user_id = login_user_id WHERE user_account_id = account_id LIMIT 1 ORDER BY login_at DESC) as account_last_activity')
+						->get($this->_table)->result();
+	}
+
+	public function get_internal($primary_value)
+	{
+		$this->is_paranoid();
+
+		return $this->db
+			->select('accounts.*')
+			->select('(SELECT SUM(resource_default_release * resource_booking_footprint) FROM resources WHERE resource_account_id = account_id AND resource_active = 1) as account_capacity')
+			->select('(SELECT login_at FROM logins JOIN users ON user_id = login_user_id WHERE user_account_id = account_id LIMIT 1 ORDER BY login_at DESC) as account_last_activity')
+						
+			->where($this->primary_key, $primary_value)
+			->get($this->_table)
+			->row();
+	}
+
 	public function check_unique($element, $attempt, $account_id = null)
 	{
 		if( ! empty($account_id))
@@ -27,5 +51,6 @@ class Account_m extends MY_Model
 						->set('account_active', 1)
 						->update('accounts');
 	}
+
 
 }
