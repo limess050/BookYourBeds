@@ -46,11 +46,13 @@ class Migration_Test_account extends CI_Migration
 					'account_slug'		=> 'the-edinburgh-hostel',
 					'account_email'		=> (ENVIRONMENT == 'development') ? 'phil@othertribe.com' : 'test@bookyourbeds.com',
 					'account_confirmed'	=> 1,
-					'account_personalised'	=> 1,
-					'account_active'		=> 1
+					'account_personalised'	=> 1
 					);
 
 		$this->account_id = $this->model('account')->insert($account);
+
+
+		$this->model('account')->launch($this->account_id);
 
 		$user = array(
 					'user_firstname'	=> 'Joe',
