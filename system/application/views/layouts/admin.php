@@ -79,6 +79,22 @@
 	</div>-->
 </div>
 
+<script type="text/javascript">
+<!--
+	$(document).ready(function() {
+		<?php if($this->session->flashdata('msg')) { ?>
+		growl('<?php echo $this->session->flashdata('msg'); ?>', '');
+		<?php } ?>
+		<?php if( ! empty($_flash_msg)) { ?>
+		growl('<?php echo $_flash_msg; ?>', '');
+		<?php } ?>
+	});
+-->
+</script>
+
+<!-- Growl-style alerts. Grrrr! -->
+<div id="growl"></div>
+
 </body>
 
 </html>
