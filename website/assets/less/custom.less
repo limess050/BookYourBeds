@@ -209,7 +209,9 @@ header
 .pullout.features
 {
 	margin-top: 20px;
-	background: black;
+	background: @orange;
+	color: black;
+	.apple-text();
 
 	.row
 	{
@@ -229,11 +231,13 @@ header
 
 .pullout.free-trial
 {
-	background: lighten(@orange, 15);
+	//background: lighten(@orange, 15);
 
 	h3, p
 	{
-		.shadowed-text();
+		color: black;
+		.apple-text();
+		//.shadowed-text();
 	}
 }
 
@@ -278,7 +282,9 @@ header
 
 .pullout.terms
 {	
-	color: #000;
+	//color: #000;
+	background: black;
+	color: #fff;
 }
 
 footer
@@ -288,6 +294,11 @@ footer
 	margin-top: 20px;
 	color: #fff;
 	font-size: 12px;
+}
+
+footer.no-margin
+{
+	margin-top: 0px;
 }
 
 .centre-block
