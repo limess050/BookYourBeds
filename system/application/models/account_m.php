@@ -13,7 +13,7 @@ class Account_m extends MY_Model
 
 		return $this->db->select('accounts.*')
 						->select('(SELECT SUM(resource_default_release * resource_booking_footprint) FROM resources WHERE resource_account_id = account_id AND resource_active = 1) as account_capacity')
-						->select('(SELECT login_at FROM logins JOIN users ON user_id = login_user_id WHERE user_account_id = account_id LIMIT 1 ORDER BY login_at DESC) as account_last_activity')
+						->select('(SELECT login_at FROM logins JOIN users ON user_id = login_user_id WHERE user_account_id = account_id ORDER BY login_at DESC LIMIT 1) as account_last_activity')
 						->get($this->_table)->result();
 	}
 
@@ -24,7 +24,7 @@ class Account_m extends MY_Model
 		return $this->db
 			->select('accounts.*')
 			->select('(SELECT SUM(resource_default_release * resource_booking_footprint) FROM resources WHERE resource_account_id = account_id AND resource_active = 1) as account_capacity')
-			->select('(SELECT login_at FROM logins JOIN users ON user_id = login_user_id WHERE user_account_id = account_id LIMIT 1 ORDER BY login_at DESC) as account_last_activity')
+			->select('(SELECT login_at FROM logins JOIN users ON user_id = login_user_id WHERE user_account_id = account_id ORDER BY login_at DESC LIMIT 1) as account_last_activity')
 						
 			->where($this->primary_key, $primary_value)
 			->get($this->_table)
