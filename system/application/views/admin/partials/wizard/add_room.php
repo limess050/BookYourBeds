@@ -6,9 +6,9 @@
 	<div class="media-body">
 		<h4 class="media-heading">Add <?php echo ($this->account->rooms == 0) ? 'your first' : 'another' ;?> room</h4>
 
-		<p>Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo.</p>
+		<p>Your must create at least one room to enable you to launch your site, however you are not required to enter all room information at this time. You can enter additional rooms later.</p>
 
-		<a href="#" onclick="$('#room_form').slideToggle(); return false;">Do this...</a>
+		<a href="#" onclick="$('#room_form').slideToggle(); return false;">Click here...</a>
 
 		<?php echo form_open('admin/dashboard/wizard', 'class="form-horizontal' . ((empty($_add_room_open)) ? ' hide' : '') . '" id="room_form"', array('_form' => 'add_room', 'resource[resource_account_id]' => account('id'))); ?>
 			<?php echo $template['partials']['form_errors']; ?>

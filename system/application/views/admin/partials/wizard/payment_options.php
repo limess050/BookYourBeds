@@ -6,9 +6,9 @@
 	<div class="media-body">
 		<h4 class="media-heading">Add payment options</h4>
 
-		<p>Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo.</p>
+		<p>Select appropriate payment settings</p>
 
-		<a href="#" onclick="$('#payment_form').slideToggle(); return false;">Do this...</a>
+		<a href="#" onclick="$('#payment_form').slideToggle(); return false;">Click here...</a>
 
 		<?php echo form_open('admin/dashboard/wizard', 'class="form-horizontal' . ((empty($_payment_options_open)) ? ' hide' : '') . '" id="payment_form"', array('_form' => 'payment_options')); ?>
 			<?php echo $template['partials']['form_errors']; ?>

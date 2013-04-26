@@ -6,9 +6,9 @@
 	<div class="media-body">
 		<h4 class="media-heading">Personalise your account</h4>
 
-		<p>Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo.</p>
+		<p>Personalise the look and feel of your account by writing a description about your B&amp;B, adding a logo and a background image! You can either complete this now or once your account is live.</p>
 
-		<a href="#" onclick="$('#account_form').slideToggle(); return false;">Do this...</a>
+		<a href="#" onclick="$('#account_form').slideToggle(); return false;">Click here...</a>
 
 		<?php echo form_open_multipart('admin/dashboard/wizard', 'class="form-horizontal' . ((empty($_account_open)) ? ' hide' : '') . '" id="account_form"', array('_form' => 'account', 'account[account_personalised]' => 1)); ?>
 			<?php echo $template['partials']['form_errors']; ?>

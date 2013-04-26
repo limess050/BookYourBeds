@@ -6,7 +6,7 @@
 	<div class="media-body">
 		<h4 class="media-heading">Confirm Account Email Address</h4>
 
-		<p>Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo.</p>
+		<p>Please check the email address below is correct; if so go to your email inbox, and click on the account confirmation link within the welcome email.  Once you’ve confirmed your account, close this browser tab/window, and continue your account set up.</p>
 
 		<?php echo form_open('admin/dashboard/wizard', 'class="form-horizontal"', array('_form' => 'confirm_email')); ?>
 			<div class="input-append">
