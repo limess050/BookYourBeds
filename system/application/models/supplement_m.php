@@ -29,6 +29,8 @@ class Supplement_m extends MY_Model
 
 	public function get_all($account_id = null)
 	{
+		$this->is_paranoid();
+
 		$this->_set_account_id($account_id);
 
 		return $this->db->where($this->account_id_field, $this->account_id)
@@ -62,7 +64,8 @@ class Supplement_m extends MY_Model
 							)
 							) as 'resource_id'");
 
-		return $this->db->where($this->account_id_field, $this->account_id)
+		return $this->db->where('supplement_active', 1)
+						->where($this->account_id_field, $this->account_id)
 									->get($this->_table)->result();
 	}
 
@@ -107,4 +110,19 @@ class Supplement_m extends MY_Model
 						->result();
 	}
 
+	public function disable($id, $account_id = null)
+	{
+		$this->_set_account_id($account_id);
+
+		$this->db->where('supplement_id', $id)
+					->update($this->_table, array('supplement_active' => 0));
+	}
+
+	public function enable($id, $account_id = null)
+	{
+		$this->_set_account_id($account_id);
+
+		$this->db->where('supplement_id', $id)
+					->update($this->_table, array('supplement_active' => 1));
+	}
 }

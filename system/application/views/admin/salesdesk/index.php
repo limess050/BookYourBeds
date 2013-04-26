@@ -35,15 +35,16 @@ $_guests = (booking('booking_guests')) ? booking('booking_guests') : 1;
 		<div class="control-group">
 			<label class="control-label" for="duration">Duration</label>
 			<div class="controls">
+				
 				<?php
-				for($i = 1; $i <= 7; $i++)
-				{
-					$nights[$i] = $i;
-				}
-				$nights[$i] = $i . '+';
-			
-				echo form_dropdown('duration', $nights, set_value('duration', $_duration), 'class="span1"');
-				?> night(s)
+				echo form_input(array(
+					'name'	=> 'duration',
+					'class'	=> 'span1',
+					'value'	=> set_value('duration', $_duration)
+					));
+				?>
+
+				night(s)
 			</div>
 		</div> <!-- /clearfix -->
 		
@@ -51,14 +52,13 @@ $_guests = (booking('booking_guests')) ? booking('booking_guests') : 1;
 			<label class="control-label" for="guests">Number of Guests</label>
 			<div class="controls">
 				<?php
-				for($i = 1; $i < 7; $i++)
-				{
-					$g[$i] = $i;
-				}
-				$g[7] = '+7';
-			
-				echo form_dropdown('guests', $g, set_value('guests', $_guests), 'class="span1"');
+				echo form_input(array(
+					'name'	=> 'guests',
+					'class'	=> 'span1',
+					'value'	=> set_value('guests', $_guests)
+					));
 				?>
+
 			</div>
 		</div> <!-- /clearfix -->
 

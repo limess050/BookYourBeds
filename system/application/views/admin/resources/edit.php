@@ -78,21 +78,32 @@
 
 				<div class="control-group">
 					<div class="controls">
-						<button type="submit" class="btn btn-primary">Save Changes</button>
+						<button type="submit" class="btn btn-warning">Save Changes</button>
 					</div>
 				</div>
 			</fieldset>
 		</form>
 
 	<?php if($resource->resource_active) { ?>
-		<div class="alert alert-danger">
+		<div class="alert alert-info">
 			<strong>Disable this room</strong>
 
 			<p>It is possible to disable this room - this will stop it appearing on diary and availability pages, and prevent it from being booked.</p>
 			
 			<?php echo anchor('admin/resources/disable/' . $resource->resource_id,
 							'<i class="icon-remove icon-white"></i> Disable this room now</a>',
-							'class="btn btn-danger" onclick="return confirm(\'Are you sure you want to disable this room?\')"'
+							'class="btn btn-primary" onclick="return confirm(\'Are you sure you want to disable this room?\')"'
 							); ?>
 		</div>
 		<?php } ?>
+
+		<div class="alert alert-danger">
+			<strong>Delete this room</strong>
+
+			<p>If you delete this room, it will be permanently removed. Any bookings made for this room will also be deleted. <strong>This cannot be undone!</strong></p>
+			
+			<?php echo anchor('admin/resources/delete/' . $resource->resource_id,
+							'<i class="icon-remove icon-white"></i> Permanently delete this room</a>',
+							'class="btn btn-danger" onclick="return confirm(\'Are you sure you want to permanently delete this room?\')"'
+							); ?>
+		</div>

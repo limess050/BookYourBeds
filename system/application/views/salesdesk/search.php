@@ -195,6 +195,11 @@ $availability =& $resource->availability; ?>
 		
 		
 		calculatePrice();
+
+		// Scroll down...
+		$('html, body').animate({
+	         scrollTop: $("#price_total").offset().top
+	     }, 1000);
 	}
 	
 	function calculatePrice()

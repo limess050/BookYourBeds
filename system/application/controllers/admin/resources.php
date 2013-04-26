@@ -165,7 +165,7 @@ class Resources extends Admin_Controller {
 
 		$this->model('resource')->disable($id);
 
-		$this->session->set_flashdata('msg', 'Resource disabled');
+		$this->session->set_flashdata('msg', 'Room disabled');
 			
 		redirect(site_url('admin/resources/edit/' . $id));
 	}
@@ -179,9 +179,23 @@ class Resources extends Admin_Controller {
 
 		$this->model('resource')->enable($id);
 
-		$this->session->set_flashdata('msg', 'Resource enabled');
+		$this->session->set_flashdata('msg', 'Room enabled');
 			
 		redirect(site_url('admin/resources/edit/' . $id));
+	}
+
+	public function delete($id = null)
+	{
+		if(empty($id))
+		{
+			show_404();
+		}
+
+		$this->model('resource')->delete($id);
+
+		$this->session->set_flashdata('msg', 'Room permanently deleted');
+			
+		redirect(site_url('admin/resources'));
 	}
 
 }

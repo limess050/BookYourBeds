@@ -1,4 +1,4 @@
-	<?php 
+<?php 
 if( ! empty($resources))
 {
 	foreach($resources as $resource) {
@@ -6,6 +6,12 @@ if( ! empty($resources))
 	}
 } else
 {
-	$this->load->view('admin/partials/availability_row', array('resource' => $resource, 'hide_title' => TRUE));
+	if( ! empty($resource))
+	{
+		$this->load->view('admin/partials/availability_row', array('resource' => $resource, 'hide_title' => TRUE));
+	} else
+	{
+		
+	}
 }
 ?>

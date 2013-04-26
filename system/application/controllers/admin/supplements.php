@@ -72,5 +72,46 @@ class Supplements extends Admin_Controller {
 
 	}
 
+	public function disable($id = null)
+	{
+		if(empty($id))
+		{
+			show_404();
+		}
+
+		$this->model('supplement')->disable($id);
+
+		$this->session->set_flashdata('msg', 'Supplement disabled');
+			
+		redirect(site_url('admin/supplements/edit/' . $id));
+	}
+
+	public function enable($id = null)
+	{
+		if(empty($id))
+		{
+			show_404();
+		}
+
+		$this->model('supplement')->enable($id);
+
+		$this->session->set_flashdata('msg', 'Supplement enabled');
+			
+		redirect(site_url('admin/supplements/edit/' . $id));
+	}
+
+	public function delete($id = null)
+	{
+		if(empty($id))
+		{
+			show_404();
+		}
+
+		$this->model('supplement')->delete($id);
+
+		$this->session->set_flashdata('msg', 'Supplement deleted');
+			
+		redirect(site_url('admin/supplements'));
+	}
 
 }

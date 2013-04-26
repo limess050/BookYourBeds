@@ -44,6 +44,8 @@ class Resource_m extends MY_Model
 
 	public function get_all($account_id = null)
 	{
+		$this->is_paranoid();
+		
 		$this->_set_account_id($account_id);
 
 		return $this->db->where($this->account_id_field, $this->account_id)

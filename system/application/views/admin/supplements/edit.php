@@ -1,3 +1,13 @@
+<?php if( ! $supplement->supplement_active) { ?>
+<div class="alert alert-success clearfix">
+	<?php echo anchor('admin/supplements/enable/' . $supplement->supplement_id,
+							'<i class="icon-ok icon-white"></i> Enable now</a>',
+							'class="btn btn-success pull-right" onclick="return confirm(\'Are you sure you want to enable this supplement?\')"'
+							); ?>
+	<strong>This supplement is currently disabled.</strong><br />It cannot be booked and will not appear on your rooms.
+</div>
+<?php } ?>
+
 <div class="page-header row">
 	<h1>Edit Supplement <small><?php echo $supplement->supplement_short_description; ?></small></h1>
 </div>
@@ -69,21 +79,32 @@
 
 				<div class="control-group">
 					<div class="controls">
-						<button type="submit" class="btn btn-primary">Save Changes</button>
+						<button type="submit" class="btn btn-warning">Save Changes</button>
 					</div>
 				</div>
 			</fieldset>
 		</form>
 
 <?php if($supplement->supplement_active) { ?>
-		<div class="alert alert-danger">
-			<strong>Disable this supplement</strong>
+<div class="alert alert-info">
+	<strong>Disable this supplement</strong>
 
-			<p>It is possible to disable this room - this will stop it appearing on diary and availability pages, and prevent it from being booked.</p>
-			
-			<?php echo anchor('admin/resources/disable/' . $supplement->supplement_id,
-							'<i class="icon-remove icon-white"></i> Disable this room now</a>',
-							'class="btn btn-danger" onclick="return confirm(\'Are you sure you want to disable this room?\')"'
-							); ?>
-		</div>
-		<?php } ?>
+	<p>It is possible to disable this supplement - this will stop it appearing on rooms, and prevent it from being booked.</p>
+	
+	<?php echo anchor('admin/supplements/disable/' . $supplement->supplement_id,
+					'<i class="icon-remove icon-white"></i> Disable this supplement now</a>',
+					'class="btn btn-primary" onclick="return confirm(\'Are you sure you want to disable this supplement?\')"'
+					); ?>
+</div>
+<?php } ?>
+
+<div class="alert alert-danger">
+	<strong>Delete this supplement</strong>
+
+	<p>If you delete this supplement, it will be permanently removed from all rooms and bookings. <strong>This cannot be undone!</strong></p>
+	
+	<?php echo anchor('admin/supplements/delete/' . $supplement->supplement_id,
+					'<i class="icon-remove icon-white"></i> Permanently delete this supplement</a>',
+					'class="btn btn-danger" onclick="return confirm(\'Are you sure you want to delete this supplement? It cannot be undone.\')"'
+					); ?>
+</div>
