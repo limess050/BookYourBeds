@@ -63,9 +63,11 @@ echo form_open('admin/bookings/checkin'); ?>
 
 		<button class="btn btn-<?php echo $btn_state; ?> dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></button>
 		<ul class="dropdown-menu">
+			<li><a href="<?php echo site_url('admin/bookings/show/' . $booking->booking_id); ?>"><i class="icon-info-sign"></i> Booking Overview</a></li>
 			<li><a href="<?php echo site_url('admin/bookings/email/' . $booking->booking_id); ?>"><i class="icon-envelope"></i> Email Booking Details</a></li>
 			<!--<li><a href="#"><i class="icon-comment"></i> Add Note to Booking</a></li>-->
 			<li><a href="<?php echo site_url('admin/bookings/edit/' . $booking->booking_id . '#guest'); ?>"><i class="icon-pencil"></i> Edit Guest Details</a></li>
+			<li><a href="<?php echo site_url('admin/bookings/supplements/' . $booking->booking_id); ?>"><i class="icon-plus-sign"></i> Edit Supplements</a></li>
 			<li class="divider"></li>
 			<li><a href="<?php echo site_url('admin/transfer/start/' . $booking->booking_id); ?>"><i class="icon-random"></i> Transfer Booking</a></li>
 			<li class="divider"></li>
@@ -80,3 +82,17 @@ echo form_open('admin/bookings/checkin'); ?>
 </form>
 <?php } ?>
 
+
+</div>
+
+
+<?php if($booking->booking_refund > 0 && ! $booking->booking_refund_refunded) { ?>
+<div class="alert alert-info clearfix">
+	<div class="pull-left">
+		<h4>Refund Due</h4>
+		This guest has a refund of <strong>&pound;<?php echo as_currency($booking->booking_refund); ?></strong> due.
+	</div>
+
+	<?php echo anchor('admin/bookings/refund/' . $booking->booking_id, 'Refund Now', 'class="btn pull-right"'); ?>
+</div>
+<?php } ?>

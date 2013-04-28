@@ -102,6 +102,17 @@ class Supplement_m extends MY_Model
 														));
 	}
 
+	public function clear_from_booking($booking_id, $supplement_id = null)
+	{
+		if(! empty($supplement_id))
+		{
+			$this->db->where('stb_supplement_id', $supplement_id);
+		}
+
+		$this->db->where('stb_booking_id', $booking_id)
+				->delete('supplement_to_booking');
+	}
+
 	public function get_for_booking($booking_id)
 	{
 		return $this->db->join('supplements', 'supplement_id = stb_supplement_id')

@@ -12,7 +12,7 @@
 	<?php 
 	$resources = booking('resources');
 	$_supplements = booking('supplements');
-
+ 
 	foreach($supplements as $supplement) { ?>
 	<tr>
 		<td><h4><?php echo $supplement->supplement_short_description; ?> <small>&pound;<?php echo as_currency($supplement->resource_price) . ' ' .
@@ -60,7 +60,7 @@
 	<div class="control-group">
 
 		<div class="controls">
-			<button type="submit" class="btn btn-primary">Continue</button>
+			<button type="submit" class="btn btn-warning">Continue</button>
 		</div>
 	</div>
 

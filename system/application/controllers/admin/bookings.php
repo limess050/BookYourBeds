@@ -126,6 +126,111 @@ class Bookings extends Admin_Controller {
 		
 	}
 
+	public function supplements($id = null)
+	{
+		if(empty($id))
+		{
+			show_404();
+		}
+
+		$data['booking'] = $this->model('booking')->get($id, $this->account->val('id')); 
+
+		$data['supplements'] = $this->model('supplement')->get_for_resource($data['booking']->resources[0]->resource_id, $this->account->val('id'));
+
+		$this->load->library('form_validation');
+
+		if(empty($data['supplements']))
+		{
+			$this->session->set_flashdata('msg', 'You do not have any supplements on this room');
+			redirect('admin/bookings/show/' . $id);
+		} 
+
+		foreach($data['supplements'] as $supplement)
+		{
+			$this->form_validation->set_rules("supplements[{$supplement->supplement_id}][qty]", '', 'trim');
+			$this->form_validation->set_rules("supplements[{$supplement->supplement_id}][price]", '', 'trim');
+			$this->form_validation->set_rules("supplements[{$supplement->supplement_id}][description]", '', 'trim');
+		}		
+
+		if($this->form_validation->run() === FALSE)
+		{
+			$data['resources'] = $data['booking']->resources;
+
+			$data['_supplements'] = array();
+
+			foreach($data['booking']->supplements as $supplement)
+			{
+				$data['_supplements'][$supplement->supplement_id] = $supplement;
+			}
+
+			$data['previous'] = ( ! empty($data['booking']->booking_original_id)) ? $this->model('booking')->get_previous($data['booking']->booking_original_id) : array();
+
+			$data['new'] = ( ! empty($data['booking']->booking_transferred_to_id)) ? $this->model('booking')->get($data['booking']->booking_transferred_to_id) : null;
+			
+			$this->load->helper('typography');
+
+			$this->template
+				->set_partial('booking_button_group', 'admin/partials/booking_button_group')
+				->build('admin/bookings/supplements', $data);
+		} else
+		{
+			//echo '<pre>';
+			//print_r($this->input->post('supplements'));
+			//echo '</pre>';
+
+			// Start by deleting any existing...
+			$this->model('supplement')->clear_from_booking($id);
+
+			$supplement_total = 0;
+
+			// Add the new ones in...
+			foreach($this->input->post('supplements') as $key => $sup)
+			{
+				if($sup['qty'] > 0)
+				{
+					$this->model('supplement')->add_to_booking($key, $id, $sup['qty'], $sup['price']);
+					$supplement_total += ($sup['price'] * $sup['qty']);
+				}
+			}
+
+			// Now update the booking price
+			$update = array(
+						'booking_price' 			=> $data['booking']->booking_room_price + $supplement_total,
+						'booking_supplement_price'	=> $supplement_total
+						);
+
+			if($data['booking']->booking_deposit > $update['booking_price'])
+			{
+				$update['booking_deposit'] = $update['booking_price'];
+				$update['booking_refund'] = $data['booking']->booking_deposit - $update['booking_price'];
+
+				$this->session->set_flashdata('msg', 'Supplements updated. The guest will require a refund of &pound;' . as_currency($update['booking_refund']));
+			} else
+			{
+				$this->session->set_flashdata('msg', 'Supplements updated.');
+			}
+
+			$this->model('booking')->update($id, $update);
+
+			redirect('admin/bookings/show/' . $id);
+		}
+
+	}
+
+	public function refund($id = null)
+	{
+		if(empty($id))
+		{
+			show_404();
+		}
+
+		$this->model('booking')->update($id, array('booking_refund_refunded' => 1));
+
+		$this->session->set_flashdata('msg', 'Amount refunded');
+			
+		redirect(site_url('admin/bookings/show/' . $id));
+	}
+
 	public function acknowledge($id = null)
 	{
 		if(empty($id))

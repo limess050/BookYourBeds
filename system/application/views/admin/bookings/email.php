@@ -1,11 +1,11 @@
 <div class="page-header row">
 	<div class="pull-left">
-		<h1><?php echo (! is_verified($booking)) ? 'Unverified ' : ''; ?>Booking <small><?php echo $booking->booking_reference; ?></small></h1>
+		<h1><?php echo (! is_verified($booking)) ? 'Unverified ' : ''; ?>Booking <small><?php echo anchor('admin/bookings/show/' . $booking->booking_id, $booking->booking_reference); ?></small></h1>
 	</div>
 
 
 	<?php echo $template['partials']['booking_button_group']; ?>
-</div>
+
 
 <?php echo form_open('admin/bookings/email/' . $booking->booking_id, 'class="form-horizontal" method="POST"'); ?>
 

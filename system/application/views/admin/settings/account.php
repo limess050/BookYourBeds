@@ -115,6 +115,7 @@
 				<div class="controls">
 					<div class="image_bg_holder" style="background-image: url(<?php echo (setting('account_bg')) ?  setting('account_bg') : site_url('assets/img/default/style_bg.jpg', FALSE); ; ?>);"></div>
 					<input type="file" name="account_bg" />
+					<span class="help-block"><i class="icon-info-sign"></i> This image will appear across the top of your sales page. For best results use an image that is at least 1024 pixels wide.</span>
 				</div>
 			</div>
 
