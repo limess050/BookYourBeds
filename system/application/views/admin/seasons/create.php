@@ -53,7 +53,7 @@
 
 				<div class="control-group">
 					<div class="controls">
-						<button type="submit" class="btn btn-primary">Create Season</button>
+						<button type="submit" class="btn btn-warning btn-large">Create Season</button>
 					</div>
 				</div>
 			</fieldset>

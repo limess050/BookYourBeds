@@ -64,7 +64,7 @@
 			</tbody>
 		</table>
 
-		<button type="submit" class="btn btn-primary">Save Changes</button>
+		<button type="submit" class="btn btn-warning btn-large">Save Changes</button>
 
 		</form>
 	</div>

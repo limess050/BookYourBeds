@@ -50,7 +50,7 @@
 	<div class="control-group">
 
 		<div class="controls">
-			<button type="submit" class="btn btn-primary">Send Booking Details</button>
+			<button type="submit" class="btn btn-warning btn-large">Send Booking Details</button>
 		</div>
 	</div>
 </fieldset>

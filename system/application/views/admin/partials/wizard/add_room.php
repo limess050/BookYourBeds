@@ -136,7 +136,7 @@
 			<div class="control-group">
 				
 				<div class="controls">
-					<button type="submit" class="btn btn-primary">Add Room</button>
+					<button type="submit" class="btn btn-warning btn-large">Add Room</button>
 				</div>
 			</div>
 

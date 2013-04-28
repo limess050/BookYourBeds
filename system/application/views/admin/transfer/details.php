@@ -141,7 +141,7 @@
 		<div class="control-group">
 
 			<div class="controls">
-				<button type="submit" class="btn btn-primary">Continue</button>
+				<button type="submit" class="btn btn-warning btn-large">Continue</button>
 			</div>
 		</div>
 	</fieldset>

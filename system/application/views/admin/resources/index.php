@@ -1,7 +1,7 @@
 <h1 class="page-header">Rooms</h1>
 
 
-		<p><?php echo anchor('admin/resources/create', 'Create New Room', 'class="btn btn-primary plus"'); ?></p>
+		<p><?php echo anchor('admin/resources/create', 'Create New Room', 'class="btn btn-warning btn-large plus"'); ?></p>
 
 
 		<table class="table zebra-striped">

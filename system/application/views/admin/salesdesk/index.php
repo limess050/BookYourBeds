@@ -65,7 +65,7 @@ $_guests = (booking('booking_guests')) ? booking('booking_guests') : 1;
 		<div class="control-group">
 
 			<div class="controls">
-				<button type="submit" class="btn btn-primary">Search</button>
+				<button type="submit" class="btn btn-warning btn-large">Search</button>
 			</div>
 		</div>
 	</fieldset>

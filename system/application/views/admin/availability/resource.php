@@ -8,7 +8,7 @@
 
 <p class="align_center">
 <?php echo anchor('admin/availability/resource/' . $resource->resource_id . '?timestamp=' . strtotime('-' . AVAILABILITY_DAYS . ' day', $start_timestamp), '&laquo; Previous ' . AVAILABILITY_DAYS . ' days', 'class="btn" id="prev_link"'); ?>&nbsp;
-<?php echo anchor('admin/availability/resource/' . $resource->resource_id, 'TODAY', 'class="btn btn-primary" id="today_link"'); ?>&nbsp; 
+<?php echo anchor('admin/availability/resource/' . $resource->resource_id, 'TODAY', 'class="btn btn-warning" id="today_link"'); ?>&nbsp; 
 <input type="hidden" value="<?php echo date("Y-m-d", $start_timestamp); ?>" id="datepicker" />&nbsp;
 
 <?php echo anchor('admin/availability/resource/' . $resource->resource_id . '?timestamp=' . strtotime('+' . AVAILABILITY_DAYS . ' day', $start_timestamp), 'Next ' . AVAILABILITY_DAYS . ' days &raquo;', 'class="btn" id="next_link"'); ?>

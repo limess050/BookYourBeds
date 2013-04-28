@@ -123,7 +123,7 @@
 				break; 
 		}*/ ?>
 		
-		<button type="submit" class="btn btn-primary">Book Now</button>
+		<button type="submit" class="btn btn-warning btn-large">Book Now</button>
 	</div>
 
 	

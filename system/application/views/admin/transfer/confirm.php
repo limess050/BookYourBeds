@@ -263,7 +263,7 @@ if($pay >= 0)
 		
 		<div class="control-group">
 			<div class="controls">
-				<button type="submit" class="btn btn-primary">Finish and Confirm Transfer</button>
+				<button type="submit" class="btn btn-warning btn-large">Finish and Confirm Transfer</button>
 			</div>
 		</div>
 

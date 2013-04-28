@@ -5,7 +5,7 @@
 
 
 
-		<p><?php echo anchor('admin/supplements/create', 'Create New Supplement', 'class="btn btn-primary plus"'); ?></p>
+		<p><?php echo anchor('admin/supplements/create', 'Create New Supplement', 'class="btn btn-warning btn-large plus"'); ?></p>
 
 
 		<table class="table zebra-striped">

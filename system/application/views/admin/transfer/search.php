@@ -110,7 +110,7 @@
 		<input type="hidden" name="price_deposit" id="price_deposit_field" />
 		<input type="hidden" name="price_first_night" id="price_first_night_field" />
 				
-		<button type="submit" class="btn btn-primary">Continue</button>
+		<button type="submit" class="btn btn-warning btn-large">Continue</button>
 	</div>
 
 	

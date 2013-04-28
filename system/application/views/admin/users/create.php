@@ -72,7 +72,7 @@
 
 			<div class="control-group">
 				<div class="controls">
-					<button type="submit" class="btn btn-primary">Create User</button>
+					<button type="submit" class="btn btn-warning btn-large">Create User</button>
 				</div>
 			</div>
 		</fieldset>
