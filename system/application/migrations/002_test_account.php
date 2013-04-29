@@ -11,42 +11,56 @@ class Migration_Test_account extends CI_Migration
 	public $email = array('gmail', 'hotmail', 'live', 'yahoo', 'me', 'ymail', 'rocketmail', 'mac');
 	public $tld = array('.com', '.co.uk', '.au.com');
 
-	public $start = '2013-01-01 00:00:00';
+	public $start = '2013-04-27 00:00:00';
+
+	public $season_id;
 
 	public $rooms = array(
+						array(
+							'resource_title'				=> 'Single Room',
+							'resource_booking_footprint'	=> 1,
+							'resource_default_release'		=> 3,
+							'resource_priced_per'			=> 'room',
+							'price'							=> array(
+																	'std'	=> array(
+																					'weekday'	=> '40',
+																					'weekend'	=> '50'
+																					),
+																	'wtr'	=> array(
+																					'weekday'	=> '30',
+																					'weekend'	=> '35'
+																					)
+																	)
+							),
+
 						array(
 							'resource_title'				=> 'Double Room',
 							'resource_booking_footprint'	=> 2,
 							'resource_default_release'		=> 4,
 							'resource_priced_per'			=> 'room',
-							'price'							=> '60'
-							),
-
-						array(
-							'resource_title'				=> 'Quad Room',
-							'resource_booking_footprint'	=> 4,
-							'resource_default_release'		=> 2,
-							'resource_priced_per'			=> 'room',
-							'price'							=> '130'
-							),
-
-						array(
-							'resource_title'				=> '12 Bed Dormitory',
-							'resource_booking_footprint'	=> 1,
-							'resource_default_release'		=> 24,
-							'resource_priced_per'			=> 'bed',
-							'price'							=> '10'
+							'price'							=> array(
+																	'std'	=> array(
+																					'weekday'	=> '50',
+																					'weekend'	=> '60'
+																					),
+																	'wtr'	=> array(
+																					'weekday'	=> '40',
+																					'weekend'	=> '45'
+																					)
+																	)
 							)
 						);
 
 	public function up()
 	{
 		$account = array(
-					'account_name'		=> 'The Edinburgh Hostel',
-					'account_slug'		=> 'the-edinburgh-hostel',
-					'account_email'		=> (ENVIRONMENT == 'development') ? 'phil@othertribe.com' : 'test@bookyourbeds.com',
+					'account_name'		=> 'The Reivers Rest',
+					'account_slug'		=> 'the-reivers-rest',
+					'account_email'		=> (ENVIRONMENT == 'development') ? 'phil@othertribe.com' : 'mail@thebedbooker.com',
 					'account_confirmed'	=> 1,
-					'account_personalised'	=> 1
+					'account_personalised'	=> 1,
+					'account_phone'			=> '01573 123456',
+					'account_description'	=> 'A fantastic B&B in the heart of the Scottish Borders, where you will always find a warm welcome, a comfy bed and a hearty breakfast to set you up for the day!'
 					);
 
 		$this->account_id = $this->model('account')->insert($account);
@@ -57,7 +71,7 @@ class Migration_Test_account extends CI_Migration
 		$user = array(
 					'user_firstname'	=> 'Joe',
 					'user_lastname'		=> 'Bloggs',
-					'user_username'		=> 'test',
+					'user_username'		=> 'user1',
 					'user_email'		=> (ENVIRONMENT == 'development') ? 'phil@othertribe.com' : 'test@bookyourbeds.com',
 					'user_password'		=> SHA1('password'),
 					'user_is_admin'		=> 1,
@@ -73,17 +87,38 @@ class Migration_Test_account extends CI_Migration
 					'sagepay_form_crypt'		=> 'oG1PDrzXanmXe5JE',
 					'sagepay_form_encryption_type'	=> 'AES',
 					'balance_due'	=> 'checkin',
-					'account_bg'	=> site_url('assets/img/default/style_edinburgh_bg.jpg', FALSE)
+					'account_logo'	=> 'https://s3-eu-west-1.amazonaws.com/bookyourbeds/0b9cd56c2868788acec9bf70bbde3a3e.jpg',
+					'account_bg'	=> 'https://s3-eu-west-1.amazonaws.com/bookyourbeds/fdc655d9dd8f01ffd995db0480146194.jpg',
+					'availability_limit_start_at'	=> '27/04/2013',
+					'availability_limit_end_at'		=> '31/10/2014',
+					'terms_and_conditions'			=> 'These are my terms and conditions for your stay!',
+					'booking_instructions'			=> 'We can accommodate dogs and have a couple of small comfortable warm kennels, where your dog can get as good a nights rest as you will!'
 					);
 
 		$_settings = array(
 					'deposit'	=> 'none',
 					'payment_gateway'	=> 'NoGateway',
-					'balance_due'	=> 'checkin',
-					'account_bg'	=> site_url('assets/img/default/style_edinburgh_bg.jpg', FALSE)
+					'balance_due'	=> 'checkout',
+					'account_logo'	=> 'https://s3-eu-west-1.amazonaws.com/bookyourbeds/0b9cd56c2868788acec9bf70bbde3a3e.jpg',
+					'account_bg'	=> 'https://s3-eu-west-1.amazonaws.com/bookyourbeds/fdc655d9dd8f01ffd995db0480146194.jpg',
+					'availability_limit_start_at'	=> '27/04/2013',
+					'availability_limit_end_at'		=> '31/10/2014',
+					'terms_and_conditions'			=> 'These are my terms and conditions for your stay!',
+					'booking_instructions'			=> 'We can accommodate dogs and have a couple of small comfortable warm kennels, where your dog can get as good a nights rest as you will!'
 					);
 
-		$this->model('setting')->create_or_update_many($settings, $this->account_id);
+		$this->model('setting')->create_or_update_many($_settings, $this->account_id);
+
+
+		$season = array(
+						'season_account_id'	=> $this->account_id,
+						'season_sort_order'	=> 1,
+						'season_title'		=> 'Winter Season',
+						'season_start_at'	=> '01/10/2013',
+						'season_end_at'		=> '31/03/2014'
+						);
+
+		$this->season_id = $this->model('season')->insert($season);
 
 		$this->supplements();
 		$this->rooms();
@@ -96,15 +131,13 @@ class Migration_Test_account extends CI_Migration
 							array(
 								'supplement_account_id'			=> $this->account_id,
 								'supplement_short_description'	=> 'Early check-in',
-								'supplement_default_price'		=> 20,
+								'supplement_default_price'		=> '7.5',
 								'supplement_active'				=> 1
 								),
 							array(
 								'supplement_account_id'			=> $this->account_id,
-								'supplement_short_description'	=> 'Breakfast',
-								'supplement_default_price'		=> 10,
-								'supplement_per_guest'			=> 1,
-								'supplement_per_day'			=> 1,
+								'supplement_short_description'	=> 'Cot',
+								'supplement_default_price'		=> '0',
 								'supplement_active'				=> 1
 								)
 							);
@@ -136,9 +169,21 @@ class Migration_Test_account extends CI_Migration
 													'price_resource_id'		=> $resource_id,
 													'price_season_id'		=> 0,
 													'price_day_id'			=> $i,
-													'price_price'			=> $room['price']
+													'price_price'			=> ($i == 5 || $i == 6) ? $room['price']['std']['weekend'] : $room['price']['std']['weekday']
 													));
 			}
+
+			for($i = 1; $i <= 7; $i++)
+			{
+				$this->model('price')->insert(array(
+													'price_resource_id'		=> $resource_id,
+													'price_season_id'		=> $this->season_id,
+													'price_day_id'			=> $i,
+													'price_price'			=> ($i == 5 || $i == 6) ? $room['price']['std']['weekend'] : $room['price']['std']['weekday']
+													));
+			}
+
+
 
 			foreach($this->sup as $s)
 			{
@@ -152,17 +197,24 @@ class Migration_Test_account extends CI_Migration
 
 	private function bookings()
 	{
-		for($b = 0; $b < 500; $b++)
+		for($b = 0; $b < 200; $b++)
 		{
-			// Random date
-			//$arrive = strtotime(human_to_unix($this->start), '+' . rand(0, 365) . ' days');
-			$arrive = unix_to_human(strtotime('+' . rand(0, 180) . ' days', human_to_unix($this->start)), TRUE, 'eu');
+			// have a couple arriving today...
+			if($b < 10)
+			{
+				$arrive = date('Y-m-d 00:00:00');
+			} else
+			{
+				// Random date
+				//$arrive = strtotime(human_to_unix($this->start), '+' . rand(0, 365) . ' days');
+				$arrive = unix_to_human(strtotime('+' . rand(0, 180) . ' days', human_to_unix($this->start)), TRUE, 'eu');
+			}
 
 			// Number of nights
-			$duration = rand(1, 7);
+			$duration = rand(1, 4);
 
 			// Guests
-			$guests = rand(1, 6);
+			$guests = rand(1, 3);
 
 			// Pick a random room
 			$room = $this->db->order_by('resource_id', 'random')
