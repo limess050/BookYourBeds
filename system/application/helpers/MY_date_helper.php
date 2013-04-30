@@ -155,3 +155,17 @@ if ( ! function_exists('nice_time'))
 	    return "$difference $periods[$j] {$tense}";
 	}
 }
+
+function time_remaining($start, $duration)
+{
+	if( ! is_numeric($start))
+	{
+		$start = human_to_unix($start);
+	}
+
+	//return $start;
+
+	$end = $start + $duration;
+
+	return timespan(time(), $end);
+}

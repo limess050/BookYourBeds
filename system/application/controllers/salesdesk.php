@@ -234,12 +234,8 @@ class Salesdesk extends Front_Controller {
 		$data['form'] = $this->payment->form(setting('payment_gateway'), $this->booking->session());
 		
 		$this->template->append_metadata( js('jquery.dotimeout.js'))
-					->build('salesdesk/payment', $data);
+					->build('salesdesk/payment', $data); 
 	}
-
-
-
-
 
 
 
@@ -287,6 +283,20 @@ class Salesdesk extends Front_Controller {
 
 				break;
 		}
+	}
+
+	public function force_process()
+	{
+		if( ! $this->input->get('id'))
+		{
+			show_404();
+		}
+
+		$id = $this->input->get('id');
+
+		$this->session->set_flashdata('booking_id', $this->booking->process(base64_decode($id), null));
+
+		redirect(site_url('salesdesk/complete'));
 	}
 
 	public function complete()

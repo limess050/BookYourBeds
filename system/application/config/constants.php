@@ -79,6 +79,8 @@ define('EXT_MAX_GUESTS', 6);
 
 define('AVAILABILITY_DAYS', 7);
 
+define('UNVALIDATED_DEFAULT_TIMESPAN', (24 * 60 * 60));
+
 /**
  * The reCAPTCHA server URL's
  */

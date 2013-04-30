@@ -248,7 +248,11 @@
 						<div class="responsive-content">&pound;<?php echo as_currency($booking->booking_price); ?></div>
 
 					</td>
-					<td></td>
+					<td>
+						<div class="responsive-label">Time Remaining</div>
+						<div class="responsive-content"><?php echo time_remaining($booking->booking_confirmation_sent_at, UNVALIDATED_DEFAULT_TIMESPAN); ?></div>
+
+					</td>
 				</tr>
 				<?php } ?>
 			</tbody>
