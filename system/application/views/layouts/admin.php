@@ -43,7 +43,7 @@
 		<li class="nav-diary <?php echo select_if_current('bookings'); ?>"><?php echo anchor('admin/bookings', 'Diary'); ?></li>
 		<?php } ?>
 		<li class="nav-rooms <?php echo select_if_current('resources'); ?>"><?php echo anchor('admin/resources', 'Rooms'); ?></li>
-		<li class="nav-availability hidden-phone <?php echo select_if_current('availability'); ?>"><?php echo anchor('admin/availability', 'Availability'); ?></li>
+		<li class="nav-availability <?php echo select_if_current('availability'); ?>"><?php echo anchor('admin/availability', 'Availability'); ?></li>
 		<li class="nav-supplements <?php echo select_if_current('supplements'); ?>"><?php echo anchor('admin/supplements', 'Supplements'); ?></li>
 		
 		<?php if(account('active')) { ?>
