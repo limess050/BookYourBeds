@@ -36,7 +36,7 @@ $_guests = (booking('booking_guests')) ? booking('booking_guests') : 1;
 			<label class="control-label" for="duration">Duration</label>
 			<div class="controls">
 				<?php
-				for($i = 1; $i <= 7; $i++)
+				for($i = 1; $i <= setting('max_duration_public'); $i++)
 				{
 					$nights[$i] = $i;
 				}
@@ -51,11 +51,11 @@ $_guests = (booking('booking_guests')) ? booking('booking_guests') : 1;
 			<label class="control-label" for="guests">Number of Guests</label>
 			<div class="controls">
 				<?php
-				for($i = 1; $i < 7; $i++)
+				for($i = 1; $i <= setting('max_guests_public'); $i++)
 				{
 					$g[$i] = $i;
 				}
-				$g[7] = '+7';
+				$g[$i] = $i . '+';
 			
 				echo form_dropdown('guests', $g, set_value('guests', $_guests), 'class="span1"');
 				?>

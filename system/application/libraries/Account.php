@@ -429,8 +429,8 @@ class Account
 	{
 		if(empty($this->settings))
 		{
-			//$this->settings = ci()->config->item('default_settings');
-			$this->settings = array();
+			$this->settings = ci()->config->item('default_settings');
+			//$this->settings = array();
 
 			$custom = $this->model('setting')->get_all();
 

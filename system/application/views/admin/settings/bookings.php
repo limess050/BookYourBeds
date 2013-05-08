@@ -8,7 +8,7 @@
 	<?php echo $template['partials']['form_errors']; ?>
 
 	<fieldset>
-		<legend>Release Limits</legend>
+		<legend>Booking Limits</legend>
 
 		<div class="control-group">
 			<label class="control-label">Only release beds after</label>
@@ -35,6 +35,32 @@
 									'id'	=> 'end_datepicker'
 									));
 				?>
+			</div>
+		</div>
+
+		<div class="control-group">
+			<label class="control-label">Maximum booking duration</label>
+			<div class="controls">
+				<?php echo form_input(array(
+									'name'	=> 'setting[max_duration_public]',
+									'class'	=> 'span1',
+									'value'	=> set_value('setting[max_duration_public]', setting('max_duration_public'))
+									));
+				?> nights
+				<span class="help-block">This limit only applies to the public booking site - any duration can be entered when booking through the admin sales desk</span>
+			</div>
+		</div>
+
+		<div class="control-group">
+			<label class="control-label">Maximum number of guests</label>
+			<div class="controls">
+				<?php echo form_input(array(
+									'name'	=> 'setting[max_guests_public]',
+									'class'	=> 'span1',
+									'value'	=> set_value('setting[max_guests_public]', setting('max_guests_public'))
+									));
+				?>
+				<span class="help-block">This limit only applies to the public booking site - any number of guests can be entered when booking through the admin sales desk</span>
 			</div>
 		</div>
 	</fieldset>

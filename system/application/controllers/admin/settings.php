@@ -60,6 +60,8 @@ class Settings extends Admin_Controller {
 	{
 		$this->load->library('form_validation');
 
+		$this->form_validation->set_rules('setting[max_duration_public]', 'Maximum duration', 'trim|required|is_numeric');
+		$this->form_validation->set_rules('setting[max_guests_public]', 'Maximum guests', 'trim|required|is_numeric');
 		$this->form_validation->set_rules('setting[terms_and_conditions]', 'Terms and Conditions', 'trim');
 		$this->form_validation->set_rules('setting[booking_instructions]', 'Additional Booking Information', 'trim');
 

@@ -173,6 +173,11 @@
 		$('#availability_results tr#row_' + id).addClass('success');
 
 		calculatePrice();
+
+		// Scroll down...
+		$('html, body').animate({
+	         scrollTop: $("#price_total").offset().top
+	     }, 1000);
 	}
 	
 	function radioClicked(elem)
@@ -194,11 +199,6 @@
 		
 		
 		calculatePrice();
-
-		// Scroll down...
-		$('html, body').animate({
-	         scrollTop: $("#price_total").offset().top
-	     }, 1000);
 	}
 	
 	function calculatePrice()

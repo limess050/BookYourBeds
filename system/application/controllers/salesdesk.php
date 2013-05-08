@@ -36,14 +36,14 @@ class Salesdesk extends Front_Controller {
 
 	public function max_duration($str)
 	{
-		$this->form_validation->set_message('max_duration', 'For stays longer than 7 days please contact the hostel directly.');
-		return $str < 8;
+		$this->form_validation->set_message('max_duration', 'For stays longer than ' . setting('max_duration_public') . ' days please contact the accommodation provider directly.');
+		return $str <= setting('max_duration_public');
 	}
 
 	public function max_guests($str)
 	{
-		$this->form_validation->set_message('max_guests', 'For more than 6 guests please contact the hostel directly.');
-		return $str < 7;
+		$this->form_validation->set_message('max_guests', 'For more than ' . setting('max_guests_public') . ' guests please contact the accommodation provider directly.');
+		return $str <= setting('max_guests_public');
 	}
 
 	public function reset()

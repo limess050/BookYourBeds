@@ -123,7 +123,7 @@ $autoload['helper'] = array('url', 'date', 'asset', 'session', 'account', 'form'
 |
 */
 
-$autoload['config'] = array();
+$autoload['config'] = array('settings');
 
 
 /*
