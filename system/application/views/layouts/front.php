@@ -1,3 +1,8 @@
+<!--
+All application code, styles and layouts
+Copyright 2013 Phil Stephens
+All rights reserved
+-->
 <!DOCTYPE html>
 <html>
 <head>

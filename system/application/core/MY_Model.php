@@ -1,4 +1,10 @@
 <?php
+ /*
+All application code, styles and layouts
+Copyright 2013 Phil Stephens
+All rights reserved
+phil@othertribe.com for more information
+*/
  
 /**
  * A base model to provide the basic CRUD
