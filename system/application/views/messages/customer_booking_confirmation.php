@@ -14,18 +14,20 @@ Telephone: <?php echo $booking->customer->customer_phone; ?><br /><br />
 Room Booked: <?php echo $resource->resource_title; ?><br />
 Arriving: <?php echo mysql_to_format($resource->reservation_start_at); ?><br />
 Duration: <?php echo duration($resource->reservation_duration); ?><br />
-Guests: <?php echo $booking->booking_guests; ?> (<?php echo "{$resource->reservation_footprint} {$resource->resource_priced_per}" . (($resource->reservation_footprint > 1) ? 's' : ''); ?>)<br /><br />
+Guests: <?php echo $resource->reservation_guests; ?> (<?php echo "{$resource->reservation_footprint} {$resource->resource_priced_per}" . (($resource->reservation_footprint > 1) ? 's' : ''); ?>)<br /><br />
 <?php } ?>
 
 Additional Supplements:<br />
-<?php if(empty($booking->supplements)) { ?>
+<?php if( ! $booking->has_supplements) { ?>
 You have not requested any additional supplements.<br /><br />
 <?php } else { ?>
-<?php foreach($booking->supplements as $supplement) { ?>
+<?php foreach($booking->resources as $resource) { 
+foreach($resource->supplements as $supplement) { ?>
 <?php echo $supplement->supplement_short_description; ?><br />
 <?php echo auto_typography($supplement->supplement_long_description); ?><br />
 &pound;<?php echo as_currency($supplement->stb_quantity * $supplement->stb_price); ?><br /><br />
-<?php } ?>
+<?php }
+} ?>
 <?php } ?>
 
 Payments<br />

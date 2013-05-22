@@ -15,70 +15,49 @@ class Booking
 		
 	}
 
-	public function create(
-							$account_id,
-							$start_timestamp,
-							$duration,
-							$resources,
+	public function create($account_id, 
+							$resource_id, 
+							$start_timestamp, 
+							$duration, 
+							$guests, 
+							$footprint = null, 
+							$price = null, 
+							$first_night = null, 
 							$user_id = 0)
 	{
-		// Need to do some parsing for calculations
-		$_guests = 0;
-		$_first_night = 0;
-		$_room_price = 0;
-
-		foreach($resources as $key => $resource)
-		{
-			if($resource['guests'] == 0)
-			{
-				unset($resources[$key]);
-			} else
-			{
-				$_guests += $resource['guests'];
-				$_first_night += $resource['resource_first_night'];
-				$_room_price += ($resource['resource_single_price'] * ceil($resource['guests'] / $resource['resource_booking_footprint']));
-			}
-		}
-
-		if($_guests > 0)
-		{
-			$booking = array(
+		// Yes? Let's go!
+		$booking = array(
 							'booking_account_id'		=> $account_id,
-							'booking_guests'			=> $_guests,
-							'booking_price'				=> $_room_price,
-							'booking_room_price'		=> $_room_price,
-							'booking_first_night_price'	=> $_first_night,
+							'booking_guests'			=> $guests,
+							'booking_price'				=> $price,
+							'booking_room_price'		=> $price,
+							'booking_first_night_price'	=> $first_night,
 							'booking_session_id'		=> ci()->session->userdata('session_id'),
 							'booking_user_id'			=> $user_id,
 							'booking_ip_address' 		=> ci()->input->ip_address(),
 							'booking_user_agent' 		=> ci()->input->user_agent(),
+							'resource_id'				=> $resource_id,
+							'footprint'					=> $footprint,
 							'duration'					=> $duration,
-							'start_at'					=> $start_timestamp,
-							'resources'					=> $resources
+							'start_at'					=> $start_timestamp
 							);
 
-			if( ! booking('booking_id'))
-			{
-				$booking_id = $this->model('booking')->insert($booking);
-				
-				// Create an empty booking for this session...
-				$this->update_session($this->model('booking')->get($booking_id));
-			} else
-			{
-				$this->model('booking')->update(booking('booking_id'), $booking);
-
-				// Update the booking we're using for this session...
-				$this->update_session($this->model('booking')->get(booking('booking_id')));
-			}
-
-			return TRUE;
+		if( ! booking('booking_id'))
+		{
+			$booking_id = $this->model('booking')->insert($booking);
+			
+			// Create an empty booking for this session...
+			$this->update_session($this->model('booking')->get($booking_id));
 		} else
 		{
-			return FALSE;
-		}
-	}
+			$this->model('booking')->update(booking('booking_id'), $booking);
 
-	
+			// Update the booking we're using for this session...
+			$this->update_session($this->model('booking')->get(booking('booking_id')));
+		}
+
+		return TRUE;
+	}
 
 	public function session()
 	{
@@ -214,14 +193,11 @@ class Booking
 		unset($booking->customer);
 
 		// Supplements ---------------------------------------------------------------------------------
-		foreach($booking->supplements as $rid => $resource)
+		foreach($booking->supplements as $key => $supplement)
 		{
-			foreach($resource as $sid => $supplement)
-			{
-				$this->model('supplement')->add_to_booking($sid, $booking->booking_id, $rid, $supplement['qty'], $supplement['price']);
-			}	
-		}
-	
+			$this->model('supplement')->add_to_booking($key, $booking->booking_id, $supplement['qty'], $supplement['price']);
+		}	
+
 		unset($booking->supplements);
 		
 		// Booking notes ---------------------------------------------------------------------------------
@@ -229,13 +205,10 @@ class Booking
 
 		// Reservation data...
 		$resources = $booking->resources;
-		
-		/* NOT SURE WHY I HAVE THESE?!
 		$booking->resource_id = $resources[0]->reservation_resource_id;
 		$booking->footprint = $resources[0]->reservation_footprint;
 		$booking->duration = $resources[0]->reservation_duration;
 		$booking->start_at = $resources[0]->reservation_start_at;
-		*/
 
 		/*$booking->booking_reference = strtoupper("{$resources[0]->resource_reference}-");
 		$booking->booking_reference .= mysql_to_format($resources[0]->reservation_start_at, 'dm-');
@@ -265,7 +238,7 @@ class Booking
 			$booking->booking_confirmation_sent_at = unix_to_human(time(), TRUE, 'eu');
 		}
 
-		unset($resources, $booking->resources, $lastname, $booking->emailconf, $booking->has_supplements);
+		unset($resources, $booking->resources, $lastname, $booking->emailconf);
 
 		// scrape off the accountdata...
 		foreach($booking as $key => $value)

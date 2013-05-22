@@ -38,4 +38,16 @@ class Reservation_m extends MY_Model
 
 		return $this->get_all();
 	}
+
+	public function get_for_booking($booking_id)
+	{
+		$reservations = $this->get_many_by('reservation_booking_id', $booking_id);
+
+		foreach($reservations as $key => $reservation)
+		{
+			$reservations[$key]->supplements = $this->model('supplement')->get_for_reservation($booking_id, $reservation->reservation_resource_id);
+		}
+
+		return $reservations;
+	}
 }

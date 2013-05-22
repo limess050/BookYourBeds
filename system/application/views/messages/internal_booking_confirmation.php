@@ -13,7 +13,7 @@ Telephone: <?php echo $booking->customer->customer_phone; ?><br /><br />
 Room Booked: <?php echo $resource->resource_title; ?><br />
 Arriving: <?php echo mysql_to_format($resource->reservation_start_at); ?><br />
 Duration: <?php echo duration($resource->reservation_duration); ?><br />
-Guests: <?php echo $booking->booking_guests; ?> (<?php echo "{$resource->reservation_footprint} {$resource->resource_priced_per}" . (($resource->reservation_footprint > 1) ? 's' : ''); ?>)<br /><br />
+Guests: <?php echo $resource->reservation_guests; ?> (<?php echo "{$resource->reservation_footprint} {$resource->resource_priced_per}" . (($resource->reservation_footprint > 1) ? 's' : ''); ?>)<br /><br />
 <?php } ?>
 <br /><br />
 

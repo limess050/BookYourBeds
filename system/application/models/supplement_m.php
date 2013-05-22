@@ -45,6 +45,26 @@ class Supplement_m extends MY_Model
 				->get($this->_table)->result();
 	}
 
+	public function get_for_resources($resources, $account_id = null, $return_all = FALSE)
+	{
+		if(is_array($resources))
+		{
+			foreach($resources as $key => $resource)
+			{
+				$resources[$key]->supplements = $this->get_for_resource($resource->resource_id, $account_id, $return_all);
+			
+				if(empty($resources[$key]->supplements))
+				{
+					unset($resources[$key]);
+				}
+			}
+
+			return $resources;
+		}
+
+
+	}
+
 	public function get_for_resource($resource_id, $account_id = null, $return_all = FALSE)
 	{
 		$this->_set_account_id($account_id);
@@ -100,11 +120,22 @@ class Supplement_m extends MY_Model
 		}
 	}
 
-	public function add_to_booking($supplement_id, $booking_id, $qty, $price = 0)
+	public function basic_add_to_booking($supplement_id, $booking_id, $qty, $price = 0)
 	{
 		$this->db->insert('supplement_to_booking', array(
 														'stb_supplement_id'	=> $supplement_id,
 														'stb_booking_id'	=> $booking_id,
+														'stb_quantity'		=> $qty,
+														'stb_price'			=> $qty * $price
+														));
+	}
+
+	public function add_to_booking($supplement_id, $booking_id, $resource_id, $qty, $price = 0)
+	{
+		$this->db->insert('supplement_to_booking', array(
+														'stb_supplement_id'	=> $supplement_id,
+														'stb_booking_id'	=> $booking_id,
+														'stb_resource_id'	=> $resource_id,
 														'stb_quantity'		=> $qty,
 														'stb_price'			=> $qty * $price
 														));
@@ -121,10 +152,19 @@ class Supplement_m extends MY_Model
 				->delete('supplement_to_booking');
 	}
 
-	public function get_for_booking($booking_id)
+	public function basic_get_for_booking($booking_id)
 	{
 		return $this->db->join('supplements', 'supplement_id = stb_supplement_id')
 						->where('stb_booking_id', $booking_id)
+						->get('supplement_to_booking')
+						->result();
+	}
+
+	public function get_for_reservation($booking_id, $resource_id)
+	{
+		return $this->db->join('supplements', 'supplement_id = stb_supplement_id')
+						->where('stb_booking_id', $booking_id)
+						->where('stb_resource_id', $resource_id)
 						->get('supplement_to_booking')
 						->result();
 	}

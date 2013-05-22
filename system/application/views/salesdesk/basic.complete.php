@@ -25,7 +25,7 @@
 			<td><strong><?php echo $resource->resource_title; ?></strong></td>
 			<td><?php echo mysql_to_format($resource->reservation_start_at); ?></td>
 			<td><?php echo duration($resource->reservation_duration); ?></td>
-			<td><?php echo $resource->reservation_guests; ?> (<?php echo "{$resource->reservation_footprint} {$resource->resource_priced_per}" . (($resource->reservation_footprint > 1) ? 's' : ''); ?>)</td>
+			<td><?php echo $booking->booking_guests; ?> (<?php echo "{$resource->reservation_footprint} {$resource->resource_priced_per}" . (($resource->reservation_footprint > 1) ? 's' : ''); ?>)</td>
 		</tr>
 		<?php } ?>
 	</tbody>

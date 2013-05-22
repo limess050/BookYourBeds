@@ -10,7 +10,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Booking_m extends MY_Model
 {
-	protected $reservations = array();
+	protected $reservation = array();
 
 	protected $before_create = array('extract_reservation');
 	protected $before_update = array('extract_reservation');
@@ -25,24 +25,16 @@ class Booking_m extends MY_Model
 
 	public function extract_reservation($data)
 	{
-		if( isset($data['resources']))
+		if( isset($data['resource_id']))
 		{
-			$this->reservations = array();
+			$this->reservation = array(
+				'reservation_resource_id'	=> $data['resource_id'],
+				'reservation_footprint'		=> $data['footprint'],
+				'reservation_duration'		=> $data['duration'],
+				'reservation_start_at'		=> (is_numeric($data['start_at'])) ? unix_to_mysql($data['start_at']) : $data['start_at'] 
+				);
 
-			foreach($data['resources'] as $key => $resource)
-			{
-				$this->reservations[] = array(
-											'reservation_resource_id'	=> $key,
-											'reservation_guests'		=> $resource['guests'],
-											'reservation_footprint'		=> ceil($resource['guests'] / $resource['resource_booking_footprint']),
-											'reservation_duration'		=> $data['duration'],
-											'reservation_start_at'		=> (is_numeric($data['start_at'])) ? unix_to_mysql($data['start_at']) : $data['start_at'],
-											'reservation_price'			=> $resource['resource_single_price'] * ceil($resource['guests'] / $resource['resource_booking_footprint'])
-											);
-			}
-
-
-			unset($data['resources'], $data['duration'], $data['start_at']);
+			unset($data['resource_id'], $data['footprint'], $data['duration'], $data['start_at']);
 		}
 
 		return $data;
@@ -50,21 +42,16 @@ class Booking_m extends MY_Model
 
 	public function update_reservation($data, $id)
 	{
-		if( ! empty($this->reservations))
+		if( ! empty($this->reservation))
 		{
-
 			// Clear the decks
 			$this->db->where('reservation_booking_id', $id)
 					->delete('reservations');
 
-			foreach($this->reservations as $reservation)
-			{
-				$this->db->insert('reservations', array_merge(
+			$this->db->insert('reservations', array_merge(
 													array('reservation_booking_id' => $id),
-													$reservation
+													$this->reservation
 													));
-			}
-			
 		}
 	}
 
@@ -84,21 +71,8 @@ class Booking_m extends MY_Model
 		if( ! empty($booking))
 		{
 			$booking->customer = $this->model('customer')->get($booking->booking_customer_id);	
-			$booking->resources = $this->model('reservation')->get_for_booking($primary_value);
-			
-			$booking->has_supplements = FALSE;
-
-			foreach($booking->resources as $resource)
-			{
-				if( ! empty($resource->supplements))
-				{
-					$booking->has_supplements = TRUE;
-					break;
-				}
-			}
-
-			$booking->supplements = array();
-			//$booking->supplements = $this->model('supplement')->get_for_booking($booking->booking_id);
+			$booking->resources = $this->model('reservation')->get_many_by('reservation_booking_id', $primary_value);
+			$booking->supplements = $this->model('supplement')->get_for_booking($booking->booking_id);
 		}
 
 		return $booking;

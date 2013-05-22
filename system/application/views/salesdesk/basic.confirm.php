@@ -19,8 +19,8 @@
 			<td><strong><?php echo $resource->resource_title; ?></strong></td>
 			<td><?php echo mysql_to_format($resource->reservation_start_at); ?></td>
 			<td><?php echo duration($resource->reservation_duration); ?></td>
-			<td><?php echo $resource->reservation_guests; ?> (<?php echo "{$resource->reservation_footprint} {$resource->resource_priced_per}" . (($resource->reservation_footprint > 1) ? 's' : ''); ?>)</td>
-			<td><strong>&pound;<?php echo as_currency($resource->reservation_price); ?></strong></td>
+			<td><?php echo $booking->booking_guests; ?> (<?php echo "{$resource->reservation_footprint} {$resource->resource_priced_per}" . (($resource->reservation_footprint > 1) ? 's' : ''); ?>)</td>
+			<td><strong>&pound;<?php echo as_currency($booking->booking_room_price); ?></strong></td>
 		</tr>
 		<?php } ?>
 
@@ -73,28 +73,14 @@ if(booking('supplements')) { ?>
 	</thead>
 
 	<tbody>
-		<?php foreach(booking('supplements') as $rid => $resource) {
-			foreach($resource as $supplement) { ?>
-			<tr>
-				<td><?php echo $supplement['description']; ?></td>
-				<td><?php echo $supplement['qty']; ?></td>
-				<td>&pound;<?php echo as_currency($supplement['price']); ?></td>
-				<td><strong>&pound;<?php echo as_currency($supplement['price'] * $supplement['qty']); ?></strong></td>
-			</tr>
-			<?php }
-		} ?>
-
-
-
-
-		<?php /* foreach(booking('supplements') as $supplement) { ?>
+		<?php foreach(booking('supplements') as $supplement) { ?>
 		<tr>
 			<td><?php echo $supplement['description']; ?></td>
 			<td><?php echo $supplement['qty']; ?></td>
 			<td>&pound;<?php echo as_currency($supplement['price']); ?></td>
 			<td><strong>&pound;<?php echo as_currency($supplement['price'] * $supplement['qty']); ?></strong></td>
 		</tr>
-		<?php } */
+		<?php } 
 
 		if(setting('deposit') != 'none' && setting('supplement_deposit') != 'none') 
 		{ 
