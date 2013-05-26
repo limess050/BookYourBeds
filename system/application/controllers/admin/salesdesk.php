@@ -47,7 +47,7 @@ class Salesdesk extends Admin_Controller {
 		}
 
 		$this->template->build('admin/salesdesk/index', $data);	
-	}
+	} 
 
 	public function max_duration($str)
 	{
@@ -70,25 +70,14 @@ class Salesdesk extends Admin_Controller {
 
 	public function new_booking()
 	{
-		// guests
-		$guests = $this->input->post('guests');
-		// duration
-		$_days = $this->input->post('day');
-		$duration = count($_days);
-		// resource_id
-		$resource_id = $_days[1];
-		// start date
-		$_resources = $this->input->post('resource');
-		$start_timestamp = $_resources[$resource_id]['day'][1]['timestamp'];
-		$footprint = $_resources[$resource_id]['day'][1]['footprint'];
-		// total price
-		$price = $this->input->post('price_total');
-		// deposit
-		//$deposit = $this->input->post('price_deposit');
-		// first night
-		$first_night = $this->input->post('price_first_night');
 
-		if( $this->booking->create(account('id'), $resource_id, $start_timestamp, $duration, $guests, $footprint, $price, $first_night, session('user', 'user_id')))
+		if( $this->booking->create(account('id'),
+									$this->input->post('start_timestamp'),
+									$this->input->post('duration'),
+									$this->input->post('resource'),
+									session('user', 'user_id')
+									)
+									)
 		{
 			redirect(site_url('admin/salesdesk/details'));
 		} else
@@ -124,7 +113,7 @@ class Salesdesk extends Admin_Controller {
 		}
 	}
 
-	public function supplements()
+	public function basic_supplements()
 	{
 		if( ! booking('customer'))
 		{
@@ -178,12 +167,75 @@ class Salesdesk extends Admin_Controller {
 		}
 	}
 
+	public function supplements()
+	{
+		if( ! booking('customer'))
+		{
+			redirect(site_url('admin/salesdesk/details'));
+		}
+		
+		$data['booking'] = booking();
+		$data['supplements'] = $this->model('supplement')->get_for_resources(booking('resources'), $this->account->val('id'));
+
+		if(empty($data['supplements']))
+		{
+			$this->booking->update_session(array('supplements' => array()));
+
+			redirect(site_url('admin/salesdesk/confirm'));
+		} else
+		{
+			$this->load->library('form_validation');
+
+			foreach($data['supplements'] as $resource)
+			{
+				
+				foreach($resource->supplements as $supplement)
+				{
+					
+					$this->form_validation->set_rules("supplements[{$resource->resource_id}][{$supplement->supplement_id}][qty]", '', 'trim');
+					$this->form_validation->set_rules("supplements[{$resource->resource_id}][{$supplement->supplement_id}][price]", '', 'trim');
+					$this->form_validation->set_rules("supplements[{$resource->resource_id}][{$supplement->supplement_id}][description]", '', 'trim');
+				}
+			}
+		}
+
+		if($this->form_validation->run() === FALSE)
+		{
+			$this->load->helper('typography');
+			$this->template->build('admin/salesdesk/supplements', $data);
+		} else
+		{
+			$supplements = $this->input->post('supplements');
+
+			$total_price = 0;
+
+			foreach($supplements as $rid => $resource)
+			{
+				foreach($resource as $sid => $supplement)
+				{
+					if(empty($supplement['qty']))
+					{
+						unset($supplements[$rid][$sid]);
+					} else
+					{
+						$total_price += ($supplement['qty'] * $supplement['price']);
+					}
+				}
+			}
+			
+			$this->booking->update_session(array('booking_price' => booking('booking_room_price') + $total_price, 'booking_supplement_price' => $total_price, 'supplements' => ((empty($supplements)) ? array() : $supplements)));
+
+			redirect(site_url('admin/salesdesk/confirm'));
+		}
+	}
+
 	public function confirm()
 	{
 		if( ! booking('supplements') && ! is_array(booking('supplements')))
 		{
 			redirect(site_url('admin/salesdesk/supplements'));
 		}
+		
 		// Merge any data that might have come from a failed submission
 		$this->booking->update_session($this->input->post());
 		//$this->session->set_userdata('booking', (object) array_merge((array) session('booking'), (array) $this->input->post()));

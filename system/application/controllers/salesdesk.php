@@ -107,69 +107,14 @@ class Salesdesk extends Front_Controller {
 		}
 	}
 
-	public function basic_supplements()
-	{
-		if( ! booking('customer'))
-		{
-			redirect(site_url('salesdesk/details'));
-		}
-
-		$resources = booking('resources');
-		$data['supplements'] = $this->model('supplement')->get_for_resource($resources[0]->resource_id, $this->account->val('id'));
-
-		if(empty($data['supplements']))
-		{
-			$this->booking->update_session(array('supplements' => array()));
-
-			redirect(site_url('salesdesk/confirm'));
-		} else
-		{
-			$this->load->library('form_validation');
-
-			foreach($data['supplements'] as $supplement)
-			{
-				$this->form_validation->set_rules("supplements[{$supplement->supplement_id}][qty]", '', 'trim');
-				$this->form_validation->set_rules("supplements[{$supplement->supplement_id}][price]", '', 'trim');
-				$this->form_validation->set_rules("supplements[{$supplement->supplement_id}][description]", '', 'trim');
-			}
-		}
-
-		if($this->form_validation->run() === FALSE)
-		{
-			$this->load->helper('typography');
-			$this->template->build('salesdesk/supplements', $data);
-		} else
-		{
-			$supplements = $this->input->post('supplements');
-
-			$total_price = 0;
-
-			foreach($supplements as $key => $supplement)
-			{
-				if(empty($supplement['qty']))
-				{
-					unset($supplements[$key]);
-				} else
-				{
-					$total_price += ($supplement['qty'] * $supplement['price']);
-				}
-			}
-
-			$this->booking->update_session(array('booking_price' => booking('booking_room_price') + $total_price, 'booking_supplement_price' => $total_price, 'supplements' => ((empty($supplements)) ? array() : $supplements)));
-
-			redirect(site_url('salesdesk/confirm'));
-		}
-	}
-
 	public function supplements()
 	{
 		if( ! booking('customer'))
 		{
 			redirect(site_url('salesdesk/details'));
 		}
-
-		//$resources = booking('resources');
 		
+		$data['booking'] = booking();
 		$data['supplements'] = $this->model('supplement')->get_for_resources(booking('resources'), $this->account->val('id'));
 
 		if(empty($data['supplements']))
@@ -256,11 +201,6 @@ class Salesdesk extends Front_Controller {
 			}
 		}
 
-		/*$this->form_validation->set_rules('booking_id', '', 'required');
-		$this->form_validation->set_rules('booking_booking_referrer_id', 'Referral source', 'trim|required_no_zero');
-		$this->form_validation->set_rules('note[note_note]', '', 'trim');
-		$this->form_validation->set_rules('over18', '', 'callback_check_over18');*/
-
 		if($this->form_validation->run() === FALSE)
 		{
 			$this->load->helper('typography');
@@ -275,9 +215,7 @@ class Salesdesk extends Front_Controller {
 		} else
 		{
 			$this->booking->update_session($this->input->post());
-			//$this->session->set_userdata('booking', (object) array_merge((array) session('booking'), (array) $this->input->post()));
-
-			//redirect(site_url('salesdesk/sagepay'));
+			
 			redirect(site_url('salesdesk/payment'));
 		}
 	}

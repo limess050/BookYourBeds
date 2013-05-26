@@ -68,66 +68,9 @@
 
 <div class="row">
 	<div class="span7">
-		<div class="heavy-border">
-			<h3>Booking Overview</h3>
+		<?php echo $template['partials']['booking_overview']; ?>
 
-			<?php echo (is_cancelled($booking)) ? '<span class="label label-important">BOOKING CANCELLED ON ' . strtoupper(mysql_to_format($booking->booking_deleted_at, 'l, j F Y')) . '</span>' : ''; ?>
-			
-			<dl class="dl-horizontal">
-				<dt>Booking Reference</dt>
-				<dd><?php echo $booking->booking_reference; ?></dd>
-
-				<?php foreach($booking->resources as $resource) { ?>
-				<dt>Room</dt>
-				<dd><?php echo $resource->resource_title; ?></dd>
-				
-				<dt>Arrival</dt>
-				<dd>
-					<?php 
-					echo anchor('admin/bookings?timestamp=' . human_to_unix($resource->reservation_start_at), mysql_to_format($resource->reservation_start_at, 'l, j F Y')); 
-					echo ($resource->reservation_start_at == date('Y-m-d 00:00:00') && $resource->reservation_checked_in) ? ' <span class="label label-success">CHECKED IN</span>' : '';
-					?>
-				</dd>
-				
-				<dt>Duration</dt>
-				<dd><?php echo duration($resource->reservation_duration); ?></dd>
-
-				<dt>Total Guests</dt>
-				<dd><?php echo "{$booking->booking_guests} guest" . (($booking->booking_guests > 1) ? 's' : ''); ?> (<?php echo "{$resource->reservation_footprint} {$resource->resource_priced_per}" . (($resource->reservation_footprint > 1) ? 's' : ''); ?>)</dd>				
-				<?php } ?>
-			
-				<dt>Payment Outstanding</dt>
-				<dd>&pound;<?php echo as_currency($booking->booking_price - $booking->booking_deposit); ?></dd>
-			</dl>
-		</div>
-
-		<?php if( ! empty($booking->supplements)) { ?>
-		<h3>Supplements <small><?php echo anchor('admin/bookings/supplements/' . $booking->booking_id, 'Edit'); ?></small></h3>
-
-		<table class="table table-condensed table-striped">
-			<thead>
-				<tr>
-					<th>Supplement</th>
-					<th class="span1">Qty</th>
-					<th class="span1">Price</th>
-				</tr>
-			</thead>
-
-			<tbody>
-				<?php foreach($booking->supplements as $supplement) { ?>
-				<tr>
-					<td><?php echo $supplement->supplement_short_description; ?></td>
-					<td><?php echo $supplement->stb_quantity; ?></td>
-					<td>&pound;<?php echo as_currency($supplement->stb_price); ?></td>
-				</tr>
-				<?php } ?>
-			</tbody>
-
-
-		</table>
-
-
-		<?php } ?>
+		<?php echo $template['partials']['booking_supplements']; ?>		
 		
 	</div>
 

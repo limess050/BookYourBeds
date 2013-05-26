@@ -67,6 +67,8 @@ class Bookings extends Admin_Controller {
 		
 		$this->template
 			->set_partial('booking_button_group', 'admin/partials/booking_button_group')
+			->set_partial('booking_overview', 'admin/partials/booking_overview')
+			->set_partial('booking_supplements', 'admin/partials/booking_supplements')
 			->build('admin/bookings/show', $data);
 	}
 
@@ -122,6 +124,8 @@ class Bookings extends Admin_Controller {
 			
 			$this->template
 				->set_partial('booking_button_group', 'admin/partials/booking_button_group')
+				->set_partial('booking_overview', 'admin/partials/booking_overview')
+				->set_partial('booking_supplements', 'admin/partials/booking_supplements')
 				->build('admin/bookings/edit', $data);
 		} else
 		{
@@ -143,48 +147,65 @@ class Bookings extends Admin_Controller {
 
 		$data['booking'] = $this->model('booking')->get($id, $this->account->val('id')); 
 
-		$data['supplements'] = $this->model('supplement')->get_for_resource($data['booking']->resources[0]->resource_id, $this->account->val('id'));
+		$data['supplements'] = $this->model('supplement')->get_for_resources($data['booking']->resources, $this->account->val('id'));
+
+		//$data['supplements'] = $this->model('supplement')->get_for_resource($data['booking']->resources[0]->resource_id, $this->account->val('id'));
 
 		$this->load->library('form_validation');
 
 		if(empty($data['supplements']))
 		{
-			$this->session->set_flashdata('msg', 'You do not have any supplements on this room');
+			$this->session->set_flashdata('msg', 'You do not have any supplements on these rooms');
 			redirect('admin/bookings/show/' . $id);
 		} 
 
 		foreach($data['supplements'] as $supplement)
 		{
-			$this->form_validation->set_rules("supplements[{$supplement->supplement_id}][qty]", '', 'trim');
-			$this->form_validation->set_rules("supplements[{$supplement->supplement_id}][price]", '', 'trim');
-			$this->form_validation->set_rules("supplements[{$supplement->supplement_id}][description]", '', 'trim');
-		}		
+			foreach($data['supplements'] as $resource)
+			{
+				
+				foreach($resource->supplements as $supplement)
+				{
+					
+					$this->form_validation->set_rules("supplements[{$resource->resource_id}][{$supplement->supplement_id}][qty]", '', 'trim');
+					$this->form_validation->set_rules("supplements[{$resource->resource_id}][{$supplement->supplement_id}][price]", '', 'trim');
+					$this->form_validation->set_rules("supplements[{$resource->resource_id}][{$supplement->supplement_id}][description]", '', 'trim');
+				}
+			}
+		}
 
 		if($this->form_validation->run() === FALSE)
 		{
-			$data['resources'] = $data['booking']->resources;
+			//$data['resources'] = $data['booking']->resources;
 
 			$data['_supplements'] = array();
 
-			foreach($data['booking']->supplements as $supplement)
+			foreach($data['booking']->resources as $resource)
 			{
-				$data['_supplements'][$supplement->supplement_id] = $supplement;
+				foreach($resource->supplements as $supplement)
+				{
+					$data['_supplements'][$resource->resource_id][$supplement->supplement_id] = $supplement;
+				}
 			}
 
 			$data['previous'] = ( ! empty($data['booking']->booking_original_id)) ? $this->model('booking')->get_previous($data['booking']->booking_original_id) : array();
 
 			$data['new'] = ( ! empty($data['booking']->booking_transferred_to_id)) ? $this->model('booking')->get($data['booking']->booking_transferred_to_id) : null;
 			
+			
 			$this->load->helper('typography');
 
 			$this->template
 				->set_partial('booking_button_group', 'admin/partials/booking_button_group')
+				->set_partial('booking_overview', 'admin/partials/booking_overview')
 				->build('admin/bookings/supplements', $data);
 		} else
 		{
-			//echo '<pre>';
-			//print_r($this->input->post('supplements'));
-			//echo '</pre>';
+			/*echo '<pre>';
+			print_r($this->input->post('supplements'));
+			echo '</pre>';
+
+			die();*/
 
 			// Start by deleting any existing...
 			$this->model('supplement')->clear_from_booking($id);
@@ -192,12 +213,15 @@ class Bookings extends Admin_Controller {
 			$supplement_total = 0;
 
 			// Add the new ones in...
-			foreach($this->input->post('supplements') as $key => $sup)
+			foreach($this->input->post('supplements') as $rid => $resource)
 			{
-				if($sup['qty'] > 0)
+				foreach($resource as $sid => $supplement)
 				{
-					$this->model('supplement')->add_to_booking($key, $id, $sup['qty'], $sup['price']);
-					$supplement_total += ($sup['price'] * $sup['qty']);
+					if($supplement['qty'] > 0)
+					{
+						$this->model('supplement')->add_to_booking($sid, $id, $rid, $supplement['qty'], $supplement['price']);
+						$supplement_total += ($supplement['price'] * $supplement['qty']);
+					}
 				}
 			}
 

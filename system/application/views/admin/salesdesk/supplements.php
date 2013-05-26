@@ -2,58 +2,63 @@
 
 ?>
 
+
 	<h1 class="page-header">Optional Supplements</h1>
 
 	<?php echo $template['partials']['form_errors']; ?>
 
 	<?php echo form_open('admin/salesdesk/supplements', array('class' => 'form-horizontal')); ?>
 
-	<table class="table">
 	<?php 
-	$resources = booking('resources');
 	$_supplements = booking('supplements');
- 
-	foreach($supplements as $supplement) { ?>
-	<tr>
-		<td><h4><?php echo $supplement->supplement_short_description; ?> <small>&pound;<?php echo as_currency($supplement->resource_price) . ' ' .
-																								(($supplement->supplement_per_guest) ? 'per person' : 'per ' . $resources[0]->resource_priced_per) . ' ' .
+
+	foreach($supplements as $rid => $resource) { ?>
+		<h3><?php echo $resource->resource_title; ?></h3>
+
+		<table class="table">
+			<tbody>
+			<?php foreach($resource->supplements as $supplement) { ?>
+				<tr>
+					<td><h4><?php echo $supplement->supplement_short_description; ?> <small>&pound;<?php echo as_currency($supplement->resource_price) . ' ' .
+																								(($supplement->supplement_per_guest) ? 'per person' : 'per ' . $resource->resource_priced_per) . ' ' .
 																								(($supplement->supplement_per_day) ? 'per night' : 'per stay') ; ?></small></h4>
 
-			<?php echo auto_typography($supplement->supplement_long_description); ?>
-		</td>
-		
-		<td class="span4">
-			<?php
-			// The total number of options
-			$opt_count = ($supplement->supplement_per_guest) ? booking('booking_guests') : $resources[0]->reservation_footprint;
-			$multiply = ($supplement->supplement_per_day) ? $resources[0]->reservation_duration : 1;
+						<?php echo auto_typography($supplement->supplement_long_description); ?>
+					</td>
 
-			$options = array(
-							0	=> '0'
-							);
+					<td class="span2">
+						<?php
+						// The total number of options
+						$opt_count = ($supplement->supplement_per_guest) ? $booking->resources[$rid]->reservation_guests : $booking->resources[$rid]->reservation_footprint;
+						$multiply = ($supplement->supplement_per_day) ? $booking->resources[$rid]->reservation_duration : 1;
 
-			for($i = 1; $i <= $opt_count; $i++)
-			{
-				$options[$i] = $i . ' ' . (($supplement->supplement_per_guest) ? 'person' : $resources[0]->resource_priced_per) . (($i > 1) ? 's' : '') . ' - &pound;' . as_currency($supplement->resource_price * $multiply * $i);
-			}
+						$options = array(
+										0	=> '0'
+										);
 
-			echo form_dropdown("supplements[{$supplement->supplement_id}][qty]", 
-								$options, 
-								set_value("supplements[{$supplement->supplement_id}][qty]", ( ! empty($_supplements[$supplement->supplement_id])) ? $_supplements[$supplement->supplement_id]['qty'] : 0), 
-								'class="span3"');
-			
-			echo form_hidden(array(
-								"supplements[{$supplement->supplement_id}][price]" => ($supplement->resource_price * $multiply),
-								"supplements[{$supplement->supplement_id}][description]" => $supplement->supplement_short_description
-								));
-			?>
+						for($i = 1; $i <= $opt_count; $i++)
+						{
+							$options[$i] = $i . ' ' . (($supplement->supplement_per_guest) ? 'person' : $resource->resource_priced_per) . (($i > 1) ? 's' : '') . ' - &pound;' . as_currency($supplement->resource_price * $multiply * $i);
+						}
 
-		</td>
-	</tr>
+						echo form_dropdown("supplements[{$resource->resource_id}][{$supplement->supplement_id}][qty]", 
+											$options, 
+											set_value("supplements[{$resource->resource_id}][{$supplement->supplement_id}][qty]", ( ! empty($_supplements[$resource->resource_id][$supplement->supplement_id])) ? $_supplements[$resource->resource_id][$supplement->supplement_id]['qty'] : 0), 
+											'class="span2"');
+						
+						echo form_hidden(array(
+											"supplements[{$resource->resource_id}][{$supplement->supplement_id}][price]" => ($supplement->resource_price * $multiply),
+											"supplements[{$resource->resource_id}][{$supplement->supplement_id}][description]" => $supplement->supplement_short_description . ' (' . $resource->resource_title . ')'
+											));
+						?>
 
+					</td>
+				</tr>
+			<?php } ?>
+			</tbody>
+		</table>
 
 	<?php } ?>
-	</table>
 
 	
 		

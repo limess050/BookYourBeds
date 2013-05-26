@@ -90,6 +90,7 @@ define("RECAPTCHA_VERIFY_SERVER", "www.google.com");
 
 define('MANDRILL_APIKEY', '5Ifu-v6LhEf5iHqbvpsZwQ');
 
+define('SEND_EMAILS', TRUE);
 
 /* End of file constants.php */
 /* Location: ./application/config/constants.php */

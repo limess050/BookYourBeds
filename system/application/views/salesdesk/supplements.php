@@ -11,7 +11,7 @@
 	<?php 
 	$_supplements = booking('supplements');
 
-	foreach($supplements as $resource) { ?>
+	foreach($supplements as $rid => $resource) { ?>
 		<h3><?php echo $resource->resource_title; ?></h3>
 
 		<table class="table">
@@ -28,8 +28,9 @@
 					<td class="span2">
 						<?php
 						// The total number of options
-						$opt_count = ($supplement->supplement_per_guest) ? $resource->reservatiob_guests : $resource->reservation_footprint;
-						$multiply = ($supplement->supplement_per_day) ? $resource->reservation_duration : 1;
+						$opt_count = ($supplement->supplement_per_guest) ? $booking->resources[$rid]->reservation_guests : $booking->resources[$rid]->reservation_footprint;
+						$multiply = ($supplement->supplement_per_day) ? $booking->resources[$rid]->reservation_duration : 1;
+
 
 						$options = array(
 										0	=> '0'

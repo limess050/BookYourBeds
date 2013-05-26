@@ -11,64 +11,136 @@
 </div>
 
 <div class="row">
-	<div class="span7">
+	<div class="span6">
 		<div class="heavy-border">
 			<h3>Current Booking Overview</h3>
 
 			<?php echo (is_cancelled($booking)) ? '<span class="label label-important">BOOKING CANCELLED ON ' . strtoupper(mysql_to_format($booking->booking_deleted_at, 'l, j F Y')) . '</span>' : ''; ?>
 
+
 			<dl class="dl-horizontal">
 				<dt>Booking Reference</dt>
 				<dd><?php echo $booking->booking_reference; ?></dd>
 
-				<?php foreach($booking->resources as $resource) { ?>
-				<dt>Room</dt>
-				<dd><?php echo $resource->resource_title; ?></dd>
-				
 				<dt>Arrival</dt>
 				<dd>
 					<?php 
-					echo anchor('admin/bookings?timestamp=' . human_to_unix($resource->reservation_start_at), mysql_to_format($resource->reservation_start_at, 'l, j F Y')); 
-					echo ($resource->reservation_start_at == date('Y-m-d 00:00:00') && $resource->reservation_checked_in) ? ' <span class="label label-success">CHECKED IN</span>' : '';
+					echo anchor('admin/bookings?timestamp=' . human_to_unix($booking->resources[0]->reservation_start_at), mysql_to_format($booking->resources[0]->reservation_start_at, 'l, j F Y')); 
 					?>
 				</dd>
 
 				<dt>Duration</dt>
-				<dd><?php echo duration($resource->reservation_duration); ?></dd>
+				<dd><?php echo duration($booking->resources[0]->reservation_duration); ?></dd>
 
 				<dt>Total Guests</dt>
-				<dd><?php echo "{$booking->booking_guests} guest" . (($booking->booking_guests > 1) ? 's' : ''); ?> (<?php echo "{$resource->reservation_footprint} {$resource->resource_priced_per}" . (($resource->reservation_footprint > 1) ? 's' : ''); ?>)</dd>				
-				<?php } ?>
-			
-				<dt>Total Cost</dt>
-				<dd>&pound;<?php echo as_currency($booking->booking_price); ?></dd>
+				<dd><?php echo $booking->booking_guests; ?></dd>
 
-				<dt>Deposit Paid</dt>
-				<dd>&pound;<?php echo as_currency($booking->booking_deposit); ?></dd>
+				<dt>Payment Outstanding</dt>
+				<dd>&pound;<?php echo as_currency($booking->booking_price - $booking->booking_deposit); ?></dd>
 			</dl>
+
+			<h3>Rooms Booked</h3>
+
+			<table class="table table-condensed table-striped">
+				<thead>
+					<tr>
+						<th>Room Type</th>
+						<th>Quantity</th>
+						<th>Guests</th>
+						<th></th>
+						<th></th>
+					</tr>
+				</thead>
+
+				<tbody>
+					<?php foreach($booking->resources as $resource) { ?>
+					<tr>
+						<td><?php echo $resource->resource_title; ?></td>
+						<td><?php echo $resource->reservation_footprint; ?></td>
+						<td><?php echo $resource->reservation_guests; ?></td>
+						<td>&pound;<?php echo as_currency($resource->reservation_price); ?></td>
+						<td><?php echo ($resource->reservation_start_at == date('Y-m-d 00:00:00') && $resource->reservation_checked_in) ? '<span class="label label-success">CHECKED IN</span>' : ''; ?></td>
+					</tr>	
+					<?php } ?>
+				</tbody>
+			</table>
+
+			<?php if($booking->has_supplements) { ?>
+			<h3>Supplements <small><?php echo anchor('admin/bookings/supplements/' . $booking->booking_id, 'Edit'); ?></small></h3>
+
+			<table class="table table-condensed table-striped">
+				<thead>
+					<tr>
+						<th>Supplement</th>
+						<th></th>
+						<th class="span1">Qty</th>
+						<th class="span1">Price</th>
+					</tr>
+				</thead>
+
+				<tbody>
+					<?php foreach($booking->resources as $resource) { ?>
+					<?php foreach($resource->supplements as $supplement) { ?>
+					<tr>
+						<td><?php echo $supplement->supplement_short_description; ?></td>
+						<td><?php echo $resource->resource_title ?></td>
+						<td><?php echo $supplement->stb_quantity; ?></td>
+						<td>&pound;<?php echo as_currency($supplement->stb_price); ?></td>
+					</tr>
+					<?php } ?>
+					<?php } ?>
+				</tbody>
+
+
+			</table>
+
+
+			<?php } ?>
+				
 		</div>
 		
 	</div>
 
-	<div class="span5">
+	<div class="span6">
 	    <h3>New Booking Details</h3>
 
 	    <dl class="dl-horizontal">
-			<dt>Room</dt>
-			<dd><?php echo $new_resource->resource_title; ?></dd>
-			
-			<dt>Arrival</dt>
+	    	<dt>Arrival</dt>
 			<dd><?php echo date('l, j F Y', session('transfer_booking', 'start_at')); ?></dd>
 
 			<dt>Duration</dt>
 			<dd><?php echo duration( session('transfer_booking', 'duration')); ?></dd>
 
 			<dt>Total Guests</dt>
-			<dd><?php echo session('transfer_booking', 'booking_guests') . " guest" . ((session('transfer_booking', 'booking_guests') > 1) ? 's' : ''); ?> (<?php echo session('transfer_booking', 'footprint') . " {$new_resource->resource_priced_per}" . ((session('transfer_booking', 'footprint') > 1) ? 's' : ''); ?>)</dd>				
-		
-			<dt>Total Cost</dt>
-			<dd>&pound;<?php echo as_currency(session('transfer_booking', 'booking_price')); ?></dd>
-		</dl>
+			<dd><?php echo session('transfer_booking', 'booking_guests'); ?></dd>	
+	    </dl>
+
+	    <h3>Rooms Booked</h3>
+
+		<table class="table table-condensed table-striped">
+			<thead>
+				<tr>
+					<th>Room Type</th>
+					<th>Quantity</th>
+					<th>Guests</th>
+					<th></th>
+				</tr>
+			</thead>
+
+			<tbody>
+				<?php foreach(session('transfer_booking', 'resources') as $resource) { ?>
+				<tr>
+					<td><?php echo $resource['resource_title']; ?></td>
+					<td><?php echo ceil($resource['guests'] / $resource['resource_booking_footprint']); ?></td>
+					<td><?php echo $resource['guests']; ?></td>
+					<td>&pound;<?php echo as_currency(ceil($resource['guests'] / $resource['resource_booking_footprint']) * $resource['resource_single_price']); ?></td>
+					
+				</tr>	
+				<?php } ?>
+			</tbody>
+		</table>
+
+
 	    
 	</div>
 
@@ -80,56 +152,60 @@
 
 	<?php echo form_open('admin/transfer/supplements/' . $booking->booking_id, array('class' => 'form-horizontal')); ?>
 
-	<table class="table">
 	<?php 
-	
+	//$_supplements = booking('supplements');
+	$resources = session('transfer_booking', 'resources');
 
-	foreach($supplements as $supplement) { ?>
-	<tr>
-		<td><h4><?php echo $supplement->supplement_short_description; ?> <small>&pound;<?php echo as_currency($supplement->resource_price) . ' ' .
-																								(($supplement->supplement_per_guest) ? 'per person' : 'per ' . $new_resource->resource_priced_per) . ' ' .
-																								(($supplement->supplement_per_day) ? 'per night' : 'per stay') ; ?></small></h4>
+	foreach($supplements as $rid => $resource) { ?>
+	<h3><?php echo $resource->resource_title; ?></h3>
 
-			<?php echo auto_typography($supplement->supplement_long_description); ?>
-		</td>
-		
-		<td class="span4">
-			<?php
-			// The total number of options
-			$opt_count = ($supplement->supplement_per_guest) ? session('transfer_booking', 'booking_guests') : session('transfer_booking', 'footprint');
-			$multiply = ($supplement->supplement_per_day) ? session('transfer_booking', 'duration') : 1;
+	<table class="table">
+		<tbody>
+		<?php 
 
-			$options = array(
-							0	=> '0'
-							);
+		foreach($resource->supplements as $supplement) { ?>
+			<tr>
+				<td><h4><?php echo $supplement->supplement_short_description; ?> <small>&pound;<?php echo as_currency($supplement->resource_price) . ' ' .
+																							(($supplement->supplement_per_guest) ? 'per person' : 'per ' . $resource->resource_priced_per) . ' ' .
+																							(($supplement->supplement_per_day) ? 'per night' : 'per stay') ; ?></small></h4>
 
-			for($i = 1; $i <= $opt_count; $i++)
-			{
-				$options[$i] = $i . ' ' . (($supplement->supplement_per_guest) ? 'person' : $new_resource->resource_priced_per) . (($i > 1) ? 's' : '') . ' - &pound;' . as_currency($supplement->resource_price * $multiply * $i);
-			}
+					<?php echo auto_typography($supplement->supplement_long_description); ?>
+				</td>
 
-			if( ! empty( $_supplements[$supplement->supplement_id]['qty']))
-			{
-				$_supplements[$supplement->supplement_id]['qty'] = ($_supplements[$supplement->supplement_id]['qty'] > $opt_count) ? $opt_count : $_supplements[$supplement->supplement_id]['qty'];
-			}
+				<td class="span2">
+					<?php
+					// The total number of options
+					$opt_count = ($supplement->supplement_per_guest) ? $resources[$rid]['guests'] : ceil($resources[$rid]['guests'] / $resources[$rid]['resource_booking_footprint']);
+					$multiply = ($supplement->supplement_per_day) ? session('transfer_booking', 'duration') : 1;
 
-			echo form_dropdown("supplements[{$supplement->supplement_id}][qty]", 
-								$options, 
-								set_value("supplements[{$supplement->supplement_id}][qty]", ( ! empty($_supplements[$supplement->supplement_id])) ? $_supplements[$supplement->supplement_id]['qty'] : 0), 
-								'class="span3"');
-			
-			echo form_hidden(array(
-								"supplements[{$supplement->supplement_id}][price]" => ($supplement->resource_price * $multiply),
-								"supplements[{$supplement->supplement_id}][description]" => $supplement->supplement_short_description
-								));
-			?>
+					$options = array(
+									0	=> '0'
+									);
 
-		</td>
-	</tr>
+					for($i = 1; $i <= $opt_count; $i++)
+					{
+						$options[$i] = $i . ' ' . (($supplement->supplement_per_guest) ? 'person' : $resource->resource_priced_per) . (($i > 1) ? 's' : '') . ' - &pound;' . as_currency($supplement->resource_price * $multiply * $i);
+					}
 
+					echo form_dropdown("supplements[{$resource->resource_id}][{$supplement->supplement_id}][qty]", 
+										$options, 
+										set_value("supplements[{$resource->resource_id}][{$supplement->supplement_id}][qty]", 
+										( ! empty($_supplements[$resource->resource_id][$supplement->supplement_id])) ? $_supplements[$resource->resource_id][$supplement->supplement_id]->stb_quantity : 0), 
+										'class="span2"');
+					
+					echo form_hidden(array(
+										"supplements[{$resource->resource_id}][{$supplement->supplement_id}][price]" => ($supplement->resource_price * $multiply),
+										"supplements[{$resource->resource_id}][{$supplement->supplement_id}][description]" => $supplement->supplement_short_description . ' (' . $resource->resource_title . ')'
+										));
+					?>
 
-	<?php } ?>
+				</td>
+			</tr>
+		<?php } ?>
+		</tbody>
 	</table>
+
+<?php } ?>
 
 	
 		

@@ -77,7 +77,7 @@ class Transfer extends Admin_Controller {
 		return $str < 7;
 	}
 	
-	public function basic_new_transfer($id)
+	public function new_transfer($id)
 	{
 		if(empty($id))
 		{
@@ -118,60 +118,6 @@ class Transfer extends Admin_Controller {
 		redirect(site_url('admin/transfer/details/' . $id));
 	}
 
-	public function new_transfer($id)
-	{
-		if(empty($id))
-		{
-			show_404();
-		}
-
-		$data['booking'] = $this->model('booking')->get($id, $this->account->val('id')); 
-
-		// Create the temporary booking...
-
-		// Need to do some parsing for calculations
-		$resources = $this->input->post('resource');
-		$_guests = 0;
-		$_first_night = 0;
-		$_room_price = 0;
-
-		foreach($resources as $key => $resource)
-		{
-			if($resource['guests'] == 0)
-			{
-				unset($resources[$key]);
-			} else
-			{
-				$resources[$key]['resource_id'] = $key;
-				$_guests += $resource['guests'];
-				$_first_night += $resource['resource_first_night'];
-				$_room_price += ($resource['resource_single_price'] * ceil($resource['guests'] / $resource['resource_booking_footprint']));
-			}
-		}
-
-		if($_guests > 0)
-		{
-			$booking = array(
-								'booking_account_id'		=> $data['booking']->account_id,
-								'booking_original_id'		=> $id,
-								'booking_guests'			=> $_guests,
-								'booking_price'				=> $_room_price,
-								'booking_room_price'		=> $_room_price,
-								'booking_first_night_price'	=> $_first_night,
-								'booking_user_id'			=> session('user', 'user_id'),
-								'booking_ip_address' 		=> ci()->input->ip_address(),
-								'booking_user_agent' 		=> ci()->input->user_agent(),
-								'duration'					=> $this->input->post('duration'),
-								'start_at'					=> $this->input->post('start_timestamp'),
-								'resources'					=> $resources
-								);
-
-			$this->session->set_userdata('transfer_booking', $booking);
-			
-			redirect(site_url('admin/transfer/details/' . $id));
-		}
-	}
-
 	public function details($id)
 	{
 		if(empty($id))
@@ -196,9 +142,7 @@ class Transfer extends Admin_Controller {
 		{
 
 			$data['booking'] = $this->model('booking')->get($id, $this->account->val('id'));
-			
-
-			//$data['new_resource'] = $this->model('resource')->get(session('transfer_booking', 'resource_id')); 
+			$data['new_resource'] = $this->model('resource')->get(session('transfer_booking', 'resource_id')); 
 				
 			$this->template
 				->set_partial('booking_button_group', 'admin/partials/booking_button_group')
@@ -225,12 +169,9 @@ class Transfer extends Admin_Controller {
 		}
 
 		$data['booking'] = $this->model('booking')->get($id, $this->account->val('id'));
-		
-		//$data['new_resource'] = $this->model('resource')->get(session('transfer_booking', 'resource_id')); 
+		$data['new_resource'] = $this->model('resource')->get(session('transfer_booking', 'resource_id')); 
+		$data['supplements'] = $this->model('supplement')->get_for_resource(session('transfer_booking', 'resource_id'), $data['booking']->account_id);
 
-		$data['supplements'] = $this->model('supplement')->get_for_resources(session('transfer_booking', 'resources'), $data['booking']->account_id);
-
-	
 		if(empty($data['supplements']))
 		{
 			$this->session->set_userdata(array_merge(
@@ -243,14 +184,11 @@ class Transfer extends Admin_Controller {
 		{
 			$this->load->library('form_validation');
 
-			foreach($data['supplements'] as $rid => $resource)
+			foreach($data['supplements'] as $supplement)
 			{
-				foreach($resource->supplements as $supplement)
-				{
-					$this->form_validation->set_rules("supplements[{$rid}][{$supplement->supplement_id}][qty]", '', 'trim');
-					$this->form_validation->set_rules("supplements[{$rid}][{$supplement->supplement_id}][price]", '', 'trim');
-					$this->form_validation->set_rules("supplements[{$rid}][{$supplement->supplement_id}][description]", '', 'trim');
-				}
+				$this->form_validation->set_rules("supplements[{$supplement->supplement_id}][qty]", '', 'trim');
+				$this->form_validation->set_rules("supplements[{$supplement->supplement_id}][price]", '', 'trim');
+				$this->form_validation->set_rules("supplements[{$supplement->supplement_id}][description]", '', 'trim');
 			}
 		}
 
@@ -258,12 +196,9 @@ class Transfer extends Admin_Controller {
 		{
 			$this->load->helper('typography');
 
-			foreach($data['booking']->resources as $resource)
+			foreach($data['booking']->supplements as $supplement)
 			{
-				foreach($resource->supplements as $supplement)
-				{
-					$data['_supplements'][$resource->resource_id][$supplement->supplement_id] = $supplement;
-				}
+				$data['_supplements'][$supplement->supplement_id]['qty'] = $supplement->stb_quantity;
 			}
 
 			$this->template
@@ -271,26 +206,22 @@ class Transfer extends Admin_Controller {
 				->build('admin/transfer/supplements', $data);
 		} else
 		{
+			echo '<pre>';
+			print_r($this->input->post('supplements'));
+			echo '</pre>';
+
 			$supplements = $this->input->post('supplements');
 
-			$supplement_price = 0;
+			$total_price = 0;
 
-			foreach($supplements as $rid => $resource)
+			foreach($supplements as $key => $supplement)
 			{
-				foreach($resource as $sid => $supplement)
+				if(empty($supplement['qty']))
 				{
-					if(empty($supplement['qty']))
-					{
-						unset($supplements[$rid][$sid]);
-					} else
-					{
-						$supplement_price += ($supplement['qty'] * $supplement['price']);
-					}
-				}
-
-				if(empty($supplements[$rid]))
+					unset($supplements[$key]);
+				} else
 				{
-					unset($supplements[$rid]);
+					$total_price += ($supplement['qty'] * $supplement['price']);
 				}
 			}
 
@@ -305,7 +236,7 @@ class Transfer extends Admin_Controller {
 			{
 				case 'full':
 					$room_deposit = session('transfer_booking', 'booking_room_price');
-					$supplement_deposit = $supplement_price;
+					$supplement_deposit = $total_price;
 					break;
 
 				case 'first':
@@ -313,24 +244,24 @@ class Transfer extends Admin_Controller {
 					switch(setting('supplement_deposit'))
 					{
 						case 'fraction':
-							$supplement_deposit = (setting('supplement_deposit_percentage') / 100) * $supplement_price;
+							$supplement_deposit = (setting('supplement_deposit_percentage') / 100) * $total_price;
 							break;
 
 						default:
-							$supplement_deposit = $supplement_price;
+							$supplement_deposit = $total_price;
 							break;
 					}
 					break;
 
 				case 'fraction':
 					$room_deposit = (setting('deposit_percentage') / 100) * session('transfer_booking', 'booking_room_price');
-					$supplement_deposit = (setting('deposit_percentage') / 100) * $supplement_price;
+					$supplement_deposit = (setting('deposit_percentage') / 100) * $total_price;
 					break;
 			}
 
 			$this->session->set_userdata('transfer_booking', array_merge(
 													(array) session('transfer_booking'),
-													array('booking_price' => session('transfer_booking', 'booking_room_price') + $supplement_price, 'booking_supplement_price' => $supplement_price, 'booking_deposit' => $room_deposit + $supplement_deposit, 'supplements' => ((empty($supplements)) ? array() : $supplements))
+													array('booking_price' => session('transfer_booking', 'booking_room_price') + $total_price, 'booking_supplement_price' => $total_price, 'booking_deposit' => $room_deposit + $supplement_deposit, 'supplements' => ((empty($supplements)) ? array() : $supplements))
 													)
 													);
 
@@ -351,14 +282,6 @@ class Transfer extends Admin_Controller {
 			redirect(site_url('admin/transfer/start/' . $id));
 		}
 
-
-
-		/*echo '<pre>';
-		print_r(session('transfer_booking'));
-		echo '</pre>';
-
-		die;*/
-
 		$this->load->library('form_validation');
 
 		$this->form_validation->set_rules("original_deposit", '', 'trim|required');
@@ -370,15 +293,17 @@ class Transfer extends Admin_Controller {
 		{
 
 			$data['booking'] = $this->model('booking')->get($id, $this->account->val('id'));
-			//$data['new_resource'] = $this->model('resource')->get(session('transfer_booking', 'resource_id'));
+			$data['new_resource'] = $this->model('resource')->get(session('transfer_booking', 'resource_id'));
 			$data['transfer'] = session('transfer_booking');
 			
 			$this->template
 					->set_partial('booking_button_group', 'admin/partials/booking_button_group')
-					->build('admin/transfer/confirm', $data);
+				->build('admin/transfer/confirm', $data);
 		} else
 		{
 			
+
+		
 			$this->session->set_flashdata('msg', 'Booking transferred');
 
 			redirect(site_url('admin/bookings/show/' . $this->booking->transfer(array_merge(

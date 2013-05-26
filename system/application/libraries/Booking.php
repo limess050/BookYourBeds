@@ -230,19 +230,6 @@ class Booking
 		// Reservation data...
 		$resources = $booking->resources;
 		
-		/* NOT SURE WHY I HAVE THESE?!
-		$booking->resource_id = $resources[0]->reservation_resource_id;
-		$booking->footprint = $resources[0]->reservation_footprint;
-		$booking->duration = $resources[0]->reservation_duration;
-		$booking->start_at = $resources[0]->reservation_start_at;
-		*/
-
-		/*$booking->booking_reference = strtoupper("{$resources[0]->resource_reference}-");
-		$booking->booking_reference .= mysql_to_format($resources[0]->reservation_start_at, 'dm-');
-		$booking->booking_reference .= url_title(convert_accented_characters($lastname), '');
-		$booking->booking_reference .= "-{$booking->booking_guests}-{$booking->booking_id}";
-		$booking->booking_reference .= ($booking->booking_user_id > 0) ? '-M' : '';*/
-
 		$booking->booking_reference = $booking->booking_account_id . '-' . $booking->booking_id;
 
 		$booking->booking_completed = 1;
@@ -293,12 +280,12 @@ class Booking
 
 		if($verification_only)
 		{
-			$this->customer_verification($booking, 'Please confirm your booking with ' . account('name'));
+			if (SEND_EMAILS) $this->customer_verification($booking, 'Please confirm your booking with ' . account('name'));
 		} else
 		{
-			$this->customer_notification($booking, 'Your Booking with ' . account('name'));
+			if (SEND_EMAILS) $this->customer_notification($booking, 'Your Booking with ' . account('name'));
 
-			$this->internal_notification($booking);
+			if (SEND_EMAILS) $this->internal_notification($booking);
 		}
 
 		return $booking->booking_id;
@@ -310,26 +297,28 @@ class Booking
 
 		// Create the booking...
 		$booking = array(
-						'booking_original_id'		=> $original->booking_id,
-						'booking_account_id'		=> $original->booking_account_id,
-						'booking_user_id'			=> $data['booking_user_id'],
-						'booking_reference'			=> $original->booking_reference,
-						'booking_guests'			=> $data['booking_guests'],
-						'booking_price'				=> $data['booking_price'],
-						'booking_deposit'			=> ($data['booking_deposit'] + $data['original_deposit'] - $data['booking_refund']),
-						'booking_room_price'		=> $data['booking_room_price'],
-						'booking_supplement_price'	=> $data['booking_supplement_price'],
-						'booking_first_night_price'	=> $data['booking_first_night_price'],
-						'booking_billing_data'		=> $original->booking_billing_data,
-						'booking_gateway_data'		=> $original->booking_gateway_data,
-						'booking_ip_address'		=> $data['booking_ip_address'],
-						'booking_user_agent'		=> $data['booking_user_agent'],
-						'resource_id'				=> $data['resource_id'],
-						'footprint'					=> $data['footprint'],
-						'duration'					=> $data['duration'],
-						'start_at'					=> $data['start_at']
-						);
-		
+							'booking_original_id'		=> $original->booking_id,
+							'booking_account_id'		=> $original->booking_account_id,
+							'booking_reference'			=> $original->booking_reference,
+							'booking_guests'			=> $data['booking_guests'],
+							'booking_price'				=> $data['booking_price'],
+							'booking_room_price'		=> $data['booking_room_price'],
+							'booking_supplement_price'	=> $data['booking_supplement_price'],
+							'booking_first_night_price'	=> $data['booking_first_night_price'],
+
+							'booking_user_id'			=> $data['booking_user_id'],
+							
+							'booking_ip_address'		=> $data['booking_ip_address'],
+							'booking_user_agent'		=> $data['booking_user_agent'],
+							
+							'booking_billing_data'		=> $original->booking_billing_data,
+							'booking_gateway_data'		=> $original->booking_gateway_data,
+							'duration'					=> $data['duration'],
+							'start_at'					=> $data['start_at'],
+							'resources'					=> $data['resources']
+							);
+
+	
 		$new = $this->model('booking')->insert($booking);
 
 		// Customer
@@ -337,9 +326,12 @@ class Booking
 		$customer_id = $this->model('customer')->insert($data['customer']);
 
 		// Supplements
-		foreach($data['supplements'] as $key => $supplement)
+		foreach($data['supplements'] as $rid => $resource)
 		{
-			$this->model('supplement')->add_to_booking($key, $new, $supplement['qty'], $supplement['price']);
+			foreach($resource as $sid => $supplement)
+			{
+				$this->model('supplement')->add_to_booking($sid, $new, $rid, $supplement['qty'], $supplement['price']);
+			}
 		}
 
 		// Update the booking (customer ID)

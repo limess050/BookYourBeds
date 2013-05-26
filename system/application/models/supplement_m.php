@@ -47,19 +47,27 @@ class Supplement_m extends MY_Model
 
 	public function get_for_resources($resources, $account_id = null, $return_all = FALSE)
 	{
+		$r = array();
+
 		if(is_array($resources))
 		{
 			foreach($resources as $key => $resource)
 			{
-				$resources[$key]->supplements = $this->get_for_resource($resource->resource_id, $account_id, $return_all);
+				$resource = (object) $resource;
+				
+				$supplements = $this->get_for_resource($resource->resource_id, $account_id, $return_all);
 			
-				if(empty($resources[$key]->supplements))
+				if( ! empty($supplements))
 				{
-					unset($resources[$key]);
+					$r[$key] = new stdClass;
+					$r[$key]->resource_id = $resource->resource_id;
+					$r[$key]->resource_title = $resource->resource_title;
+					$r[$key]->resource_priced_per = $resource->resource_priced_per;
+					$r[$key]->supplements = $supplements;
 				}
 			}
 
-			return $resources;
+			return $r;
 		}
 
 
@@ -141,8 +149,13 @@ class Supplement_m extends MY_Model
 														));
 	}
 
-	public function clear_from_booking($booking_id, $supplement_id = null)
+	public function clear_from_booking($booking_id, $resource_id = null, $supplement_id = null)
 	{
+		if(! empty($resource_id))
+		{
+			$this->db->where('stb_resource_id', $resource_id);
+		}
+
 		if(! empty($supplement_id))
 		{
 			$this->db->where('stb_supplement_id', $supplement_id);

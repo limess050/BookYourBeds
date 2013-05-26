@@ -1,13 +1,33 @@
-<?php echo form_open('admin/transfer/new_transfer/' . $booking->booking_id, array('method' => 'POST'), array('guests' => $guests)); ?>
+<?php echo form_open('admin/transfer/new_transfer/' . $booking->booking_id, 
+					array(
+						'method' => 'POST',
+						'onsubmit' => 'return checkGuests(' . $guests . ');'
+						), 
+					array(
+						'guests' 			=> $guests,
+						'start_timestamp'	=> $start_timestamp,
+						'duration'			=> $duration
+						)); ?>
+<?php foreach($resources as $resource) { 
+			
+$availability =& $resource->availability; ?>
 
-<table class="table table-condensed table-striped table-hover">
+<!--<pre>
+<?php print_r($resource); ?>
+
+</pre>-->
+
+<div>
+	<h4><?php echo $resource->resource_title; ?></h4>
+
+	<table class="table table-condensed table-striped table-hover">
+	
 	<thead>
 		<tr>
-			<th colspan="2"><strong>Prices are for <?php echo $guests . ' ' . (($guests > 1) ? 'guests' : 'guest'); ?></strong></th>
 			<?php for($i = 0; $i < $duration; $i++) { ?>
 			<th class="align_center<?php echo (date("w", strtotime('+' . $i . ' day', $start_timestamp)) > 4 ) ? ' weekend' : ''; ?>">
 			<?php
-			echo date("D", strtotime('+' . $i . ' day', $start_timestamp)); ?><br /><small><?php echo date("d/m", strtotime('+' . $i . ' day', $start_timestamp)); ?></small>
+			echo date("D", strtotime('+' . $i . ' day', $start_timestamp)); ?> <small><?php echo date("d/m", strtotime('+' . $i . ' day', $start_timestamp)); ?></small>
 			</th>
 			<?php } ?>
 			<th class="span1"></th>
@@ -15,304 +35,220 @@
 	</thead>
 
 	<tbody id="availability_results">
-		<?php foreach($resources as $resource) { 
-			
-		$availability =& $resource->availability;
-		?>
-		<tr id="row_<?php echo $resource->resource_id; ?>"<?php echo ($resource->resource_id == $resource_id) ? ' class="warning"' : ''; ?>>
-			
-			<td><?php echo $resource->resource_title; ?></td>
-			
-			<td>
-				<?php
-				$footprint = ceil($guests / $resource->resource_booking_footprint);
-				echo "<strong>{$footprint} {$resource->resource_priced_per}" . (($footprint > 1) ? 's' : '') . "</strong>";
-				?>
-			</td>
+		<tr id="row_<?php echo $resource->resource_id; ?>">
 			
 			<?php 
 			$available = TRUE;
-			$total_price = 0;
+			$max = $guests;
+			$single_total = 0;
+
 			for($i = 1; $i <= $duration; $i++) { ?>
 
-			<td class="align_center<?php echo ((strtotime('+' . ($i - 1) . ' day', $start_timestamp)) < $today) ? ' disabled' : ''; ?>">
+			<td class="align_center">
 				
 				<?php
 				$b = ( ! empty($availability[$i]->bookings_pending)) ? $availability[$i]->bookings + $availability[$i]->bookings_pending + $availability[$i]->bookings_unverified  : $availability[$i]->bookings + $availability[$i]->bookings_unverified;
 				
-				if($footprint <= ($availability[$i]->release - $b))
+				$a = ($availability[$i]->release - $b) * $resource->resource_booking_footprint;
+
+				$e = $availability[$i]->release - $b;
+
+				if($e > 0)
 				{
 					
 
-					echo '<i class="icon-ok"></i><br />&nbsp;';
+					echo '<i class="icon-ok"></i><br />';
 
-					$day_total = $footprint * $availability[$i]->price;
-					
-					$total_price += $day_total;
+					echo $e . ' ' . $resource->resource_priced_per . ' available<br />';
 
-					echo '&pound;' . as_currency($day_total);
-					$js = 'onClick="radioClicked(this);"';
-					
-					$js .= ' style="display: none;"';
+					$single_total += $availability[$i]->price;			
 
-					echo form_radio('day[' . $i . ']', $resource->resource_id, false, $js);
-					//echo form_hidden('day[' . $i . ']', $resource->resource_id, false, $js);
-					
+					echo '&pound;' . as_currency($availability[$i]->price) . ' per ' . $resource->resource_priced_per;
+
+					$max = ($a < $max) ? $a : $max;
 				} else
 				{
-					$day_total = 0;
 					echo '<i class="icon-remove"></i><br />&nbsp;';
 					$available = FALSE;
+					$max = 0;
 				}
-				
-				echo form_hidden("resource[{$resource->resource_id}][day][{$i}][resource_id]", $resource->resource_id);
-				echo form_hidden("resource[{$resource->resource_id}][day][{$i}][timestamp]", strtotime('+' . ($i - 1) . ' day', $start_timestamp));
-				echo form_hidden("resource[{$resource->resource_id}][day][{$i}][footprint]", $footprint);
-				echo form_hidden("resource[{$resource->resource_id}][day][{$i}][priced_per]", $resource->resource_priced_per);			
-				?>
-
-				<input type="hidden" name="<?php echo "resource[{$resource->resource_id}][day][{$i}][price]"; ?>" value="<?php echo $day_total; ?>" class="this_price" />			
+				?>		
 			</td>
 			<?php } ?>
 			
 			<td>
 				<?php if($available) { ?>
-				<a href="#" class="btn btn-small btn-success" onclick="fillRow(<?php echo $resource->resource_id; ?>); return false;">&pound;<?php echo as_currency($total_price); ?></a>
+				
+				<?php
+				$dropdown[0] = 'Select...';
+
+				for($d = 1; $d <= $max; $d++)
+				{
+					$dropdown[$d] = $d . ' guests (' . ceil($d / $resource->resource_booking_footprint) . ' ' . $resource->resource_priced_per . ')';
+				}
+
+				$js = 'class="span2" onchange="updateRow(' . $resource->resource_id . ');"';
+
+				echo form_dropdown("resource[{$resource->resource_id}][guests]", $dropdown, 0, $js);
+				
+				echo form_hidden("resource[{$resource->resource_id}][resource_title]", $resource->resource_title);
+				echo form_hidden("resource[{$resource->resource_id}][resource_single_price]", $single_total);
+				echo form_hidden("resource[{$resource->resource_id}][resource_first_night]", $availability[1]->price);
+				echo form_hidden("resource[{$resource->resource_id}][resource_booking_footprint]", $resource->resource_booking_footprint);
+				echo form_hidden("resource[{$resource->resource_id}][resource_priced_per]", $resource->resource_priced_per);
+
+
+				} else { ?>
+				No availability
 				<?php } ?>
 			</td>
 		</tr>
-		<?php } ?>
 	
 	</tbody>
 </table>
 
-<div id="price_total" style="display: none;">
+</div>
+<?php } ?>
+
+<div id="booking_total" style="display: none;">
 	<h2 class="page-header">New Booking</h2>
 
 	<table class="table">
 		<thead>
 			<tr>
-				<th>Room Type Chosen</th>
-				<th>Arriving</th>
-				<th class="pricing_subtotal">Nights</th>
-				<th class="pricing_subtotal">Total</th>
+				<th>Room Type</th>
+				<th>Quantity</th>
+				<th>Guests</th>
+				<th>Total</th>
 			</tr>
 		</thead>
 	
-		<tbody id="price_breakdown">
+		<tbody id="booking_breakdown">
 		
 		</tbody>
 	</table>
 
-
-	<div class="actions" style="text-align: right;">
-		<input type="hidden" name="price_total" id="price_total_field" />
-		<input type="hidden" name="price_deposit" id="price_deposit_field" />
-		<input type="hidden" name="price_first_night" id="price_first_night_field" />
-				
-		<button type="submit" class="btn btn-warning btn-large">Continue</button>
-	</div>
-
-	
+	<button type="submit" class="btn btn-primary" id="submit_btn" style="display: none;">BOOK NOW</button>
 </div>
+
 </form>
 
-<!-- start: page-specific javascript -->
+<!-- Page specific Javascript -->
 <script type="text/javascript">
 <!--
-	var resources = new Array();
-	<?php foreach($resources as $resource) { ?>
-	resources[<?php echo $resource->resource_id; ?>] = '<?php echo $resource->resource_title; ?>';	
-	<?php } ?>
-	
-	var duration = <?php echo $duration; ?>;
-	
-	function fillRow(id)
+	var guest_array = new Array();
+	var price_array = new Array();
+
+	var total_guests = 0;
+	var total_price = 0;
+
+	function updateRow(id)
 	{
-		
-		$('#availability_results input[type="radio"]').each(function()
+		// Let's get some values...
+		var guests = $('select[name="resource[' + id + '][guests]"]').val();
+
+		if(guests == 0)
 		{
-			
-			var the_name = $(this).attr('name');
-			
-			
-			$('input[name="' + the_name + '"]').each(function()
+			$('#total_row_' + id).remove();
+			guest_array[id] = price_array[id] = 0;
+		} else {
+			var title = $('input[name="resource[' + id + '][resource_title]"]').val();
+			var single_total = $('input[name="resource[' + id + '][resource_single_price]"]').val();
+			var footprint = $('input[name="resource[' + id + '][resource_booking_footprint]"]').val();
+			var priced_per = $('input[name="resource[' + id + '][resource_priced_per]"]').val();
+
+			// These can probably be done on the fly...
+			var resources = Math.ceil(guests / footprint);
+			var resource_total = resources * single_total;
+
+			//alert(resource_total);
+			guest_array[id] = guests;
+			price_array[id] = resource_total;
+
+
+			var table_row = '<tr id="total_row_' + id + '">';
+			table_row += '<td>' + title + '</td>';
+			table_row += '<td>' + resources + '</td>';
+			table_row += '<td>' + guests + '</td>';
+			table_row += '<td>&pound;' + resource_total.toFixed(2) + '</td>';
+			table_row += '</tr>';
+
+			if($('#total_row_' + id).length == 0)
 			{
-				
-				$(this).removeClass('on');
-				$(this).prop("checked", false);
-			
-				if($(this).val() == id)
-				{
-					
-					$(this).prop("checked", true);
-					$(this).addClass('on');
-				}
-			});
+				$('#booking_breakdown').prepend(table_row);
+			} else
+			{
+				$('#total_row_' + id).replaceWith(table_row);
+			}
+
+			$('#booking_total').show();
+
+			// Scroll down...
+			$('html, body').animate({
+		         scrollTop: $("#booking_total").offset().top
+		     }, 1000);
+
 		}
-		);
 
-		$('#availability_results tr').each(function()
+		// Add up the totals
+		var index;
+		total_guests = 0;
+		
+		for (index in guest_array) {
+		    total_guests += Number(guest_array[index]);
+		}
+
+		if(total_guests > 0)
 		{
-			$(this).removeClass('success');
-		});
+			
 
-		$('#availability_results tr#row_' + id).addClass('success');
+			var index;
+			total_price = 0;
+			
+			for (index in price_array) {
+			    total_price += Number(price_array[index]);
+			}
 
-		calculatePrice();
-	}
-	
-	function radioClicked(elem)
-	{
-		if($(elem).hasClass('on'))
-		{
-			$(elem).removeClass('on');
-			$(elem).attr('checked', '');
+			var table_row = '<tr id="grand_total_row">';
+			table_row += '<td><strong>Grand Total</strong></td>';
+			table_row += '<td></td>';
+			table_row += '<td><strong>' + total_guests + '</strong></td>';
+			table_row += '<td><strong>&pound;' + total_price.toFixed(2) + '</strong></td>';
+			table_row += '</tr>';
 		} else
 		{
-			var the_name = $(elem).attr('name');
-			$('input[name="' + the_name + '"]').each(function()
-			{
-				$(this).removeClass('on');
-			});
-			
-			$(elem).addClass('on');
+			var table_row = '<tr id="grand_total_row">';
+			table_row += '<td colspan="4">Please select a room...</td>';
+			table_row += '</tr>';
 		}
-		
-		
-		calculatePrice();
-	}
-	
-	function calculatePrice()
-	{
 
-		var nights = new Array();
-		var prices = new Array();
-		
-		var total_price = 0;
-				
-		var first_night = '';
-		
-		for(i = 1; i <= duration; i++)
-		{			
-			$('#availability_results input[name="day[' + i + ']"]').each(function()
-			{
-				if($(this).is(':checked'))
-				{
-					var this_price = $('input[type="hidden"].this_price', $(this).parent()).val();
-
-					total_price += Number(this_price);
-
-					if(nights[$(this).val()] == undefined)
-					{
-						nights[$(this).val()] = 0;
-						prices[$(this).val()] = 0;
-					}
-
-					nights[$(this).val()]++;
-					prices[$(this).val()] += Number(this_price);
-
-					var the_name = $(this).attr('name');
-
-					if(first_night == '')
-					{
-						first_night = Number(this_price);
-					}
-				}
-			});
-		}
-		/*
-		$('#availability_results input[type="radio"]').each(function()
+		if($('#grand_total_row').length == 0)
 		{
-			if($(this).is(':checked'))
-			{
-				var this_price = $('input[type="hidden"].this_price', $(this).parent()).val();
-				
-				total_price += Number(this_price);
-				
-				if(nights[$(this).val()] == undefined)
-				{
-					nights[$(this).val()] = 0;
-					prices[$(this).val()] = 0;
-				}
-				
-				nights[$(this).val()]++;
-				prices[$(this).val()] += Number(this_price);
-				
-				var the_name = $(this).attr('name');
-								
-				if(n == 1)
-				{
-					first_night = Number(this_price);
-				}
-				
-				n++;
-			}
-		}
-		);*/
-		
-		//console.log(nights);
-		//console.log(prices);
-		
-		//console.log(total_price);
-		//console.log(first_night);
-		
-		$('#price_total').fadeIn();
-		
-		var table_body = '';
-		
-		for(var room in nights)
+			$('#booking_breakdown').append(table_row);
+		} else
 		{
-			//console.log(nights[room]);
-			table_body += '<tr><td>' + resources[room] + '</td><td><?php echo date('l, j F Y', $start_timestamp); ?></td><td>' + nights[room] + '</td><td>&pound;' + prices[room].toFixed(2) + '</td></tr>';
+			$('#grand_total_row').replaceWith(table_row);
 		}
-		
-		//table_body += '<tr class="total_row"><td colspan="2" class="align_right">Total:</td><td><strong>&pound;' + total_price.toFixed(2) + '</strong></td></tr>';
-		
-		$('#price_total_field').val(total_price);
-		$('#price_breakdown').html(table_body);
-		
-		<?php switch (setting('deposit')) {
-			case 'none': ?>
-		$('#price_deposit_field').val('0');
-		$('#deposit_amount').html('0');
-		<?php break; ?>
-		<?php case 'full': ?>
-		$('#price_deposit_field').val(total_price);
-		$('#deposit_amount').html(total_price.toFixed(2));
-		<?php break; ?>
-		<?php case 'first': ?>
-		$('#price_deposit_field').val(first_night);
-		$('#deposit_amount').html(first_night.toFixed(2));
-		<?php break; ?>
-		<?php case 'fraction': ?>
-		var deposit = total_price * <?php echo setting('deposit_percentage') / 100; ?>;
-		$('#price_deposit_field').val(deposit);
-		$('#deposit_amount').html('&pound;' + deposit.toFixed(2));
-		<?php break; ?>
-		<?php } ?>
-		
-		$('input[name="price_first_night"]').val(first_night);
 
-		//$('#price_deposit_field').val(first_night);
-		//$('#deposit_amount').html(first_night.toFixed(2));
-		//var deposit = total_price * 0.1;
-		//$('#price_deposit_field').val(deposit);
-		//$('#deposit_amount').html('&pound;' + deposit.toFixed(2));
+		if(total_guests > 0)
+		{
+			$('#submit_btn').show();
+		} else
+		{
+			$('#submit_btn').hide();
+		}
 	}
 
-	/*function submitForm(elem)
+	function checkGuests(guests)
 	{
-		
-		$('input[type="radio"]', elem).each(function() {
-			$(this).attr('disabled', ! this.checked);
-		});
-
-		//$(elem).submit();
-		return true;
-	}*/
-	
-	
+		if(guests == total_guests)
+		{
+			return true;
+		} else
+		{
+			return confirm('You are making a booking for ' + total_guests + ' guests (you originally requested ' + guests + '). Is this correct?');
+		}
+	}
 -->
 </script>
-<!-- end: page-specific javascript -->
+<!-- // -->
