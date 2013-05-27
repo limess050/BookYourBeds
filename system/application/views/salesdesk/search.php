@@ -1,7 +1,8 @@
 <?php echo form_open('salesdesk/new_booking', 
 					array(
 						'method' => 'POST',
-						'onsubmit' => 'return checkGuests(' . $guests . ');'
+						'onsubmit' => 'return checkGuests(' . $guests . ');',
+						'class'		=> 'form-horizontal'
 						), 
 					array(
 						'guests' 			=> $guests,
@@ -23,17 +24,17 @@ $availability =& $resource->availability; ?>
 <div>
 	<h4><?php echo $resource->resource_title; ?></h4>
 
-	<table class="table table-condensed table-striped table-hover">
+	<table class="table table-condensed table-striped table-bordered">
 	
 	<thead>
 		<tr>
 			<?php for($i = 0; $i < $duration; $i++) { ?>
-			<th class="align_center<?php echo (date("w", strtotime('+' . $i . ' day', $start_timestamp)) > 4 ) ? ' weekend' : ''; ?>">
+			<th class="align_center span2<?php echo (date("w", strtotime('+' . $i . ' day', $start_timestamp)) > 4 ) ? ' weekend' : ''; ?>">
 			<?php
-			echo date("D", strtotime('+' . $i . ' day', $start_timestamp)); ?> <small><?php echo date("d/m", strtotime('+' . $i . ' day', $start_timestamp)); ?></small>
+			echo date("D", strtotime('+' . $i . ' day', $start_timestamp)); ?><br /><small><?php echo date("d/m", strtotime('+' . $i . ' day', $start_timestamp)); ?></small>
 			</th>
 			<?php } ?>
-			<th class="span1"></th>
+			<th class="span2"></th>
 		</tr>
 	</thead>
 
@@ -60,13 +61,13 @@ $availability =& $resource->availability; ?>
 				{
 					
 
-					echo '<i class="icon-ok"></i><br />';
+					echo '<i class="icon-ok"></i><br /><small>';
 
-					echo $e . ' ' . $resource->resource_priced_per . ' available<br />';
+					echo $e . ' available<br />';
 
 					$single_total += $availability[$i]->price;			
 
-					echo '&pound;' . as_currency($availability[$i]->price) . ' per ' . $resource->resource_priced_per;
+					echo '&pound;' . as_currency($availability[$i]->price) . '/' . $resource->resource_priced_per . '</small>';
 
 					$max = ($a < $max) ? $a : $max;
 				} else
@@ -79,7 +80,7 @@ $availability =& $resource->availability; ?>
 			</td>
 			<?php } ?>
 			
-			<td>
+			<td class="align_center">
 				<?php if($available) { ?>
 				
 				<?php
@@ -87,7 +88,11 @@ $availability =& $resource->availability; ?>
 
 				for($d = 1; $d <= $max; $d++)
 				{
-					$dropdown[$d] = $d . ' guests (' . ceil($d / $resource->resource_booking_footprint) . ' ' . $resource->resource_priced_per . ')';
+					$guest_plural = ($d > 1) ? 's' : '';
+					$fp = ceil($d / $resource->resource_booking_footprint);
+					$per_plural = ($fp > 1) ? 's' : '';
+
+					$dropdown[$d] = $d . ' guest' . $guest_plural . ' (' . $fp . ' ' . $resource->resource_priced_per . $per_plural . ')';
 				}
 
 				$js = 'class="span2" onchange="updateRow(' . $resource->resource_id . ');"';
@@ -102,7 +107,8 @@ $availability =& $resource->availability; ?>
 
 
 				} else { ?>
-				No availability
+				<span class="label label-important">No Availability</span>
+
 				<?php } ?>
 			</td>
 		</tr>
@@ -116,7 +122,7 @@ $availability =& $resource->availability; ?>
 <div id="booking_total" style="display: none;">
 	<h2 class="page-header">Your Booking</h2>
 
-	<table class="table">
+	<table class="table table-striped">
 		<thead>
 			<tr>
 				<th>Room Type</th>
@@ -135,7 +141,14 @@ $availability =& $resource->availability; ?>
 		For bookings of more than <strong><?php echo setting('max_guests_public'); ?> guests</strong> please contact <?php echo account('name'); ?> directly.
 	</div>
 
-	<button type="submit" class="btn btn-primary" id="submit_btn" style="display: none;">BOOK NOW</button>
+	<div class="control-group">
+		
+		<div class="controls">
+			<button type="submit" class="btn btn-primary btn-large" id="submit_btn" style="display: none;">BOOK NOW</button>
+
+		</div>
+	</div> 
+
 </div>
 
 </form>
