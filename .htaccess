@@ -31,3 +31,5 @@
 
     ErrorDocument 404 /index.php
 </IfModule>
+
+redirect 301 /website/ http://website.bookyourbeds.com/
