@@ -109,11 +109,11 @@ class Salesdesk extends Front_Controller {
 
 	public function supplements()
 	{
-		if( ! booking('customer'))
+		if( ! $this->booking->has_customer())
 		{
 			redirect(site_url('salesdesk/details'));
 		}
-		
+
 		$data['booking'] = booking();
 		$data['supplements'] = $this->model('supplement')->get_for_resources(booking('resources'), $this->account->val('id'));
 
@@ -171,7 +171,7 @@ class Salesdesk extends Front_Controller {
 
 	public function confirm()
 	{
-		if( ! booking('supplements') && ! is_array(booking('supplements')))
+		if( ! $this->booking->has_supplements() || ! $this->booking->has_customer())
 		{
 			redirect(site_url('salesdesk/supplements'));
 		}

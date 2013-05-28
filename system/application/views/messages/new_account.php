@@ -1,13 +1,13 @@
-Welcome to BookYourBeds<br /><br />
+<h2>Welcome to BookYourBeds</h2>
 
-Thank you for creating your new account - <?php echo $account->account_name; ?>.<br /><br />
+<p>Thank you for creating your new account - <strong><?php echo $account->account_name; ?></strong>.</p>
 
-You can sign in to your new account and get started at <?php echo anchor('signin'); ?> using the details you used when creating your account:<br />
-Email Address: <?php echo $email; ?><br />
-Password: <?php echo $password; ?><br /><br />
+<p>You can sign in to your new account and get started at <?php echo anchor('signin'); ?> using the details you used when creating your account:<br />
+Email Address: <strong><?php echo $email; ?></strong><br />
+Password: <strong><?php echo $password; ?></strong></p>
 
-You will also need to confirm your account by visiting the following link in your browser: <?php echo anchor('confirm_account?auth=' . $account->account_confirmation_code, null, null, FALSE); ?><br /><br />
+<p>You will also need to confirm your account by visiting the following link in your browser: <?php echo anchor('confirm_account?auth=' . $account->account_confirmation_code, null, null, FALSE); ?></p>
 
-Thanks!<br /><br />
+<p>Thanks!</p>
 
-The BookYourBeds Team
+<p><strong>The BookYourBeds Team</strong></p>

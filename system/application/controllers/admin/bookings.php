@@ -347,7 +347,7 @@ class Bookings extends Admin_Controller {
 			show_404();
 		}
 
-		$this->model('booking')->verify(null, $id);
+		$this->booking->verify(null, $id);
 
 		$this->session->set_flashdata('msg', 'Booking manually verified');
 

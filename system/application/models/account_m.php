@@ -60,5 +60,10 @@ class Account_m extends MY_Model
 						->update('accounts');
 	}
 
+	public function get_address($account_id)
+	{
+		return array();
+	}
+
 
 }

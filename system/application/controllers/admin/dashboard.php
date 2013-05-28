@@ -82,7 +82,15 @@ class Dashboard extends Admin_Controller {
 		$this->form_validation->set_rules('account[account_name]', 'Account Name', 'trim|required');
 		$this->form_validation->set_rules('account[account_slug]', 'Account URL', 'trim|required');
 		$this->form_validation->set_rules('account[account_email]', 'Account Email', 'trim|required|valid_email');
+		
+		$this->form_validation->set_rules('account[account_address1]', 'Address 1', 'trim|required');
+		$this->form_validation->set_rules('account[account_address2	]', 'Address 2', 'trim');
+		$this->form_validation->set_rules('account[account_city]', 'Town/City', 'trim|required');
+		$this->form_validation->set_rules('account[account_postcode]', 'Postcode', 'trim|required');
+		$this->form_validation->set_rules('account[account_country]', 'Country', 'trim|required');
+		//$this->form_validation->set_rules('account[account_contact_email]', 'Contact Email', 'trim|valid_email');
 		$this->form_validation->set_rules('account[account_phone]', 'Contact Telephone', 'trim');
+
 		$this->form_validation->set_rules('account[account_description]', 'Description', 'trim');
 		$this->form_validation->set_rules('account[account_website]', 'Website', 'trim');
 

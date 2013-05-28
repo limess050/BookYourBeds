@@ -59,7 +59,12 @@ class Migration_Test_account extends CI_Migration
 					'account_email'		=> (ENVIRONMENT == 'development') ? 'phil@othertribe.com' : 'mail@thebedbooker.com',
 					'account_confirmed'	=> 1,
 					'account_personalised'	=> 1,
+					'account_address1'		=> 'Bowmont Street',
+					'account_city'			=> 'Kelso',
+					'account_postcode'		=> 'TD5 7DZ',
+					'account_country'		=> 'GB',
 					'account_phone'			=> '01573 123456',
+					'account_website'		=> 'http://website.bookyourbeds.com',
 					'account_description'	=> 'A fantastic B&B in the heart of the Scottish Borders, where you will always find a warm welcome, a comfy bed and a hearty breakfast to set you up for the day!'
 					);
 

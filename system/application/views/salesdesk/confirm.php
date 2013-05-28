@@ -73,8 +73,12 @@ if(booking('supplements')) { ?>
 	</thead>
 
 	<tbody>
-		<?php foreach(booking('supplements') as $rid => $resource) {
-			foreach($resource as $supplement) { ?>
+		<?php
+		$count = 0;
+		 foreach(booking('supplements') as $rid => $resource) {
+			foreach($resource as $supplement) { 
+				$count++;
+				?>
 			<tr>
 				<td><?php echo $supplement['description']; ?></td>
 				<td><?php echo $supplement['qty']; ?></td>
@@ -87,16 +91,9 @@ if(booking('supplements')) { ?>
 
 
 
-		<?php /* foreach(booking('supplements') as $supplement) { ?>
-		<tr>
-			<td><?php echo $supplement['description']; ?></td>
-			<td><?php echo $supplement['qty']; ?></td>
-			<td>&pound;<?php echo as_currency($supplement['price']); ?></td>
-			<td><strong>&pound;<?php echo as_currency($supplement['price'] * $supplement['qty']); ?></strong></td>
-		</tr>
-		<?php } */
+		<?php
 
-		if(setting('deposit') != 'none' && setting('supplement_deposit') != 'none') 
+		if(setting('deposit') != 'none' && setting('supplement_deposit') != 'none' && $count > 0) 
 		{ 
 
 			switch(setting('deposit'))
@@ -131,7 +128,15 @@ if(booking('supplements')) { ?>
 			<td colspan="3"><?php echo $title; ?></td>
 			<td>&pound;<?php echo as_currency($supplement_deposit); ?></td>
 		</tr>
-		<?php } ?>
+		<?php } 
+
+		if($count == 0)
+		{ ?>
+		<tr class="error">
+			<td colspan="4">No supplements selected</td>
+		</tr>
+		<?php }
+		?>
 
 	</tbody>
 

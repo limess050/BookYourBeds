@@ -169,7 +169,7 @@ class Salesdesk extends Admin_Controller {
 
 	public function supplements()
 	{
-		if( ! booking('customer'))
+		if(! $this->booking->has_customer())
 		{
 			redirect(site_url('admin/salesdesk/details'));
 		}
@@ -231,7 +231,7 @@ class Salesdesk extends Admin_Controller {
 
 	public function confirm()
 	{
-		if( ! booking('supplements') && ! is_array(booking('supplements')))
+		if( ! $this->booking->has_supplements() || ! $this->booking->has_customer())
 		{
 			redirect(site_url('admin/salesdesk/supplements'));
 		}

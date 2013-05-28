@@ -97,7 +97,7 @@ class Booking_m extends MY_Model
 				}
 			}
 
-			$booking->supplements = array();
+			//$booking->supplements = array();
 			//$booking->supplements = $this->model('supplement')->get_for_booking($booking->booking_id);
 		}
 

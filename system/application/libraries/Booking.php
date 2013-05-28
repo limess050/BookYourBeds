@@ -14,7 +14,7 @@ class Booking
 	{
 		
 	}
-
+ 
 	public function create(
 							$account_id,
 							$start_timestamp,
@@ -77,8 +77,6 @@ class Booking
 			return FALSE;
 		}
 	}
-
-	
 
 	public function session()
 	{
@@ -171,6 +169,20 @@ class Booking
 			$this->update_session(unserialize($booking->booking_session_dump), TRUE);
 		}
 	} 
+
+	public function has_customer()
+	{
+		$booking = $this->session();
+
+		return (empty($booking->customer)) ? FALSE : TRUE;
+	}
+
+	public function has_supplements()
+	{
+		$booking = $this->session();
+
+		return ( ! isset($booking->supplements)) ? FALSE : TRUE;
+	}
 
 	public function process($booking_id = null, $gateway_results = null)
 	{
@@ -373,7 +385,7 @@ class Booking
 	{
 		// Send email
 		$message = array(
-				'html'		=> ci()->load->view('messages/internal_booking_confirmation', array('booking' => $booking), TRUE),
+				'html'		=> ci()->template->set_layout('email', '')->build('messages/internal_booking_confirmation', array('booking' => $booking), TRUE),
 				'subject'	=> $subject,
 				'from_email'	=> 'robot@bookyourbeds.com',
 				'from_name'		=> 'BookYourBeds.com',
@@ -395,13 +407,17 @@ class Booking
 	private function customer_notification($booking, $subject = 'Your booking')
 	{
 		ci()->load->helper('typography');
+		ci()->load->config('countries');
 
 		$data['booking'] = $booking;
+		$data['countries'] = ci()->config->item('iso_countries');
 		$data['instructions'] = $this->model('setting')->get_setting('booking_instructions', $booking->account_id);
+		$data['terms'] = $this->model('setting')->get_setting('terms_and_conditions', $data['booking']->account_id);
+
 
 		// Send email
 		$message = array(
-				'html'		=> ci()->load->view('messages/customer_booking_confirmation', $data, TRUE),
+				'html'		=> ci()->template->set_layout('email', '')->build('messages/customer_booking_confirmation', $data, TRUE),
 				'subject'	=> $subject,
 				'from_email'	=> 'robot@bookyourbeds.com',
 				'from_name'		=> $booking->account_name,
@@ -420,9 +436,11 @@ class Booking
 
 	private function customer_verification($booking, $subject = 'Confirm your booking')
 	{
+		ci()->load->config('countries');
+
 		// Send email
 		$message = array(
-				'html'		=> ci()->load->view('messages/customer_booking_verification', array('booking' => $booking), TRUE),
+				'html'		=> ci()->template->set_layout('email', '')->build('messages/customer_booking_verification', array('booking' => $booking, 'countries' => ci()->config->item('iso_countries')), TRUE),
 				'subject'	=> $subject,
 				'from_email'	=> 'robot@bookyourbeds.com',
 				'from_name'		=> $booking->account_name,
@@ -441,15 +459,19 @@ class Booking
 
 	public function email($booking_id, $email, $subject, $message = null)
 	{
+		ci()->load->config('countries');
+
 		$data['booking'] = $this->model('booking')->get($booking_id);
 		$data['message'] = $message;
+		$data['countries'] = ci()->config->item('iso_countries');
 		$data['instructions'] = $this->model('setting')->get_setting('booking_instructions', $data['booking']->account_id);
+		$data['terms'] = $this->model('setting')->get_setting('terms_and_conditions', $data['booking']->account_id);
 
 		ci()->load->library('mandrill');
 		ci()->load->helper('typography');
 
 		$message = array(
-				'html'		=> ci()->load->view('messages/customer_booking_confirmation', $data, TRUE),
+				'html'		=> ci()->template->set_layout('email', '')->build('messages/customer_booking_confirmation', $data, TRUE),
 				'subject'	=> $subject,
 				'from_email'	=> $data['booking']->account_email,
 				'from_name'		=> $data['booking']->account_name,

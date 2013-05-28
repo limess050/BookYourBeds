@@ -1,7 +1,7 @@
-Confirm your BookYourBeds account<br /><br />
+<h2>Confirm your BookYourBeds account</h2>
 
-Please visit the following link in your browser: <?php echo anchor('confirm_account?auth=' . $account->account_confirmation_code, null, null, FALSE); ?><br /><br />
+<p>Please visit the following link in your browser: <?php echo anchor('confirm_account?auth=' . $account->account_confirmation_code, null, null, FALSE); ?></p>
 
-Thanks!<br /><br />
+<p>Thanks!</p>
 
-The BookYourBeds Team
+<p><strong>The BookYourBeds Team</strong></p>

@@ -120,7 +120,7 @@ class Account
 			$data['password'] = $password;
 
 			$message = array(
-				'html'		=> ci()->load->view('messages/new_account', $data, TRUE),
+				'html'		=> ci()->template->set_layout('email', '')->build('messages/new_account', $data, TRUE),
 				'subject'	=> 'Welcome to BookYourBeds.com',
 				'from_email'	=> 'bookyourbeds@othertribe.com',
 				'from_name'		=> 'BookYourBeds.com',
@@ -189,7 +189,7 @@ class Account
 
 		// Send confirmation mail
 		$message = array(
-				'html'		=> ci()->load->view('messages/confirm_account', $data, TRUE),
+				'html'		=> ci()->template->set_layout('email', '')->build('messages/confirm_account', $data, TRUE),
 				'subject'	=> 'Confirm you BookYourBeds.com account',
 				'from_email'	=> 'bookyourbeds@othertribe.com',
 				'from_name'		=> 'BookYourBeds.com',
@@ -231,7 +231,7 @@ class Account
 
 			// Send confirmation mail
 			$message = array(
-				'html'		=> ci()->load->view('messages/reset_password', array('email' => $email, 'auth' => $auth), TRUE),
+				'html'		=> ci()->template->set_layout('email', '')->build('messages/reset_password', array('email' => $email, 'auth' => $auth), TRUE),
 				'subject'	=> 'Reset your BookYourBeds.com password',
 				'from_email'	=> 'bookyourbeds@othertribe.com',
 				'from_name'		=> 'BookYourBeds.com',

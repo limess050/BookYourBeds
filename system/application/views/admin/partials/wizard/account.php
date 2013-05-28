@@ -24,7 +24,7 @@
 											'class'	=> 'span4',
 											'value'	=> set_value('account[account_name]', account('name'))
 											));
-						?>
+						?> *
 					</div>
 				</div>
 
@@ -37,40 +37,112 @@
 											'class'	=> 'span2',
 											'value'	=> set_value('account[account_slug]', account('slug'))
 											));
-							?>
+							?> *
 					</div>
 				</div>
-			</fieldset>
-
-			<fieldset>
-				<legend>Contact Details</legend>
 
 				<div class="control-group">
-					<label class="control-label">Account Email</label>
-					<div class="controls">
-						<?php echo form_input(array(
-											'name'	=> 'account[account_email]',
-											'class'	=> 'span4',
-											'value'	=> set_value('account[account_email]', account('email'))
-											));
-						?>
-					</div>
-				</div>
+			<label class="control-label">Account Email</label>
+			<div class="controls">
+				<?php echo form_input(array(
+									'name'	=> 'account[account_email]',
+									'class'	=> 'span4',
+									'value'	=> set_value('account[account_email]', account('email'))
+									));
+				?> *
+				<span class="help-block"><i class="icon-info-sign"></i> This is the email that BookYourBeds will contact you on and send your booking confirmations to. This is also the email that your customers will contact you on.</span>
+			</div>
+		</div>
+	</fieldset>
 
+	<fieldset>
+		<legend>Contact Details</legend>
 
-				<div class="control-group">
-					<label class="control-label">Contact Telephone</label>
-					<div class="controls">
-						<?php echo form_input(array(
-											'name'	=> 'account[account_phone]',
-											'class'	=> 'span4',
-											'value'	=> set_value('account[account_phone]', account('phone'))
-											));
-						?>
-					</div>
-				</div>
+		<div class="control-group">
+			<label class="control-label">Address 1</label>
+			<div class="controls">
+				<?php echo form_input(array(
+									'name'	=> 'account[account_address1]',
+									'class'	=> 'span4',
+									'value'	=> set_value('account[account_address1]', account('address1'))
+									));
+				?> *
+			</div>
+		</div>
 
-			</fieldset>
+		<div class="control-group">
+			<label class="control-label">Address 2</label>
+			<div class="controls">
+				<?php echo form_input(array(
+									'name'	=> 'account[account_address2]',
+									'class'	=> 'span4',
+									'value'	=> set_value('account[account_address2]', account('address2'))
+									));
+				?>
+			</div>
+		</div>
+
+		<div class="control-group">
+			<label class="control-label">Town/City</label>
+			<div class="controls">
+				<?php echo form_input(array(
+									'name'	=> 'account[account_city]',
+									'class'	=> 'span3',
+									'value'	=> set_value('account[account_city]', account('city'))
+									));
+				?> *
+			</div>
+		</div>
+
+		<div class="control-group">
+			<label class="control-label">Postcode</label>
+			<div class="controls">
+				<?php echo form_input(array(
+									'name'	=> 'account[account_postcode]',
+									'class'	=> 'span2',
+									'value'	=> set_value('account[account_postcode]', account('postcode'))
+									));
+				?> *
+			</div>
+		</div>
+
+		<div class="control-group">
+			<label class="control-label">Country</label>
+			<div class="controls">
+				<?php 
+				echo country_dropdown('country', 'GB', 'class="span4" disabled="disabled"');
+				echo form_hidden('account[account_country]', 'GB');
+				?>
+				<span class="help-block"><i class="icon-info-sign"></i> BookYourBeds is currently only available to customers in the United Kingdom.</span>
+
+			</div>
+		</div>
+
+		<!--<div class="control-group">
+			<label class="control-label">Contact Email</label>
+			<div class="controls">
+				<?php echo form_input(array(
+									'name'	=> 'account[account_contact_email]',
+									'class'	=> 'span4',
+									'value'	=> set_value('account[account_contact_email]', account('contact_email'))
+									));
+				?>
+			</div>
+		</div>-->
+
+		<div class="control-group">
+			<label class="control-label">Contact Telephone</label>
+			<div class="controls">
+				<?php echo form_input(array(
+									'name'	=> 'account[account_phone]',
+									'class'	=> 'span4',
+									'value'	=> set_value('account[account_phone]', account('phone'))
+									));
+				?>
+			</div>
+		</div>
+
+	</fieldset>
 
 			<fieldset>
 				<legend>A Bit About You</legend>
@@ -129,6 +201,7 @@
 		
 		<div class="controls">
 			<button type="submit" class="btn btn-warning btn-large">Save Changes</button>
+			&nbsp;&nbsp;* Required fields
 		</div>
 	</div>
 
