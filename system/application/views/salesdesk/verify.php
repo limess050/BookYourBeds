@@ -46,7 +46,7 @@
 
 <h3>Total Cost: &pound;<?php echo as_currency($booking->booking_price); ?></h3>
 <h3>Deposit Paid: &pound;<?php echo as_currency($booking->booking_deposit); ?></h3>
-<h3>Due On Arrival: &pound;<?php echo as_currency($booking->booking_price - $booking->booking_deposit); ?></h3>
+<h3>Due at <?php echo setting('balance_due'); ?>: &pound;<?php echo as_currency($booking->booking_price - $booking->booking_deposit); ?></h3>
 <?php } else { ?>
 <h1 class="page-header">Unable to verify booking</h1>
 

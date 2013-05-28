@@ -51,7 +51,7 @@
 
 <h3>Total Cost: &pound;<?php echo as_currency($booking->booking_price); ?></h3>
 <h3>Deposit Paid: &pound;<?php echo as_currency($booking->booking_deposit); ?></h3>
-<h3>Due On Arrival: &pound;<?php echo as_currency($booking->booking_price - $booking->booking_deposit); ?></h3>
+<h3>Due at <?php echo setting('balance_due'); ?>: &pound;<?php echo as_currency($booking->booking_price - $booking->booking_deposit); ?></h3>
 
 <?php if(! is_verified($booking)) { ?>
 <div class="alert alert-danger"><strong>Please note:</strong> This booking is not confirmed until you verify it by following the link in the email that has been sent to <strong><?php echo $booking->customer->customer_email; ?></strong>.</div>

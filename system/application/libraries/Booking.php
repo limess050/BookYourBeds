@@ -383,9 +383,12 @@ class Booking
 
 	private function internal_notification($booking, $subject = 'You have a new booking')
 	{
+		$data['booking'] = $booking;
+		$data['balance_due'] = $this->model('setting')->get_setting('balance_due', $data['booking']->account_id);
+
 		// Send email
 		$message = array(
-				'html'		=> ci()->template->set_layout('email', '')->build('messages/internal_booking_confirmation', array('booking' => $booking), TRUE),
+				'html'		=> ci()->template->set_layout('email', '')->build('messages/internal_booking_confirmation', $data, TRUE),
 				'subject'	=> $subject,
 				'from_email'	=> 'robot@bookyourbeds.com',
 				'from_name'		=> 'BookYourBeds.com',
@@ -413,7 +416,7 @@ class Booking
 		$data['countries'] = ci()->config->item('iso_countries');
 		$data['instructions'] = $this->model('setting')->get_setting('booking_instructions', $booking->account_id);
 		$data['terms'] = $this->model('setting')->get_setting('terms_and_conditions', $data['booking']->account_id);
-
+		$data['balance_due'] = $this->model('setting')->get_setting('balance_due', $data['booking']->account_id);
 
 		// Send email
 		$message = array(
@@ -438,9 +441,13 @@ class Booking
 	{
 		ci()->load->config('countries');
 
+		$data['booking'] = $booking;
+		$data['countries'] = ci()->config->item('iso_countries');
+		$data['balance_due'] = $this->model('setting')->get_setting('balance_due', $data['booking']->account_id);
+
 		// Send email
 		$message = array(
-				'html'		=> ci()->template->set_layout('email', '')->build('messages/customer_booking_verification', array('booking' => $booking, 'countries' => ci()->config->item('iso_countries')), TRUE),
+				'html'		=> ci()->template->set_layout('email', '')->build('messages/customer_booking_verification', $data, TRUE),
 				'subject'	=> $subject,
 				'from_email'	=> 'robot@bookyourbeds.com',
 				'from_name'		=> $booking->account_name,
@@ -466,6 +473,7 @@ class Booking
 		$data['countries'] = ci()->config->item('iso_countries');
 		$data['instructions'] = $this->model('setting')->get_setting('booking_instructions', $data['booking']->account_id);
 		$data['terms'] = $this->model('setting')->get_setting('terms_and_conditions', $data['booking']->account_id);
+		$data['balance_due'] = $this->model('setting')->get_setting('balance_due', $data['booking']->account_id);
 
 		ci()->load->library('mandrill');
 		ci()->load->helper('typography');

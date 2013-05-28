@@ -65,5 +65,5 @@ Telephone: <strong><?php echo $booking->customer->customer_phone; ?></strong></p
 <h3>Payments</h3>
 <p>Total Amount: <strong>&pound;<?php echo as_currency($booking->booking_price); ?></strong><br />
 Deposit Paid: <strong>&pound;<?php echo as_currency($booking->booking_deposit); ?></strong><br />
-Due on Arrival: <strong>&pound;<?php echo as_currency($booking->booking_price - $booking->booking_deposit); ?></strong></p>
+Due at <?php echo setting('balance_due'); ?>: <strong>&pound;<?php echo as_currency($booking->booking_price - $booking->booking_deposit); ?></strong></p>
 
