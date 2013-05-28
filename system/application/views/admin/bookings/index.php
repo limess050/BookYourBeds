@@ -3,9 +3,9 @@
 <h1 class="page-header hidden-desktop hidden-tablet"><?php echo date('D j F Y', $current_date); ?></h1>
 
 <p class="diary-nav">
-	<?php echo anchor('admin/bookings?timestamp=' . strtotime('-1 day', $current_date), '&laquo; ' . date('j M Y', strtotime('-1 day', $current_date)), 'id="prev_link" class="btn"'); ?>
+	<?php echo anchor('admin/bookings?timestamp=' . strtotime('-1 day', $current_date), '&laquo;<span class="hidden-phone"> ' . date('j M Y', strtotime('-1 day', $current_date)) . '</span>', 'id="prev_link" class="btn"'); ?>
 	<?php echo anchor('admin/bookings', 'TODAY', 'id="today_link" class="btn btn-warning"'); ?>
-	<?php echo anchor('admin/bookings?timestamp=' . strtotime('+1 day', $current_date), date('j M Y', strtotime('+1 day', $current_date)) . ' &raquo;', 'id="next_link" class="btn"'); ?>
+	<?php echo anchor('admin/bookings?timestamp=' . strtotime('+1 day', $current_date), '<span class="hidden-phone">' . date('j M Y', strtotime('+1 day', $current_date)) . ' </span>&raquo;', 'id="next_link" class="btn"'); ?>
 	<input type="hidden" value="<?php echo date("Y-m-d", $current_date); ?>" id="datepicker" />
 	
 	<a href="<?php echo site_url('admin/bookings?timestamp=' . $current_date . '&' . (( ! get_cookie('hideOther')) ? 'checkingin=1' : 'all=1')); ?>" class="btn">
