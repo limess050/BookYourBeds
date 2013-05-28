@@ -349,7 +349,7 @@ class Salesdesk extends Front_Controller {
 			}
 		}
 
-		$this->template->build('salesdesk/verify', $data);
+		$this->template->set_layout('front', '')->build('salesdesk/verify', $data);
 	}
 
 
