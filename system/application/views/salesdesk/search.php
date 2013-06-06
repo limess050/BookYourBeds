@@ -84,7 +84,7 @@ $availability =& $resource->availability; ?>
 				<?php if($available) { ?>
 				
 				<?php
-				$dropdown[0] = 'Select...';
+				$dropdown = array('0' => 'Select...');
 
 				for($d = 1; $d <= $max; $d++)
 				{

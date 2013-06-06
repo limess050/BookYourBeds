@@ -121,7 +121,7 @@ CREATE TABLE `resources` (
 `resource_reference` VARCHAR(64) NOT NULL DEFAULT '',
 `resource_default_release` INT(6) NOT NULL DEFAULT '1',
 `resource_booking_footprint` INT(6) NOT NULL DEFAULT '1',
-`resource_priced_per` VARCHAR(10) NOT NULL DEFAULT 'bed', 
+`resource_priced_per` VARCHAR(10) NOT NULL DEFAULT 'room', 
 `resource_active` TINYINT(1) NOT NULL DEFAULT '1',
 `resource_updated_at` TIMESTAMP NOT NULL,
 `resource_created_at` DATETIME NOT NULL,

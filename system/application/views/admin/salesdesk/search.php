@@ -68,7 +68,7 @@ $availability =& $resource->availability; ?>
 					$single_total += $availability[$i]->price;			
 
 					echo '&pound;' . as_currency($availability[$i]->price) . '/' . $resource->resource_priced_per . '</small>';
-
+					
 					$max = ($a < $max) ? $a : $max;
 				} else
 				{
@@ -84,7 +84,7 @@ $availability =& $resource->availability; ?>
 				<?php if($available) { ?>
 				
 				<?php
-				$dropdown[0] = 'Select...';
+				$dropdown = array('0' => 'Select...');
 
 				for($d = 1; $d <= $max; $d++)
 				{

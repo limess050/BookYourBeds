@@ -18,7 +18,7 @@ class Dashboard extends Admin_Controller {
 			$this->dash();
 		} else
 		{
-			$this->wizard();
+			redirect(site_url('admin/dashboard/wizard'));
 		}
 	}
 
