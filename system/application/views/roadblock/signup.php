@@ -50,6 +50,10 @@
 		            	<div class="alert alert-warning">
 		            		By clicking 'Continue' below you are agreeing to the <strong>Book Your Beds</strong> <a href="/terms.html" data-target="#myModal" data-toggle="modal">Terms &amp; Conditions</a>.
 						</div>
+
+						<div class="alert alert-success">
+							Need help getting started? Follow our <?php echo anchor('getting_started_guide', 'Getting Started', 'style="color: #468847; font-weight: bold;"'); ?> guide <?php echo anchor('getting_started_guide', 'here', 'style="color: #468847; font-weight: bold;"'); ?>!
+						</div>
 		            </div>
 		        </div>
 			</fieldset>
