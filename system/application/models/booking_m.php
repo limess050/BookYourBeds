@@ -184,7 +184,7 @@ class Booking_m extends MY_Model
 		$this->db
 				->select('bookings.*, customers.*, resources.*')
 
-				->select('(SELECT SUM(reservation_duration) FROM reservations WHERE reservation_booking_id = booking_id) AS reservation_duration')
+				->select('(SELECT MAX(reservation_duration) FROM reservations WHERE reservation_booking_id = booking_id) AS reservation_duration')
 				->select('(SELECT MIN(reservation_start_at) FROM reservations WHERE reservation_booking_id = booking_id) AS reservation_start_at')
 				->join('reservations', 'reservation_booking_id = booking_id')
 				->join('resources', 'resource_id = reservation_resource_id')
@@ -208,7 +208,7 @@ class Booking_m extends MY_Model
 		$this->db
 				->select('bookings.*, customers.*, resources.*')
 
-				->select('(SELECT SUM(reservation_duration) FROM reservations WHERE reservation_booking_id = booking_id) AS reservation_duration')
+				->select('(SELECT MAX(reservation_duration) FROM reservations WHERE reservation_booking_id = booking_id) AS reservation_duration')
 				->select('(SELECT MIN(reservation_start_at) FROM reservations WHERE reservation_booking_id = booking_id) AS reservation_start_at')
 				->join('reservations', 'reservation_booking_id = booking_id')
 				->join('resources', 'resource_id = reservation_resource_id')
@@ -230,7 +230,7 @@ class Booking_m extends MY_Model
 		$this->db
 				->select('bookings.*, customers.*, resources.*')
 
-				->select('(SELECT SUM(reservation_duration) FROM reservations WHERE reservation_booking_id = booking_id) AS reservation_duration')
+				->select('(SELECT MAX(reservation_duration) FROM reservations WHERE reservation_booking_id = booking_id) AS reservation_duration')
 				->select('(SELECT MIN(reservation_start_at) FROM reservations WHERE reservation_booking_id = booking_id) AS reservation_start_at')
 				->join('reservations', 'reservation_booking_id = booking_id')
 				->join('resources', 'resource_id = reservation_resource_id')
