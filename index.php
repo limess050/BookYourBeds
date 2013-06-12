@@ -42,7 +42,7 @@
  *
  * NOTE: If you change these, also change the error_reporting() code below
  */
-	define('ENVIRONMENT', isset($_SERVER['BYB_ENV']) ? $_SERVER['BYB_ENV'] : (($_SERVER['SERVER_ADDR'] == '64.207.139.231') ? 'testing' : 'development'));
+	define('ENVIRONMENT', isset($_SERVER['BYB_ENV']) ? $_SERVER['BYB_ENV'] : (($_SERVER['SERVER_ADDR'] == '205.186.183.246') ? 'testing' : 'development'));
 
 /*
  *---------------------------------------------------------------

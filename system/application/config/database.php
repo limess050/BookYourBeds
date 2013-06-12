@@ -101,7 +101,7 @@ $db['development'] = array(
 	'failover' => array()
 );
 
-$db['testing'] = array(
+$db['production'] = array(
 	'dsn'	=> '',
 	'hostname' => 'tunnel.pagodabox.com:3306',
 	'username' => 'valencia',
@@ -123,12 +123,12 @@ $db['testing'] = array(
 	'failover' => array()
 );
 
-$db['default'] = array(
+$db['testing'] = array(
 	'dsn'	=> '',
-	'hostname' => 'localhost',
-	'username' => '',
-	'password' => '',
-	'database' => '',
+	'hostname' => 'internal-db.s111739.gridserver.com',
+	'username' => 'db111739_bybtest',
+	'password' => 'H7dhrTYL',
+	'database' => 'db111739_bybtesting',
 	'dbdriver' => 'mysql',
 	'dbprefix' => '',
 	'pconnect' => TRUE,
