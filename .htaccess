@@ -35,4 +35,4 @@
 # Temporary redirect while awaiting launch
 redirect 301 /website http://website.bookyourbeds.com
 
-redirect /getting_started_guide http://support.bookyourbeds.com/wordpress/wp-content/uploads/2013/03/Getting-Started-with-BookYourBeds.pdf
+redirect /getting_started_guide http://support.bookyourbeds.com/wordpress/wp-content/uploads/2013/06/Getting-Started-with-BookYourBeds.pdf
