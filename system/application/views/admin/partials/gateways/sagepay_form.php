@@ -9,7 +9,7 @@
 								));
 
 			?> 
-			<span class="help-block alert">For testing purposes use <code>applecart</code></span>
+			<?php if(ENVIRONMENT != 'production') { ?><span class="help-block alert">For testing purposes use <code>applecart</code></span><?php } ?>
 
 		</div>
 	</div>
@@ -26,7 +26,7 @@
 				echo form_hidden('setting[sagepay_form_encryption_type]', 'AES');
 
 			?>
-			<span class="help-block alert">For testing purposes use <code>oG1PDrzXanmXe5JE</code></span>
+			<?php if(ENVIRONMENT != 'production') { ?><span class="help-block alert">For testing purposes use <code>oG1PDrzXanmXe5JE</code></span><?php } ?>
 
 		</div>
 	</div>

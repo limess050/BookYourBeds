@@ -12,3 +12,10 @@ $config['default_settings'] = array(
 									'max_duration_public' => 7,
 									'max_guests_public' => 6
 									);
+
+
+$config['new_account_notifications'] = array(
+											array(
+												'email'	=> 'phil@othertribe.com'
+												)
+										);

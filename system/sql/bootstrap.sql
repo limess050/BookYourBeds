@@ -39,8 +39,8 @@ CREATE TABLE `accounts` (
 `account_created_at` DATETIME NOT NULL,
 `account_activated_at` DATETIME NOT NULL,
 `account_deleted_at` DATETIME NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='Accounts';
-
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=237 COMMENT='Accounts';
+ 
 -- COMMAND BREAK --
 
 DROP TABLE IF EXISTS `users`;
@@ -64,7 +64,7 @@ CREATE TABLE `users` (
 UNIQUE KEY `account_username` (`user_account_id`, `user_username`),
 UNIQUE KEY `account_email` (`user_account_id`, `user_email`),
 INDEX (`user_account_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='Users';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=237 COMMENT='Users';
 
 -- COMMAND BREAK --
 
@@ -106,7 +106,7 @@ CREATE TABLE `seasons` (
 `season_start_at` DATETIME NOT NULL,
 `season_end_at` DATETIME NOT NULL,
 INDEX (`season_account_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='Seasons';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=133 COMMENT='Seasons';
 
 -- COMMAND BREAK --
 
@@ -127,7 +127,7 @@ CREATE TABLE `resources` (
 `resource_created_at` DATETIME NOT NULL,
 `resource_deleted_at` DATETIME NOT NULL,
 INDEX (`resource_account_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='Resources';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=199 COMMENT='Resources';
 
 -- COMMAND BREAK --
 
@@ -148,7 +148,7 @@ CREATE TABLE `supplements` (
 `supplement_created_at` DATETIME NOT NULL,
 `supplement_deleted_at` DATETIME NOT NULL,
 INDEX (`supplement_account_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='Supplements';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=68 COMMENT='Supplements';
 
 -- COMMAND BREAK --
 
@@ -248,7 +248,7 @@ INDEX (`booking_original_id`),
 INDEX (`booking_customer_id`),
 INDEX `account_reference` (`booking_account_id`, `booking_reference`),
 INDEX `account_acknowledged` (`booking_account_id`, `booking_acknowledged`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='Bookings';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=3547 COMMENT='Bookings';
 
 -- COMMAND BREAK --
 
@@ -286,7 +286,7 @@ CREATE TABLE `customers` (
 `customer_created_at` DATETIME NOT NULL,
 `customer_deleted_at` DATETIME NOT NULL,
 INDEX (`customer_account_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='Customers';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=3547 COMMENT='Customers';
 
 -- COMMAND BREAK --
 

@@ -9,7 +9,7 @@
 								));
 
 			?>
-			<span class="help-block alert">For testing purposes use <code>vendor_1360309502_biz@othertribe.com</code></span>
+			<?php if(ENVIRONMENT != 'production') { ?><span class="help-block alert">For testing purposes use <code>vendor_1360309502_biz@othertribe.com</code></span><?php } ?>
 
 		</div>
 	</div>

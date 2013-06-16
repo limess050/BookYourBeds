@@ -151,6 +151,25 @@ class Account
 			ci()->mcapi->listSubscribe(ci()->config->item('mcapi_signup_list'), $email);
 		}
 
+		$internal_notifications = ci()->config->item('new_account_notifications');
+
+		if( ! $internal && ! empty($internal_notifications))
+		{
+			ci()->load->library('mandrill');
+
+			$message = array(
+				'html'		=> ci()->template->set_layout('email', '')->build('messages/internal_new_account', $data, TRUE),
+				'subject'	=> 'New account sign up for BookYourBeds',
+				'from_email'	=> 'bookyourbeds@othertribe.com',
+				'from_name'		=> 'BookYourBeds.com',
+				'to'			=> $internal_notifications,
+				'auto_text'		=> TRUE,
+				'url_strip_qs'	=> TRUE
+				);
+
+			ci()->mandrill->call('messages/send', array('message' => $message));
+		}
+
 		return ($internal) ? $account_id : $user_id;
 	}
 
