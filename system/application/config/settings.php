@@ -17,5 +17,8 @@ $config['default_settings'] = array(
 $config['new_account_notifications'] = array(
 											array(
 												'email'	=> 'phil@othertribe.com'
+												),
+											array(
+												'email'	=> 'mail@thebedbooker.com'
 												)
 										);
