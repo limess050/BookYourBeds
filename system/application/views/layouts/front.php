@@ -10,7 +10,7 @@ All rights reserved
 	<!-- Always force latest IE rendering engine & Chrome Frame -->
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 
-	<title><?php echo account('name'); ?></title>
+	<title><?php echo account('name'); ?> • Powered by BookYourBeds</title>
 	
 	<base href="<?php echo base_url(); ?>" />
 	
@@ -47,8 +47,7 @@ All rights reserved
 	</div>
 
 	<footer>
-		<!--&copy; Copyright <?php echo date('Y'); ?> | <?php echo account('name'); ?> | <?php echo anchor('admin', 'Sign In...'); ?>-->
-		<a href="http://testing.bookyourbeds.com/website" target="_blank" class="powered-by-badge">Powered by BookYourBeds.com</a>
+		<a href="http://bookyourbeds.com" target="_blank" class="powered-by-badge">Powered by BookYourBeds.com</a>
 	</footer>
 </section>
 
