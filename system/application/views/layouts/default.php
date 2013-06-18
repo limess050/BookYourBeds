@@ -51,17 +51,22 @@ All rights reserved
 	<div class="container">
 		<div class="row">
 			<div class="span3 offset1">
-				&copy; 2013 The Bed Booker Ltd.
+				Need to get in touch? <a href="ma&#105;&#108;to&#58;&#37;6&#68;&#97;%&#54;9l&#64;%&#54;2o%6Fky%6Furb&#101;&#37;64%73&#46;%6&#51;om">Email us.</a>
 			</div>
 
 			<div class="span4 centre-block">
-				<a href="http://testing.bookyourbeds.com/website/faq.html">Frequently Asked Questions</a>
+				<a href="faq.html">Frequently Asked Questions</a>
 			</div>
 
 			<div class="span3">
-				Want updates? Follow <a href="https://twitter.com/thebedbooker">@thebedbooker</a>
+				Want updates? Follow <a href="https://twitter.com/BookYourBeds">@BookYourBeds</a>
 			</div>
+		</div>
 
+		<div class="row">
+			<div class="span12 centre-block">
+				&copy; <?php echo date('Y'); ?> The Bed Booker Ltd.
+			</div>
 		</div>
 
 	</div>
