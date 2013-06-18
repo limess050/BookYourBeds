@@ -55,7 +55,7 @@ All rights reserved
 			</div>
 
 			<div class="span4 centre-block">
-				<a href="faq.html">Frequently Asked Questions</a>
+				<a href="http://bookyourbeds.com/faq.html">Frequently Asked Questions</a>
 			</div>
 
 			<div class="span3">
