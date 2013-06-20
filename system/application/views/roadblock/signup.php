@@ -7,6 +7,19 @@
 				<?php echo $template['partials']['form_errors']; ?>
 
 				<div class="control-group">
+		        	<label class="control-label">Your Name</label>
+		        	<div class="controls">
+		            	<?php
+		        		echo form_input(array(
+		        						'name'	=> 'name',
+		        						'class'	=> 'span3',
+		        						'value'	=> set_value('name')
+		        						));
+		        		?>
+		            </div>
+		        </div>
+
+				<div class="control-group">
 		        	<label class="control-label">Email address</label>
 		        	<div class="controls">
 		        		<?php
@@ -27,19 +40,6 @@
 		        						'name'	=> 'password',
 		        						'class'	=> 'span4',
 		        						'value'	=> set_value('password')
-		        						));
-		        		?>
-		            </div>
-		        </div>
-
-		        <div class="control-group">
-		        	<label class="control-label">Account Name</label>
-		        	<div class="controls">
-		            	<?php
-		        		echo form_input(array(
-		        						'name'	=> 'name',
-		        						'class'	=> 'span3',
-		        						'value'	=> set_value('name')
 		        						));
 		        		?>
 		            </div>

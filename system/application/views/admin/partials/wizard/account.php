@@ -17,7 +17,7 @@
 				<legend>The Essentials</legend>
 
 				<div class="control-group">
-					<label class="control-label">Account Name</label>
+					<label class="control-label">Property Name</label>
 					<div class="controls">
 						<?php echo form_input(array(
 											'name'	=> 'account[account_name]',
@@ -28,7 +28,7 @@
 					</div>
 				</div>
 
-				<div class="control-group">
+				<!--<div class="control-group">
 					<label class="control-label">Account URL</label>
 					<div class="controls">
 						<?php echo site_url('', FALSE); ?>
@@ -39,7 +39,7 @@
 											));
 							?> *
 					</div>
-				</div>
+				</div>-->
 
 				<div class="control-group">
 			<label class="control-label">Account Email</label>

@@ -80,7 +80,7 @@ class Dashboard extends Admin_Controller {
 	private function wizard_account()
 	{
 		$this->form_validation->set_rules('account[account_name]', 'Account Name', 'trim|required');
-		$this->form_validation->set_rules('account[account_slug]', 'Account URL', 'trim|required');
+		//$this->form_validation->set_rules('account[account_slug]', 'Account URL', 'trim|required');
 		$this->form_validation->set_rules('account[account_email]', 'Account Email', 'trim|required|valid_email');
 		
 		$this->form_validation->set_rules('account[account_address1]', 'Address 1', 'trim|required');
@@ -112,7 +112,11 @@ class Dashboard extends Admin_Controller {
 				$this->account->upload_bg();
 			}
 			
-			$this->model('account')->update(account('id'), $this->input->post('account'));
+			$account = $this->input->post('account');
+
+			$account['account_slug'] = $this->account->generate_slug($account['account_name']);
+
+			$this->model('account')->update(account('id'), $account);
 			
 			$this->account->ac = $this->model('account')->get(account('id'));
 

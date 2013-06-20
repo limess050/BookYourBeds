@@ -7,7 +7,20 @@
 				<?php echo $template['partials']['form_errors']; ?>
 
 				<div class="control-group">
-		        	<label class="control-label">Account Name</label>
+		        	<label class="control-label">User Name</label>
+		        	<div class="controls">
+		            	<?php
+		        		echo form_input(array(
+		        						'name'	=> 'user_name',
+		        						'class'	=> 'span3',
+		        						'value'	=> set_value('user_name')
+		        						));
+		        		?>
+		            </div>
+		        </div>
+
+				<div class="control-group">
+		        	<label class="control-label">Property Name</label>
 		        	<div class="controls">
 		            	<?php
 		        		echo form_input(array(

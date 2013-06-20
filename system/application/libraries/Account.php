@@ -86,15 +86,15 @@ class Account
 		return (isset($this->ac->$key)) ? $this->ac->$key : FALSE;
 	}
 
-	public function create($name, $email, $password, $send_notification = TRUE, $internal = FALSE)
+	public function create($name, $email, $password, $send_notification = TRUE, $internal = FALSE, $property_name = '')
 	{
 		
 		// Create the account
 
 		// ERROR CHECKING ON SLUG
 		$account = array(
-						'account_name'	=> $name,
-						'account_slug'	=> $this->generate_slug($name),
+						'account_name'	=> $property_name,
+						'account_slug'	=> $this->generate_slug($property_name),
 						'account_email'	=> $email,
 						'account_confirmation_code'	=> SHA1($email . time())
 						);
@@ -102,7 +102,11 @@ class Account
 		$account_id = $this->model('account')->insert($account);
 
 		// Create the user
+		$name_parts = explode(' ', $name);
+
 		$user = array(
+					'user_firstname'	=> array_shift($name_parts),
+					'user_lastname' 	=> implode(' ', $name_parts),
 					'user_account_id'	=> $account_id,
 					'user_email'		=> $email,
 					'user_password'		=> SHA1($password),
@@ -116,6 +120,7 @@ class Account
 			ci()->load->library('mandrill');
 
 			$data['account'] = $this->model('account')->get($account_id);
+			$data['user'] = $this->model('user')->get($user_id);
 			$data['email'] = $email;
 			$data['password'] = $password;
 
@@ -173,12 +178,12 @@ class Account
 		return ($internal) ? $account_id : $user_id;
 	}
 
-	public function generate_slug($name)
+	public function generate_slug($name = '')
 	{
 		ci()->load->helper('text');
 		ci()->load->helper('string');
 
-		$slug = url_title(convert_accented_characters($name), '-', TRUE);
+		$slug = ( ! empty($name)) ? url_title(convert_accented_characters($name), '-', TRUE) : random_string('alnum', 8);
 		
 		$ac = $this->model('account')->get_by('account_slug', $slug);
 

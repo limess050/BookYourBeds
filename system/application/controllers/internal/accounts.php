@@ -25,7 +25,8 @@ class Accounts extends Internal_Controller {
 
 		$this->form_validation->set_rules('email', 'Email Address', 'trim|required|valid_email|callback_check_account_email');
 		$this->form_validation->set_rules('password', 'Password', 'trim|required');
-		$this->form_validation->set_rules('name', 'Account Name', 'trim|required');
+		$this->form_validation->set_rules('name', 'Property Name', 'trim|required');
+		$this->form_validation->set_rules('user_name', 'User Name', 'trim|required');
 		$this->form_validation->set_rules('email_details', '', 'trim');
 
 		if($this->form_validation->run() == FALSE)
@@ -34,7 +35,7 @@ class Accounts extends Internal_Controller {
 					->build('internal/accounts/create');
 		} else
 		{
-			$account_id = $this->account->create($this->input->post('name'), $this->input->post('email'), $this->input->post('password'), $this->input->post('email_details'), TRUE);
+			$account_id = $this->account->create($this->input->post('user_name'), $this->input->post('email'), $this->input->post('password'), $this->input->post('email_details'), TRUE, $this->input->post('name'));
 
 			//$this->session->set_userdata('user', $this->model('user')->get($user_id));
 			//$this->account->ac = $this->model('account')->get( session('user', 'user_account_id') );

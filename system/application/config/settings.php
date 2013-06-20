@@ -14,8 +14,17 @@ $config['default_settings'] = array(
 									);
 
 
-$config['new_account_notifications'] = array(
-											array(
-												'email'	=> 'mail@bookyourbeds.com'
-												)
-										);
+if(ENVIRONMENT == 'development') {
+	$config['new_account_notifications'] = array(
+												array(
+													'email'	=> 'phil@othertribe.com'
+													)
+											);
+} else
+{
+	$config['new_account_notifications'] = array(
+												array(
+													'email'	=> 'mail@bookyourbeds.com'
+													)
+											);
+}

@@ -1,6 +1,6 @@
 <h2>Welcome to BookYourBeds</h2>
 
-<p>Thank you for creating your new account - <strong><?php echo $account->account_name; ?></strong>.</p>
+<p>Hi, <?php echo $user->user_firstname; ?>! Thank you for creating your new account with <strong>BookYourBeds</strong>.</p>
 
 <p>You can sign in to your new account and get started at <?php echo anchor('signin'); ?> using the details you used when creating your account:<br />
 Email Address: <strong><?php echo $email; ?></strong><br />

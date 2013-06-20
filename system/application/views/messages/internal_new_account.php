@@ -2,7 +2,7 @@
 
 <p>You have a new account signup:</p>
 
-<p>Account Name: <strong><?php echo $account->account_name; ?></strong><br />
+<p>Name: <strong><?php echo $user->user_firstname; ?> <?php echo $user->user_lastname; ?></strong><br />
 Email Address: <strong><?php echo $email; ?></strong><br />
 Account ID: <strong><?php echo $account->account_id; ?></strong></p>
 
