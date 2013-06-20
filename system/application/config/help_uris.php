@@ -34,7 +34,7 @@ $config['help_uri'] = array(
 							'resources/index'		=> 'documentation/your-rooms',
 							'bookings/index'		=> 'documentation/diary',
 							'dashboard/index'		=> 'documentation/dashboard',
-							'dashboard/wizard'		=> 'resources/getting-started',
+							'dashboard/wizard'		=> 'resources/getting-started-with-bookyourbeds',
 							'auth/forgotten_password'	=> 'documentation/forgotten-password',
 							'auth/signin'				=> 'documentation/sign-in'
 							);
