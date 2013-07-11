@@ -17,15 +17,16 @@ class Internal_user_m extends MY_Model
 	
 	public function do_signin($username, $password)
 	{
+		$this->load->library('PasswordHash', array(8, FALSE));
+
 		$this->is_paranoid();
 		
 		$user = $this->db->where('internal_user_username', $username)
-						->where('internal_user_password', $password)
 						->get('internal_users')
 						->row();
 
 
-		if( ! empty($user))
+		if( ! empty($user) && $this->passwordhash->CheckPassword($password, $user->internal_user_password))
 		{
 			$this->session->set_userdata('internal_user', $user);
 			

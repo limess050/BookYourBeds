@@ -78,7 +78,7 @@ class Users extends Admin_Controller {
 
 		if( ! empty($_POST['password']))
 		{
-			$this->form_validation->set_rules('password', 'Password', 'trim|required|matches[passconf]|sha1');
+			$this->form_validation->set_rules('password', 'Password', 'trim|required|matches[passconf]');
 			$this->form_validation->set_rules('passconf', 'Password Confirmation', 'trim|required');
 		}
 
@@ -94,7 +94,9 @@ class Users extends Admin_Controller {
 
 			if($this->input->post('password'))
 			{
-				$user['user_password'] = $this->input->post('password');
+				$this->load->library('PasswordHash', array(8, FALSE));
+
+				$user['user_password'] = $this->passwordhash->HashPassword($this->input->post('password'));
 			}
 
 			$this->model('user')->update($this->input->post('user_id'), $user);

@@ -29,28 +29,32 @@ class User_m extends MY_Model
 			->row();
 	}
 
-	public function get_all($account_id = null)
+	public function _get_all($account_id = null)
 	{
-		$this->_set_account_id($account_id);
+		/*$this->_set_account_id($account_id);
 
 		$this->is_paranoid();
 
 		return $this->db->where($this->account_id_field, $this->account_id)
-				->get($this->_table)->result();
+				->get($this->_table)->result();*/
+
+		$this->is_paranoid();
+
+
 	}
 	
 	public function do_signin($username, $password)
 	{
+		$this->load->library('PasswordHash', array(8, FALSE));
+
 		$this->is_paranoid();
 		
 		$user = $this->db->where('user_username', $username)
 						->or_where('user_email', $username)
-						->where('user_password', $password)
 						->get('users')
 						->row();
 
-
-		if( ! empty($user) && $account = $this->model('account')->get($user->user_account_id))
+		if( ! empty($user) && $this->passwordhash->CheckPassword($password, $user->user_password) && $account = $this->model('account')->get($user->user_account_id))
 		{
 			$this->session->set_userdata('user', $user);
 			$this->session->set_userdata('account', $account);
@@ -91,9 +95,11 @@ class User_m extends MY_Model
 
 	public function reset_password($id, $password)
 	{
+		$this->load->library('PasswordHash', array(8, FALSE));
+
 		$this->db->where('user_id', $id)
 				->update('users', array(
-										'user_password'					=> SHA1($password),
+										'user_password'					=> $this->passwordhash->HashPassword($password),
 										'user_password_reset'			=> null,
 										'user_password_reset_expires'	=> null
 										));
