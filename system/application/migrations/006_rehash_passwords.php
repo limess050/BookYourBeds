@@ -5,6 +5,7 @@ class Migration_Rehash_passwords extends CI_Migration
 
 	public function up()
 	{
+		echo 'Up';
 		$this->load->library('PasswordHash', array(8, FALSE));
 		$this->load->library('mandrill');
 

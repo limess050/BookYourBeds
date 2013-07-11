@@ -130,7 +130,7 @@ class Account
 			$message = array(
 				'html'		=> ci()->template->set_layout('email', '')->build('messages/new_account', $data, TRUE),
 				'subject'	=> 'Welcome to BookYourBeds.com',
-				'from_email'	=> 'robot@bookyourbeds.com',
+				'from_email'	=> 'mail@bookyourbeds.com',
 				'from_name'		=> 'BookYourBeds.com',
 				'to'			=> array(
 										array(
@@ -168,7 +168,7 @@ class Account
 			$message = array(
 				'html'		=> ci()->template->set_layout('email', '')->build('messages/internal_new_account', $data, TRUE),
 				'subject'	=> 'New account sign up for BookYourBeds',
-				'from_email'	=> 'robot@bookyourbeds.com',
+				'from_email'	=> 'mail@bookyourbeds.com',
 				'from_name'		=> 'BookYourBeds.com',
 				'to'			=> $internal_notifications,
 				'auto_text'		=> TRUE,
@@ -218,7 +218,7 @@ class Account
 		$message = array(
 				'html'		=> ci()->template->set_layout('email', '')->build('messages/confirm_account', $data, TRUE),
 				'subject'	=> 'Confirm you BookYourBeds.com account',
-				'from_email'	=> 'robot@bookyourbeds.com',
+				'from_email'	=> 'mail@bookyourbeds.com',
 				'from_name'		=> 'BookYourBeds.com',
 				'to'			=> array(
 										array(
@@ -260,7 +260,7 @@ class Account
 			$message = array(
 				'html'		=> ci()->template->set_layout('email', '')->build('messages/reset_password', array('email' => $email, 'auth' => $auth), TRUE),
 				'subject'	=> 'Reset your BookYourBeds.com password',
-				'from_email'	=> 'robot@bookyourbeds.com',
+				'from_email'	=> 'mail@bookyourbeds.com',
 				'from_name'		=> 'BookYourBeds.com',
 				'to'			=> array(
 										array(
