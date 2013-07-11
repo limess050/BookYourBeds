@@ -44,8 +44,8 @@ class Internal_Controller extends MY_Controller
 
 		$this->load->library('form_validation');
 
-		$this->form_validation->set_rules('username', 'Username', 'trim|required');
-		$this->form_validation->set_rules('password', 'Password', 'trim|required|sha1|callback_do_signin');
+		$this->form_validation->set_rules('username', 'Username', 'trim|required|xss_clean');
+		$this->form_validation->set_rules('password', 'Password', 'trim|required|sha1|xss_clean|callback_do_signin');
 
 		if($this->form_validation->run() == FALSE)
 		{

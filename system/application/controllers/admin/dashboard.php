@@ -79,20 +79,20 @@ class Dashboard extends Admin_Controller {
 
 	private function wizard_account()
 	{
-		$this->form_validation->set_rules('account[account_name]', 'Account Name', 'trim|required');
+		$this->form_validation->set_rules('account[account_name]', 'Account Name', 'trim|required|xss_clean');
 		//$this->form_validation->set_rules('account[account_slug]', 'Account URL', 'trim|required');
-		$this->form_validation->set_rules('account[account_email]', 'Account Email', 'trim|required|valid_email');
+		$this->form_validation->set_rules('account[account_email]', 'Account Email', 'trim|required|valid_email|xss_clean');
 		
-		$this->form_validation->set_rules('account[account_address1]', 'Address 1', 'trim|required');
-		$this->form_validation->set_rules('account[account_address2	]', 'Address 2', 'trim');
-		$this->form_validation->set_rules('account[account_city]', 'Town/City', 'trim|required');
-		$this->form_validation->set_rules('account[account_postcode]', 'Postcode', 'trim|required');
-		$this->form_validation->set_rules('account[account_country]', 'Country', 'trim|required');
+		$this->form_validation->set_rules('account[account_address1]', 'Address 1', 'trim|required|xss_clean');
+		$this->form_validation->set_rules('account[account_address2	]', 'Address 2', 'trim|xss_clean');
+		$this->form_validation->set_rules('account[account_city]', 'Town/City', 'trim|required|xss_clean');
+		$this->form_validation->set_rules('account[account_postcode]', 'Postcode', 'trim|required|xss_clean');
+		$this->form_validation->set_rules('account[account_country]', 'Country', 'trim|required|xss_clean');
 		//$this->form_validation->set_rules('account[account_contact_email]', 'Contact Email', 'trim|valid_email');
-		$this->form_validation->set_rules('account[account_phone]', 'Contact Telephone', 'trim');
+		$this->form_validation->set_rules('account[account_phone]', 'Contact Telephone', 'trim|xss_clean');
 
-		$this->form_validation->set_rules('account[account_description]', 'Description', 'trim');
-		$this->form_validation->set_rules('account[account_website]', 'Website', 'trim');
+		$this->form_validation->set_rules('account[account_description]', 'Description', 'trim|xss_clean');
+		$this->form_validation->set_rules('account[account_website]', 'Website', 'trim|xss_clean');
 
 		$data = array();
 		if($this->form_validation->run() == FALSE)
@@ -127,16 +127,16 @@ class Dashboard extends Admin_Controller {
 
 	private function wizard_add_room()
 	{
-		$this->form_validation->set_rules('resource[resource_title]', 'Resource Title', 'trim|required');
-		$this->form_validation->set_rules('resource[resource_default_release]', 'Default Release', 'trim|required|is_natural_no_zero');
-		$this->form_validation->set_rules('resource[resource_booking_footprint]', 'Booking Footprint', 'trim|required|is_natural_no_zero');
-		$this->form_validation->set_rules('resource[resource_priced_per]', 'Resource Priced Per', 'trim');
+		$this->form_validation->set_rules('resource[resource_title]', 'Resource Title', 'trim|required|xss_clean');
+		$this->form_validation->set_rules('resource[resource_default_release]', 'Default Release', 'trim|required|is_natural_no_zero|xss_clean');
+		$this->form_validation->set_rules('resource[resource_booking_footprint]', 'Booking Footprint', 'trim|required|is_natural_no_zero|xss_clean');
+		$this->form_validation->set_rules('resource[resource_priced_per]', 'Resource Priced Per', 'trim|xss_clean');
 		
 		$dow =  array('', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday');
 
 		for($i = 1; $i <= 7; $i++)
 		{
-			$this->form_validation->set_rules("price[{$i}]", $dow[$i] . ' Price', 'trim|required|is_numeric|as_currency');
+			$this->form_validation->set_rules("price[{$i}]", $dow[$i] . ' Price', 'trim|required|is_numeric|as_currency|xss_clean');
 		}
 
 		$data = array();
@@ -168,30 +168,30 @@ class Dashboard extends Admin_Controller {
 	private function wizard_payment_options()
 	{
 		
-		$this->form_validation->set_rules('setting[deposit]', 'Deposit', 'trim|required|callback_gateway_needed');
-		$this->form_validation->set_rules('setting[balance_due]', 'Balance Due', 'trim|required');
+		$this->form_validation->set_rules('setting[deposit]', 'Deposit', 'trim|required|callback_gateway_needed|xss_clean');
+		$this->form_validation->set_rules('setting[balance_due]', 'Balance Due', 'trim|required|xss_clean');
 
 		if($this->input->post('setting'))
 		{
 			if($_POST['setting']['deposit'] != 'none')
 			{
-				$this->form_validation->set_rules('setting[payment_gateway]', 'Payment Gateway', 'required');
+				$this->form_validation->set_rules('setting[payment_gateway]', 'Payment Gateway', 'required|xss_clean');
 
 				if($_POST['setting']['payment_gateway'] == 'PayPal')
 				{
-					$this->form_validation->set_rules('setting[paypal_email]', 'PayPal email', 'trim|required|valid_email');
+					$this->form_validation->set_rules('setting[paypal_email]', 'PayPal email', 'trim|required|valid_email|xss_clean');
 					unset($_POST['setting']['sagepay_form_vendor_id'], $_POST['setting']['sagepay_form_crypt'], $_POST['setting']['sagepay_form_encryption_type']);
-				} else if($_POST['setting']['payment_gateway'] == 'SagePay Form')
+				} else if($_POST['setting']['payment_gateway'] == 'SagePay_Form')
 				{
-					$this->form_validation->set_rules('setting[sagepay_form_vendor_id]', 'SagePay Vendor ID', 'trim|required');
-					$this->form_validation->set_rules('setting[sagepay_form_crypt]', 'SagePay Crypt', 'trim|required');
+					$this->form_validation->set_rules('setting[sagepay_form_vendor_id]', 'SagePay Vendor ID', 'trim|required|xss_clean');
+					$this->form_validation->set_rules('setting[sagepay_form_crypt]', 'SagePay Crypt', 'trim|required|xss_clean');
 					unset($_POST['setting']['paypal_email']);
 				}
 
 
 				if($_POST['setting']['deposit'] == 'fraction')
 				{
-					$this->form_validation->set_rules('setting[deposit_percentage]', 'Percentage', 'trim|required|greater_than[0]');
+					$this->form_validation->set_rules('setting[deposit_percentage]', 'Percentage', 'trim|required|greater_than[0]|xss_clean');
 				}
 			} else
 			{
@@ -243,7 +243,7 @@ class Dashboard extends Admin_Controller {
 
 	public function wizard_confirm_email()
 	{
-		$this->form_validation->set_rules('confirm_email', 'Account Email', 'trim|required|valid_email');
+		$this->form_validation->set_rules('confirm_email', 'Account Email', 'trim|required|valid_email|xss_clean');
 
 		if($this->form_validation->run() == FALSE)
 		{

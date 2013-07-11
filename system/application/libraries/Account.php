@@ -158,7 +158,7 @@ class Account
 
 		$internal_notifications = ci()->config->item('new_account_notifications');
 
-		if( ! $internal && ! empty($internal_notifications))
+		if( ! $internal && ! empty($internal_notifications) && ENVIRONMENT != 'development')
 		{
 			ci()->load->library('mandrill');
 

@@ -21,20 +21,20 @@ class Settings extends Admin_Controller {
 	{
 		$this->load->library('form_validation');
 
-		$this->form_validation->set_rules('account[account_name]', 'Account Name', 'trim|required');
-		$this->form_validation->set_rules('account[account_slug]', 'Account URL', 'trim|required|callback_check_account_slug');
-		$this->form_validation->set_rules('account[account_email]', 'Account Email', 'trim|required|valid_email|callback_check_account_email');
+		$this->form_validation->set_rules('account[account_name]', 'Account Name', 'trim|required|xss_clean');
+		$this->form_validation->set_rules('account[account_slug]', 'Account URL', 'trim|required|xss_clean|callback_check_account_slug');
+		$this->form_validation->set_rules('account[account_email]', 'Account Email', 'trim|required|valid_email|xss_clean|callback_check_account_email');
 		
-		$this->form_validation->set_rules('account[account_address1]', 'Address 1', 'trim|required');
-		$this->form_validation->set_rules('account[account_address2]', 'Address 2', 'trim');
-		$this->form_validation->set_rules('account[account_city]', 'Town/City', 'trim|required');
-		$this->form_validation->set_rules('account[account_postcode]', 'Postcode', 'trim|required');
-		$this->form_validation->set_rules('account[account_country]', 'Country', 'trim|required');
+		$this->form_validation->set_rules('account[account_address1]', 'Address 1', 'trim|required|xss_clean');
+		$this->form_validation->set_rules('account[account_address2]', 'Address 2', 'trim|xss_clean');
+		$this->form_validation->set_rules('account[account_city]', 'Town/City', 'trim|required|xss_clean');
+		$this->form_validation->set_rules('account[account_postcode]', 'Postcode', 'trim|required|xss_clean');
+		$this->form_validation->set_rules('account[account_country]', 'Country', 'trim|required|xss_clean');
 		//$this->form_validation->set_rules('account[account_contact_email]', 'Contact Email', 'trim|valid_email');
-		$this->form_validation->set_rules('account[account_phone]', 'Contact Telephone', 'trim');
+		$this->form_validation->set_rules('account[account_phone]', 'Contact Telephone', 'trim|xss_clean');
 		
-		$this->form_validation->set_rules('account[account_description]', 'Description', 'trim');
-		$this->form_validation->set_rules('account[account_website]', 'Website', 'trim');
+		$this->form_validation->set_rules('account[account_description]', 'Description', 'trim|xss_clean');
+		$this->form_validation->set_rules('account[account_website]', 'Website', 'trim|xss_clean');
  
 		if($this->form_validation->run() == FALSE)
 		{
@@ -76,10 +76,10 @@ class Settings extends Admin_Controller {
 	{
 		$this->load->library('form_validation');
 
-		$this->form_validation->set_rules('setting[max_duration_public]', 'Maximum duration', 'trim|required|is_numeric');
-		$this->form_validation->set_rules('setting[max_guests_public]', 'Maximum guests', 'trim|required|is_numeric');
-		$this->form_validation->set_rules('setting[terms_and_conditions]', 'Terms and Conditions', 'trim');
-		$this->form_validation->set_rules('setting[booking_instructions]', 'Additional Booking Information', 'trim');
+		$this->form_validation->set_rules('setting[max_duration_public]', 'Maximum duration', 'trim|required|is_numeric|xss_clean');
+		$this->form_validation->set_rules('setting[max_guests_public]', 'Maximum guests', 'trim|required|is_numeric|xss_clean');
+		$this->form_validation->set_rules('setting[terms_and_conditions]', 'Terms and Conditions', 'trim|xss_clean');
+		$this->form_validation->set_rules('setting[booking_instructions]', 'Additional Booking Information', 'trim|xss_clean');
 
 		if($this->form_validation->run() == FALSE)
 		{
@@ -104,8 +104,8 @@ class Settings extends Admin_Controller {
 		$this->load->library('form_validation');
 
 		$this->form_validation->set_rules('setting[deposit]', 'Deposit', 'trim|required|callback_gateway_needed');
-		$this->form_validation->set_rules('setting[balance_due]', 'Balance Due', 'trim|required');
-		$this->form_validation->set_rules('setting[payment_gateway]', 'Payment Gateway', 'trim|required');
+		$this->form_validation->set_rules('setting[balance_due]', 'Balance Due', 'trim|required|xss_clean');
+		$this->form_validation->set_rules('setting[payment_gateway]', 'Payment Gateway', 'trim|required|xss_clean');
 
 		if($this->input->post('setting'))
 		{
@@ -113,20 +113,19 @@ class Settings extends Admin_Controller {
 			{
 				if($_POST['setting']['payment_gateway'] == 'PayPal')
 				{
-					$this->form_validation->set_rules('setting[paypal_email]', 'PayPal email', 'trim|required|valid_email');
+					$this->form_validation->set_rules('setting[paypal_email]', 'PayPal email', 'trim|required|valid_email|xss_clean');
 					unset($_POST['setting']['sagepay_form_vendor_id'], $_POST['setting']['sagepay_form_crypt'], $_POST['setting']['sagepay_form_encryption_type']);
-				} else if($_POST['setting']['payment_gateway'] == 'SagePay Form')
+				} else if($_POST['setting']['payment_gateway'] == 'SagePay_Form')
 				{
-					$this->form_validation->set_rules('setting[sagepay_form_vendor_id]', 'SagePay Vendor ID', 'trim|required');
-					$this->form_validation->set_rules('setting[sagepay_form_crypt]', 'SagePay Crypt', 'trim|required');
-					$this->form_validation->set_rules('setting[sagepay_form_crypt]', 'SagePay Crypt', 'trim|required');
+					$this->form_validation->set_rules('setting[sagepay_form_vendor_id]', 'SagePay Vendor ID', 'trim|required|xss_clean');
+					$this->form_validation->set_rules('setting[sagepay_form_crypt]', 'SagePay Crypt', 'trim|required|xss_clean');
 					unset($_POST['setting']['paypal_email']);
 				}
 
 
 				if($_POST['setting']['deposit'] == 'fraction')
 				{
-					$this->form_validation->set_rules('setting[deposit_percentage]', 'Percentage', 'trim|required|greater_than[0]');
+					$this->form_validation->set_rules('setting[deposit_percentage]', 'Percentage', 'trim|required|greater_than[0]|xss_clean');
 				}
 			} else
 			{

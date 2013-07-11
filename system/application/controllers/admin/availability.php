@@ -114,12 +114,12 @@ class Availability extends Admin_Controller {
 				{
 					$this->form_validation->set_rules("resource[{$key}][day][{$i}][availability]",
 						date('j M Y', $resource['day'][$i]['timestamp']),
-						'trim|required|is_natural'
+						'trim|required|is_natural|xss_clean'
 						);
 
 					$this->form_validation->set_rules("resource[{$key}][day][{$i}][price]",
 						date('j M Y', $resource['day'][$i]['timestamp']),
-						'trim|required|is_numeric'
+						'trim|required|is_numeric|xss_clean'
 						);
 				}
 			}

@@ -27,9 +27,9 @@ class Salesdesk extends Admin_Controller {
 		$data = array();
 
 		$this->load->library('form_validation');
-		$this->form_validation->set_rules('start_at', 'Date', 'trim|required');
-		$this->form_validation->set_rules('duration', 'Duration', 'callback_max_duration');
-		$this->form_validation->set_rules('guests', 'Guests', 'callback_max_guests');
+		$this->form_validation->set_rules('start_at', 'Date', 'trim|required|xss_clean');
+		$this->form_validation->set_rules('duration', 'Duration', 'callback_max_duration|xss_clean');
+		$this->form_validation->set_rules('guests', 'Guests', 'callback_max_guests|xss_clean');
 
 		$this->form_validation->set_message('is_natural_no_zero', 'Please select a hostel.');
 		$this->form_validation->set_message('required', 'Please enter an arrival date.');
@@ -95,10 +95,10 @@ class Salesdesk extends Admin_Controller {
 
 		$this->load->library('form_validation');
 
-		$this->form_validation->set_rules('customer[customer_firstname]', 'First Name', 'trim|required');
-		$this->form_validation->set_rules('customer[customer_lastname]', 'Last Name', 'trim|required');
-		$this->form_validation->set_rules('customer[customer_email]', 'Email Address', 'trim|required|valid_email');
-		$this->form_validation->set_rules('customer[customer_phone]', 'Contact Telephone', 'trim');
+		$this->form_validation->set_rules('customer[customer_firstname]', 'First Name', 'trim|required|xss_clean');
+		$this->form_validation->set_rules('customer[customer_lastname]', 'Last Name', 'trim|required|xss_clean');
+		$this->form_validation->set_rules('customer[customer_email]', 'Email Address', 'trim|required|valid_email|xss_clean');
+		$this->form_validation->set_rules('customer[customer_phone]', 'Contact Telephone', 'trim|xss_clean');
 
 		if($this->form_validation->run() === FALSE)
 		{
@@ -134,9 +134,9 @@ class Salesdesk extends Admin_Controller {
 
 			foreach($data['supplements'] as $supplement)
 			{
-				$this->form_validation->set_rules("supplements[{$supplement->supplement_id}][qty]", '', 'trim');
-				$this->form_validation->set_rules("supplements[{$supplement->supplement_id}][price]", '', 'trim');
-				$this->form_validation->set_rules("supplements[{$supplement->supplement_id}][description]", '', 'trim');
+				$this->form_validation->set_rules("supplements[{$supplement->supplement_id}][qty]", '', 'trim|xss_clean');
+				$this->form_validation->set_rules("supplements[{$supplement->supplement_id}][price]", '', 'trim|xss_clean');
+				$this->form_validation->set_rules("supplements[{$supplement->supplement_id}][description]", '', 'trim|xss_clean');
 			}
 		}
 

@@ -39,9 +39,9 @@ class Transfer extends Admin_Controller {
 		$data['booking'] = $this->model('booking')->get($id, $this->account->val('id')); 
 			
 		$this->load->library('form_validation');
-		$this->form_validation->set_rules('start_at', 'Date', 'trim|required');
-		$this->form_validation->set_rules('duration', 'Duration', 'callback_max_duration');
-		$this->form_validation->set_rules('guests', 'Guests', 'callback_max_guests');
+		$this->form_validation->set_rules('start_at', 'Date', 'trim|required|xss_clean');
+		$this->form_validation->set_rules('duration', 'Duration', 'callback_max_duration|xss_clean');
+		$this->form_validation->set_rules('guests', 'Guests', 'callback_max_guests|xss_clean');
 
 		$this->form_validation->set_message('is_natural_no_zero', 'Please select a hostel.');
 		$this->form_validation->set_message('required', 'Please enter an arrival date.');
@@ -187,10 +187,10 @@ class Transfer extends Admin_Controller {
 
 		$this->load->library('form_validation');
 
-		$this->form_validation->set_rules('customer[customer_firstname]', 'First Name', 'trim|required');
-		$this->form_validation->set_rules('customer[customer_lastname]', 'Last Name', 'trim|required');
-		$this->form_validation->set_rules('customer[customer_email]', 'Email Address', 'trim|required|valid_email');
-		$this->form_validation->set_rules('customer[customer_phone]', 'Contact Telephone', 'trim');
+		$this->form_validation->set_rules('customer[customer_firstname]', 'First Name', 'trim|required|xss_clean');
+		$this->form_validation->set_rules('customer[customer_lastname]', 'Last Name', 'trim|required|xss_clean');
+		$this->form_validation->set_rules('customer[customer_email]', 'Email Address', 'trim|required|valid_email|xss_clean');
+		$this->form_validation->set_rules('customer[customer_phone]', 'Contact Telephone', 'trim|xss_clean');
 
 		if($this->form_validation->run() === FALSE)
 		{
@@ -361,10 +361,10 @@ class Transfer extends Admin_Controller {
 
 		$this->load->library('form_validation');
 
-		$this->form_validation->set_rules("original_deposit", '', 'trim|required');
-		$this->form_validation->set_rules("email_customer", '', 'trim');
-		$this->form_validation->set_rules("booking_deposit", '', 'trim');
-		$this->form_validation->set_rules("booking_refund", '', 'trim');
+		$this->form_validation->set_rules("original_deposit", '', 'trim|required|xss_clean');
+		$this->form_validation->set_rules("email_customer", '', 'trim|xss_clean');
+		$this->form_validation->set_rules("booking_deposit", '', 'trim|xss_clean');
+		$this->form_validation->set_rules("booking_refund", '', 'trim|xss_clean');
 
 		if($this->form_validation->run() === FALSE)
 		{

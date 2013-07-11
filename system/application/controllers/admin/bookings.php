@@ -81,9 +81,9 @@ class Bookings extends Admin_Controller {
 
 		$this->load->library('form_validation');
 
-		$this->form_validation->set_rules('email', 'Email Address', 'trim|required|valid_email');
-		$this->form_validation->set_rules('subject', 'Subject', 'trim|required');
-		$this->form_validation->set_rules('message', 'Message', 'trim');
+		$this->form_validation->set_rules('email', 'Email Address', 'trim|required|valid_email|xss_clean');
+		$this->form_validation->set_rules('subject', 'Subject', 'trim|required|xss_clean');
+		$this->form_validation->set_rules('message', 'Message', 'trim|xss_clean');
 
 		if($this->form_validation->run() === FALSE)
 		{
@@ -111,11 +111,11 @@ class Bookings extends Admin_Controller {
 
 		$this->load->library('form_validation');
 
-		$this->form_validation->set_rules('customer_id', 'Customer ID', 'trim|required');
-		$this->form_validation->set_rules('customer[customer_firstname]', 'First Name', 'trim|required');
-		$this->form_validation->set_rules('customer[customer_lastname]', 'Last Name', 'trim|required');
-		$this->form_validation->set_rules('customer[customer_email]', 'Email', 'trim|required|valid_email');
-		$this->form_validation->set_rules('customer[customer_phone]', 'Telephone', 'trim');
+		$this->form_validation->set_rules('customer_id', 'Customer ID', 'trim|required|xss_clean');
+		$this->form_validation->set_rules('customer[customer_firstname]', 'First Name', 'trim|required|xss_clean');
+		$this->form_validation->set_rules('customer[customer_lastname]', 'Last Name', 'trim|required|xss_clean');
+		$this->form_validation->set_rules('customer[customer_email]', 'Email', 'trim|required|valid_email|xss_clean');
+		$this->form_validation->set_rules('customer[customer_phone]', 'Telephone', 'trim|xss_clean');
 				
 		if($this->form_validation->run() === FALSE)
 		{
@@ -167,9 +167,9 @@ class Bookings extends Admin_Controller {
 				foreach($resource->supplements as $supplement)
 				{
 					
-					$this->form_validation->set_rules("supplements[{$resource->resource_id}][{$supplement->supplement_id}][qty]", '', 'trim');
-					$this->form_validation->set_rules("supplements[{$resource->resource_id}][{$supplement->supplement_id}][price]", '', 'trim');
-					$this->form_validation->set_rules("supplements[{$resource->resource_id}][{$supplement->supplement_id}][description]", '', 'trim');
+					$this->form_validation->set_rules("supplements[{$resource->resource_id}][{$supplement->supplement_id}][qty]", '', 'trim|xss_clean');
+					$this->form_validation->set_rules("supplements[{$resource->resource_id}][{$supplement->supplement_id}][price]", '', 'trim|xss_clean');
+					$this->form_validation->set_rules("supplements[{$resource->resource_id}][{$supplement->supplement_id}][description]", '', 'trim|xss_clean');
 				}
 			}
 		}
@@ -374,7 +374,7 @@ class Bookings extends Admin_Controller {
 		$this->load->library('form_validation');
 		$this->load->helper('text');
 
-		$this->form_validation->set_rules('search_terms', 'Search Terms', 'trim|required');
+		$this->form_validation->set_rules('search_terms', 'Search Terms', 'trim|required|xss_clean');
 
 		$data['search'] = $this->input->post('search_terms');
 

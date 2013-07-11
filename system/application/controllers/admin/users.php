@@ -36,9 +36,9 @@ class Users extends Admin_Controller {
 
 		$this->load->library('form_validation');
 
-		$this->form_validation->set_rules('user[user_firstname]', 'First Name', 'trim|required');
-		$this->form_validation->set_rules('user[user_lastname]', 'Last Name', 'trim');
-		$this->form_validation->set_rules('user[user_username]', 'Username', 'trim|required|callback_check_username');
+		$this->form_validation->set_rules('user[user_firstname]', 'First Name', 'trim|required|xss_clean');
+		$this->form_validation->set_rules('user[user_lastname]', 'Last Name', 'trim|xss_clean');
+		$this->form_validation->set_rules('user[user_username]', 'Username', 'trim|required|xss_clean|callback_check_username');
 		$this->form_validation->set_rules('user[user_password]', 'Password', 'trim|required|sha1');
 
 		if($this->form_validation->run() == FALSE)
@@ -71,10 +71,10 @@ class Users extends Admin_Controller {
 
 		$this->load->library('form_validation');
 
-		$this->form_validation->set_rules('user[user_firstname]', 'First Name', 'trim');
-		$this->form_validation->set_rules('user[user_lastname]', 'Last Name', 'trim');
-		$this->form_validation->set_rules('user[user_username]', 'Username', 'trim|callback_check_username');
-		$this->form_validation->set_rules('user[user_email]', 'Email Address', 'trim|callback_check_username_or_email|valid_email|callback_check_email');
+		$this->form_validation->set_rules('user[user_firstname]', 'First Name', 'trim|xss_clean');
+		$this->form_validation->set_rules('user[user_lastname]', 'Last Name', 'trim|xss_clean');
+		$this->form_validation->set_rules('user[user_username]', 'Username', 'trim|xss_clean|callback_check_username');
+		$this->form_validation->set_rules('user[user_email]', 'Email Address', 'trim|xss_clean|callback_check_username_or_email|valid_email|callback_check_email');
 
 		if( ! empty($_POST['password']))
 		{

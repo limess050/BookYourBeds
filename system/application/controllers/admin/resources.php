@@ -29,7 +29,7 @@ class Resources extends Admin_Controller {
 	{
 		$this->load->library('form_validation');
 		
-		$this->form_validation->set_rules('resource[resource_title]', 'Resource Title', 'trim|required');
+		$this->form_validation->set_rules('resource[resource_title]', 'Resource Title', 'trim|required|xss_clean');
 		
 		if($this->form_validation->run() == FALSE)
 		{
@@ -54,11 +54,11 @@ class Resources extends Admin_Controller {
 		
 		$this->load->library('form_validation');
 		
-		$this->form_validation->set_rules('resource[resource_title]', 'Resource Title', 'trim|required');
+		$this->form_validation->set_rules('resource[resource_title]', 'Resource Title', 'trim|required|xss_clean');
 		//$this->form_validation->set_rules('resource[resource_reference]', 'Resource Reference', 'trim');
-		$this->form_validation->set_rules('resource[resource_default_release]', 'Default Release', 'trim|is_natural_no_zero');
-		$this->form_validation->set_rules('resource[resource_booking_footprint]', 'Booking Footprint', 'trim|is_natural_no_zero');
-		$this->form_validation->set_rules('resource[resource_priced_per]', 'Resource Priced Per', 'trim');
+		$this->form_validation->set_rules('resource[resource_default_release]', 'Default Release', 'trim|is_natural_no_zero|xss_clean');
+		$this->form_validation->set_rules('resource[resource_booking_footprint]', 'Booking Footprint', 'trim|is_natural_no_zero|xss_clean');
+		$this->form_validation->set_rules('resource[resource_priced_per]', 'Resource Priced Per', 'trim|xss_clean');
 		
 		if($this->form_validation->run() == FALSE)
 		{
@@ -99,7 +99,7 @@ class Resources extends Admin_Controller {
 			{
 				for($i = 1; $i <= 7; $i++)
 				{
-					$this->form_validation->set_rules("season[{$key}][{$i}][price]", 'Price', 'trim|' . (($key == 0) ? 'required|' : '') . 'numeric_or_empty');
+					$this->form_validation->set_rules("season[{$key}][{$i}][price]", 'Price', 'trim|' . (($key == 0) ? 'required|' : '') . 'numeric_or_empty|xss_clean');
 				}
 			}
 		}
@@ -139,9 +139,9 @@ class Resources extends Admin_Controller {
 
 		foreach($data['supplements'] as $supplement)
 		{
-			$this->form_validation->set_rules("supplement[$supplement->supplement_id][str_resource_id]", '', 'trim');
-			$this->form_validation->set_rules("supplement[$supplement->supplement_id][str_supplement_id]", '', 'trim');
-			$this->form_validation->set_rules("supplement[$supplement->supplement_id][str_price]", 'Supplement Price', 'trim|numeric_or_empty');
+			$this->form_validation->set_rules("supplement[$supplement->supplement_id][str_resource_id]", '', 'trim|xss_clean');
+			$this->form_validation->set_rules("supplement[$supplement->supplement_id][str_supplement_id]", '', 'trim|xss_clean');
+			$this->form_validation->set_rules("supplement[$supplement->supplement_id][str_price]", 'Supplement Price', 'trim|numeric_or_empty|xss_clean');
 		}
 
 		if($this->form_validation->run() == FALSE)

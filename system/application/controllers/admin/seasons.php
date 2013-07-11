@@ -26,7 +26,7 @@ class Seasons extends Admin_Controller {
 			$seasons = $this->input->post('season');
 			foreach($seasons as $key => $season)
 			{
-				$this->form_validation->set_rules("season[{$key}][season_sort_order]", '', 'trim');
+				$this->form_validation->set_rules("season[{$key}][season_sort_order]", '', 'trim|xss_clean');
 			}
 		}
 
@@ -54,9 +54,9 @@ class Seasons extends Admin_Controller {
 	{
 		$this->load->library('form_validation');
 		
-		$this->form_validation->set_rules('season[season_title]', 'Season Title', 'trim|required');
-		$this->form_validation->set_rules('season[season_start_at]', 'Season Start', 'trim|required');
-		$this->form_validation->set_rules('season[season_end_at]', 'Season End', 'trim|required');
+		$this->form_validation->set_rules('season[season_title]', 'Season Title', 'trim|required|xss_clean');
+		$this->form_validation->set_rules('season[season_start_at]', 'Season Start', 'trim|required|xss_clean');
+		$this->form_validation->set_rules('season[season_end_at]', 'Season End', 'trim|required|xss_clean');
 		
 		if($this->form_validation->run() == FALSE)
 		{
@@ -82,9 +82,9 @@ class Seasons extends Admin_Controller {
 		
 		$this->load->library('form_validation');
 		
-		$this->form_validation->set_rules('season[season_title]', 'Season Title', 'trim|required');
-		$this->form_validation->set_rules('season[season_start_at]', 'Season Start', 'trim|required');
-		$this->form_validation->set_rules('season[season_end_at]', 'Season End', 'trim|required');
+		$this->form_validation->set_rules('season[season_title]', 'Season Title', 'trim|required|xss_clean');
+		$this->form_validation->set_rules('season[season_start_at]', 'Season Start', 'trim|required|xss_clean');
+		$this->form_validation->set_rules('season[season_end_at]', 'Season End', 'trim|required|xss_clean');
 		
 		if($this->form_validation->run() == FALSE)
 		{

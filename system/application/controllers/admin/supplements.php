@@ -27,11 +27,11 @@ class Supplements extends Admin_Controller {
 	{
 		$this->load->library('form_validation');
 
-		$this->form_validation->set_rules('supplement[supplement_short_description]', 'Short Description/Title', 'trim|required');
-		$this->form_validation->set_rules('supplement[supplement_long_description]', 'Long Description', 'trim');
-		$this->form_validation->set_rules('supplement[supplement_default_price]', 'Default Price', 'trim|numeric_or_empty');
-		$this->form_validation->set_rules('supplement[supplement_per_guest]', 'Per Guest', 'trim');
-		$this->form_validation->set_rules('supplement[supplement_per_day]', 'Per Day', 'trim');
+		$this->form_validation->set_rules('supplement[supplement_short_description]', 'Short Description/Title', 'trim|required|xss_clean');
+		$this->form_validation->set_rules('supplement[supplement_long_description]', 'Long Description', 'trim|xss_clean');
+		$this->form_validation->set_rules('supplement[supplement_default_price]', 'Default Price', 'trim|numeric_or_empty|xss_clean');
+		$this->form_validation->set_rules('supplement[supplement_per_guest]', 'Per Guest', 'trim|xss_clean');
+		$this->form_validation->set_rules('supplement[supplement_per_day]', 'Per Day', 'trim|xss_clean');
 
 		if($this->form_validation->run() == FALSE)
 		{	
@@ -57,11 +57,11 @@ class Supplements extends Admin_Controller {
 
 		$this->load->library('form_validation');
 
-		$this->form_validation->set_rules('supplement[supplement_short_description]', 'Short Description/Title', 'trim|required');
-		$this->form_validation->set_rules('supplement[supplement_long_description]', 'Long Description', 'trim');
-		$this->form_validation->set_rules('supplement[supplement_default_price]', 'Default Price', 'trim|numeric_or_empty');
-		$this->form_validation->set_rules('supplement[supplement_per_guest]', 'Per Guest', 'trim');
-		$this->form_validation->set_rules('supplement[supplement_per_day]', 'Per Day', 'trim');
+		$this->form_validation->set_rules('supplement[supplement_short_description]', 'Short Description/Title', 'trim|required|xss_clean');
+		$this->form_validation->set_rules('supplement[supplement_long_description]', 'Long Description', 'trim|xss_clean');
+		$this->form_validation->set_rules('supplement[supplement_default_price]', 'Default Price', 'trim|numeric_or_empty|xss_clean');
+		$this->form_validation->set_rules('supplement[supplement_per_guest]', 'Per Guest', 'trim|xss_clean');
+		$this->form_validation->set_rules('supplement[supplement_per_day]', 'Per Day', 'trim|xss_clean');
 
 		if($this->form_validation->run() == FALSE)
 		{

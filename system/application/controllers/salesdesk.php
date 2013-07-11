@@ -20,9 +20,9 @@ class Salesdesk extends Front_Controller {
 		$data = array();
 
 		$this->load->library('form_validation');
-		$this->form_validation->set_rules('start_at', 'Date', 'trim|required');
-		$this->form_validation->set_rules('duration', 'Duration', 'callback_max_duration');
-		$this->form_validation->set_rules('guests', 'Guests', 'callback_max_guests');
+		$this->form_validation->set_rules('start_at', 'Date', 'trim|required|xss_clean');
+		$this->form_validation->set_rules('duration', 'Duration', 'callback_max_duration|xss_clean');
+		$this->form_validation->set_rules('guests', 'Guests', 'callback_max_guests|xss_clean');
 
 		$this->form_validation->set_message('is_natural_no_zero', 'Please select a hostel.');
 		$this->form_validation->set_message('required', 'Please enter an arrival date.');
@@ -88,11 +88,11 @@ class Salesdesk extends Front_Controller {
 
 		$this->load->library('form_validation');
 
-		$this->form_validation->set_rules('customer[customer_firstname]', 'First Name', 'trim|required');
-		$this->form_validation->set_rules('customer[customer_lastname]', 'Last Name', 'trim|required');
-		$this->form_validation->set_rules('customer[customer_email]', 'Email Address', 'trim|required|valid_email|matches[emailconf]');
-		$this->form_validation->set_rules('emailconf', 'Confirm Email Address', 'trim|required');
-		$this->form_validation->set_rules('customer[customer_phone]', 'Contact Telephone', 'trim');
+		$this->form_validation->set_rules('customer[customer_firstname]', 'First Name', 'trim|required|xss_clean');
+		$this->form_validation->set_rules('customer[customer_lastname]', 'Last Name', 'trim|required|xss_clean');
+		$this->form_validation->set_rules('customer[customer_email]', 'Email Address', 'trim|required|valid_email|matches[emailconf]|xss_clean');
+		$this->form_validation->set_rules('emailconf', 'Confirm Email Address', 'trim|required|xss_clean');
+		$this->form_validation->set_rules('customer[customer_phone]', 'Contact Telephone', 'trim|xss_clean');
 
 		if($this->form_validation->run() === FALSE)
 		{
@@ -185,19 +185,19 @@ class Salesdesk extends Front_Controller {
 
 		if($this->input->post('booking_price') !== '0')
 		{
-			$this->form_validation->set_rules('billing[firstname]', 'Billing First Name', 'trim|required');
-			$this->form_validation->set_rules('billing[lastname]', 'Billing Last Name', 'trim|required');
-			$this->form_validation->set_rules('billing[email]', 'Billing Email Address', 'trim|required|valid_email');
-			$this->form_validation->set_rules('billing[address1]', 'Billing Address 1', 'trim|required');
-			$this->form_validation->set_rules('billing[address2]', 'Billing Address 2', 'trim');
-			$this->form_validation->set_rules('billing[city]', 'Billing Town/City', 'trim|required');
-			$this->form_validation->set_rules('billing[postcode]', 'Billing Postal/ZIP Code', 'trim|required');
-			$this->form_validation->set_rules('billing[country]', 'Billing Country', 'trim|required_no_zero');
+			$this->form_validation->set_rules('billing[firstname]', 'Billing First Name', 'trim|required|xss_clean');
+			$this->form_validation->set_rules('billing[lastname]', 'Billing Last Name', 'trim|required|xss_clean');
+			$this->form_validation->set_rules('billing[email]', 'Billing Email Address', 'trim|required|valid_email|xss_clean');
+			$this->form_validation->set_rules('billing[address1]', 'Billing Address 1', 'trim|required|xss_clean');
+			$this->form_validation->set_rules('billing[address2]', 'Billing Address 2', 'trim|xss_clean');
+			$this->form_validation->set_rules('billing[city]', 'Billing Town/City', 'trim|required|xss_clean');
+			$this->form_validation->set_rules('billing[postcode]', 'Billing Postal/ZIP Code', 'trim|required|xss_clean');
+			$this->form_validation->set_rules('billing[country]', 'Billing Country', 'trim|required_no_zero|xss_clean');
 			
 			$b = $this->input->post('billing');
 			if( ! empty($b['country']) && $b['country'] == 'US')
 			{
-				$this->form_validation->set_rules('billing[state]', 'Billing State', 'trim|required_no_zero');
+				$this->form_validation->set_rules('billing[state]', 'Billing State', 'trim|required_no_zero|xss_clean');
 			}
 		}
 

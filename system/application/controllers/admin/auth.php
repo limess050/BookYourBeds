@@ -21,7 +21,7 @@ class Auth extends Admin_Controller {
 	{
 		$this->load->library('form_validation');
 
-		$this->form_validation->set_rules('email', 'Email Address', 'trim|required|valid_email|callback_do_reset');
+		$this->form_validation->set_rules('email', 'Email Address', 'trim|required|valid_email|xss_clean|callback_do_reset');
 
 		if($this->form_validation->run() == FALSE)
 		{
@@ -42,8 +42,8 @@ class Auth extends Admin_Controller {
 	{
 		$this->load->library('form_validation');
 
-		$this->form_validation->set_rules('password', 'New Password', 'trim|required|matches[password_conf]');
-		$this->form_validation->set_rules('password_conf', 'Confirm New Password', 'trim|required');
+		$this->form_validation->set_rules('password', 'New Password', 'trim|required|matches[password_conf]|xss_clean');
+		$this->form_validation->set_rules('password_conf', 'Confirm New Password', 'trim|required|xss_clean');
 		$this->form_validation->set_rules('user_id', 'User', 'required');
 
 		if($this->form_validation->run() == FALSE)

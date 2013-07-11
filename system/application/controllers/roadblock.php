@@ -46,9 +46,9 @@ class Roadblock extends MY_Controller {
 	{
 		$this->load->library('form_validation');
 
-		$this->form_validation->set_rules('email', 'Email Address', 'trim|required|valid_email|callback_check_account_email');
-		$this->form_validation->set_rules('password', 'Password', 'trim|required');
-		$this->form_validation->set_rules('name', 'Account Name', 'trim|required');
+		$this->form_validation->set_rules('email', 'Email Address', 'trim|required|valid_email|xss_clean|callback_check_account_email');
+		$this->form_validation->set_rules('password', 'Password', 'trim|required|xss_clean');
+		$this->form_validation->set_rules('name', 'Account Name', 'trim|required|xss_clean');
 
 		if($this->form_validation->run() == FALSE)
 		{
