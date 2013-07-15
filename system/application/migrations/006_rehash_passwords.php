@@ -30,7 +30,7 @@ class Migration_Rehash_passwords extends CI_Migration
 			echo $new_password . '<br />';
 
 			// inform user
-			if( ! empty($user->user_email))
+			if( ! empty($user->user_email) && ENVIRONMENT != 'development')
 			{
 				$data = array(
 							'user_firstname' 	=> $user->user_firstname,
