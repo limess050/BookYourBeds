@@ -7,7 +7,7 @@
 				<?php echo $template['partials']['form_errors']; ?>
 
 				<div class="control-group">
-		        	<label class="control-label">Email address or username</label>
+		        	<label class="control-label">Email address</label>
 		        	<div class="controls">
 		            	<input type="text" class="span4" name="username" />
 		            </div>

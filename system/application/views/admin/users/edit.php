@@ -50,19 +50,7 @@
 			</div>
 		</div>
 
-		<div class="control-group">
-			<label class="control-label" for="user_username">Username</label>
-			<div class="controls">
-				<?php
-				echo form_input(array(
-					'name'	=> 'user[user_username]',
-					'id'	=> 'user_username',
-					'class'	=> 'span2',
-					'value'	=> set_value('user[user_username]', $user->user_username)
-					));
-				?>
-			</div>
-		</div>
+		
 
 	</fieldset>
 

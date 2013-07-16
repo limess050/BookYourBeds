@@ -55,7 +55,7 @@ class Admin_Controller extends MY_Controller
 
 		$this->load->library('form_validation');
 
-		$this->form_validation->set_rules('username', 'Username', 'trim|required|xss_clean');
+		$this->form_validation->set_rules('username', 'Email Address', 'trim|required|xss_clean|valid_email');
 		$this->form_validation->set_rules('password', 'Password', 'trim|required|xss_clean|callback_do_signin');
 
 		if($this->form_validation->run() == FALSE)
@@ -72,6 +72,12 @@ class Admin_Controller extends MY_Controller
 				$this->input->get('redirect') : 
 				'admin');
 		}
+	}
+
+	public function new_valid_email($str)
+	{
+		$this->form_validation->set_message('new_valid_email', 'The email address is not valid');
+		return filter_var($str, FILTER_VALIDATE_EMAIL);
 	}
 
 	public function do_signin($str)

@@ -49,8 +49,12 @@ class User_m extends MY_Model
 
 		$this->is_paranoid();
 		
-		$user = $this->db->where('user_username', $username)
+		/*$user = $this->db->where('user_username', $username)
 						->or_where('user_email', $username)
+						->get('users')
+						->row();*/
+
+		$user = $this->db->where('user_email', $username)
 						->get('users')
 						->row();
 
